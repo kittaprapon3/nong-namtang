@@ -180,6 +180,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .msg.urgent{background:var(--warn-bg);color:var(--warn-ink);font-weight:500}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{font:500 .92rem var(--f-body);padding:7px 12px;border-radius:999px;border:1.5px solid var(--accent);color:var(--accent);background:transparent;cursor:pointer}
+.mic{flex-shrink:0;width:48px;padding:0;font-size:1.2rem}
+.mic.on,.fab.talk.on{background:var(--warn-ink);border-color:var(--warn-ink);color:#fff}
+@media (prefers-reduced-motion: no-preference){.mic.on,.fab.talk.on{animation:listen 1s ease-in-out infinite}@keyframes listen{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--warn-ink) 25%,transparent)}}}
+.listening{color:var(--warn-ink);font-weight:600;font-size:.9rem;align-self:flex-end}
 .chip.go{background:var(--accent);color:var(--accent-ink)}
 .typing{color:var(--muted);font-size:.9rem;align-self:flex-start}
 form{display:flex;gap:8px}
@@ -213,6 +217,7 @@ form input{flex:1;min-width:0;font:400 1rem var(--f-body);padding:12px 14px;bord
     <div class="fabrow">
       <button class="fab" id="sayBtn" type="button"></button>
       <button class="fab" id="camBtn" type="button"></button>
+      <button class="fab talk" id="talkBtn" type="button" hidden></button>
       <button class="fab chat" id="chatBtn" type="button"></button>
     </div>
     <section class="panel navp" id="navp">
@@ -246,6 +251,7 @@ form input{flex:1;min-width:0;font:400 1rem var(--f-body);padding:12px 14px;bord
       <div class="shead"><h2 id="chatH"></h2><button class="iconbtn" type="button" data-close>✕</button></div>
       <div class="msgs" id="msgs" aria-live="polite"></div>
       <form id="form">
+        <button class="btn mic" id="micBtn" type="button" hidden></button>
         <input id="q" type="text" autocomplete="off" aria-labelledby="chatH">
         <button class="btn primary" id="sendBtn" type="submit"></button>
       </form>
@@ -339,11 +345,11 @@ const UI={
       arrived:"🚶 ถึงแล้ว",atHere:"คุณอยู่ที่นี่",finishOf:n=>`${n}เสร็จแล้ว ✓`,
       st:{done:"เสร็จแล้ว",now:"ตอนนี้",todo:"ยังไม่ได้ทำ",skipAge:"ไม่ต้อง (อายุต่ำกว่า 35)",ifDoc:"ถ้าอายุ 35 ขึ้นไป",ifMeds:"ถ้าได้ยา",noMeds:"ไม่ต้อง (ไม่ได้ยา)"},
       reset:"↺ เริ่มใหม่ (ผู้ป่วยคนใหม่)",resetSure:"แตะอีกครั้งเพื่อยืนยันเริ่มใหม่",
-      replay:"🔊 ฟังอีกครั้ง",voicePick:"เสียงพูด (เลือกเสียงที่ฟังเป็นธรรมชาติที่สุดในมือถือเครื่องนี้)",voiceTest:"▶ ทดลองฟัง",voiceOn:"เปิดเสียงพูด",voiceOff:"ปิดเสียงพูด",
+      replay:"🔊 ฟังซ้ำ",talk:"🎤 พูด",mic:"กดแล้วพูด",micOn:"กำลังฟัง… พูดได้เลยค่ะ",micDenied:"ต้องอนุญาตให้ใช้ไมโครโฟนก่อน กดอนุญาตในเบราว์เซอร์แล้วลองใหม่นะคะ",micNoSpeech:"ไม่ได้ยินเสียงเลยค่ะ ลองกดแล้วพูดใหม่นะคะ",micFail:"ฟังไม่สำเร็จ ลองใหม่หรือพิมพ์แทนได้ค่ะ",voicePick:"เสียงพูด (เลือกเสียงที่ฟังเป็นธรรมชาติที่สุดในมือถือเครื่องนี้)",voiceTest:"▶ ทดลองฟัง",voiceOn:"เปิดเสียงพูด",voiceOff:"ปิดเสียงพูด",
       noVoice:"มือถือเครื่องนี้ไม่มีเสียงภาษาไทย ลองตั้งค่าเสียงอ่านข้อความในมือถือ",
       already:"คุณอยู่ที่นี่แล้ว",youHere:"คุณอยู่ที่นี่",entrance:"ทางเข้า",
       stats:(m,min)=>`${m} ม. · ${min} นาที`,camAll:"⤢ ทั้งตึก",camRoute:"◎ เส้นทาง",chat:"💬 ถาม",chatH:"ถามน้องนำทาง",
-      ph:"พิมพ์คำถาม เช่น ห้องน้ำอยู่ไหน",send:"ส่ง",showMap:"🗺️ ดูบนแผนที่",
+      ph:"พิมพ์ หรือกด 🎤 แล้วพูด",send:"ส่ง",showMap:"🗺️ ดูบนแผนที่",
       done:"ภารกิจสำเร็จ",allDone:"ครบทุกภารกิจ!",
       hint:"ทำห้องไหนก่อนก็ได้ ตามที่เจ้าหน้าที่แนะนำ แตะรายการด้านบนเพื่อนำทางไปห้องนั้น เดินถึงแล้วกด \"ถึงแล้ว\" ทำเสร็จแล้วกดปุ่มสีทอง แอปจำความคืบหน้าไว้ ปิดเว็บแล้วเปิดใหม่ก็ไม่หาย",
       note:"ต้นแบบ · แผนผังจากผังอาคารจริง ระยะทางโดยประมาณ · น้องนำทางตอบเฉพาะเรื่องทางเดินและขั้นตอนบริการ ไม่ให้คำแนะนำทางการแพทย์"},
@@ -361,11 +367,11 @@ const UI={
       arrived:"🚶 I'm here",atHere:"You are here",finishOf:n=>`${n} done ✓`,
       st:{done:"Done",now:"Now",todo:"To do",skipAge:"Not needed (under 35)",ifDoc:"If 35 or older",ifMeds:"If you get medicine",noMeds:"Not needed (no medicine)"},
       reset:"↺ Start over (new patient)",resetSure:"Tap again to confirm",
-      replay:"🔊 Repeat",voicePick:"Voice (pick the most natural one on this phone)",voiceTest:"▶ Try it",voiceOn:"Voice on",voiceOff:"Voice off",
+      replay:"🔊 Repeat",talk:"🎤 Talk",mic:"Tap and speak",micOn:"Listening… go ahead",micDenied:"Please allow the microphone in your browser, then try again.",micNoSpeech:"I didn't hear anything. Tap and try again.",micFail:"Couldn't catch that. Try again or type instead.",voicePick:"Voice (pick the most natural one on this phone)",voiceTest:"▶ Try it",voiceOn:"Voice on",voiceOff:"Voice off",
       noVoice:"This phone has no voice for this language. Check your phone's text-to-speech settings.",
       already:"You are already here",youHere:"You are here",entrance:"Entrance",
       stats:(m,min)=>`${m} m · ${min} min`,camAll:"⤢ Whole floor",camRoute:"◎ Route",chat:"💬 Ask",chatH:"Ask the guide",
-      ph:"Type a question, e.g. where is the toilet",send:"Send",showMap:"🗺️ Show on map",
+      ph:"Type, or tap 🎤 and speak",send:"Send",showMap:"🗺️ Show on map",
       done:"Quest complete",allDone:"All quests complete!",
       hint:"Any order is fine, follow what the staff suggest. Tap an item above for directions. Tap \"I'm here\" when you arrive and the gold button when you're done. Your progress is saved.",
       note:"Prototype · based on the real floor plan, distances are approximate · The guide answers directions and service steps only, not medical advice."}
@@ -582,7 +588,7 @@ function commonText(){const t=UI[lang];document.documentElement.lang=lang;
   $("langBtn").textContent=t.lang;$("chatH").textContent=t.chatH;$("chatBtn").textContent=t.chat;$("q").placeholder=t.ph;$("sendBtn").textContent=t.send;
   $("note").textContent=t.note;$("modeH").textContent=t.modeH;
   document.querySelectorAll("[data-mode]").forEach(b=>{b.textContent=b.dataset.mode==="check"?t.modeCheck:t.modeFree;b.setAttribute("aria-pressed",String(b.dataset.mode===mode))});
-  $("resetBtn").textContent=t.reset;voiceUI()}
+  $("resetBtn").textContent=t.reset;voiceUI();if(typeof micUI==="function")micUI()}
 
 function renderNav(){
   const t=UI[lang];commonText();
@@ -864,7 +870,33 @@ function send(text){
 }
 $("form").addEventListener("submit",e=>{e.preventDefault();const q=$("q");send(q.value);q.value=""});
 
-render();
+/* ================= พูดคุยด้วยเสียง (ใช้ระบบฟังเสียงในเบราว์เซอร์ ฟรี) ================= */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let rec=null,listening=false,heard="",listenNote=null;
+function micUI(){const t=UI[lang];
+  $("micBtn").hidden=!SR;$("talkBtn").hidden=!SR;
+  $("micBtn").textContent=listening?"■":"🎤";$("micBtn").setAttribute("aria-label",listening?t.micOn:t.mic);$("micBtn").classList.toggle("on",listening);
+  $("talkBtn").textContent=listening?"■ "+t.micOn.split("…")[0]:t.talk;$("talkBtn").classList.toggle("on",listening);
+  if(listening&&!listenNote){listenNote=document.createElement("div");listenNote.className="listening";listenNote.textContent=t.micOn;msgs.appendChild(listenNote);msgs.scrollTop=msgs.scrollHeight}
+  if(!listening&&listenNote){listenNote.remove();listenNote=null}}
+function listen(){
+  if(!SR)return;
+  if(listening){try{rec.stop()}catch(e){}return}
+  stopSpeech();heard="";
+  try{rec=new SR()}catch(e){return}
+  rec.lang=lang==="th"?"th-TH":"en-US";rec.interimResults=true;rec.continuous=false;rec.maxAlternatives=1;
+  rec.onresult=e=>{let t="";for(const r of e.results)t+=r[0].transcript;heard=t;$("q").value=t};
+  rec.onerror=e=>{const t=UI[lang],m=e.error==="not-allowed"||e.error==="service-not-allowed"?t.micDenied:e.error==="no-speech"?t.micNoSpeech:e.error==="aborted"?"":t.micFail;if(m)toast("🎤",m)};
+  rec.onend=()=>{listening=false;micUI();const t=heard.trim();heard="";if(t){$("q").value="";send(t)}};
+  try{rec.start();listening=true}catch(e){listening=false}
+  micUI();
+}
+$("micBtn").onclick=listen;
+$("talkBtn").onclick=()=>{openSheet("chatSheet");listen()};
+const _closeSheets=closeSheets;closeSheets=function(){if(listening)try{rec.abort()}catch(e){}_closeSheets()};
+$("scrim").onclick=closeSheets;document.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeSheets);
+
+render();micUI();
 addBot({text:mode==="check"?"สวัสดีค่ะ! น้องนำทางพร้อมช่วยค่ะ ถามทางหรือขั้นตอนได้เลย เช่น “ไปไหนต่อ” (You can ask in English too)":"สวัสดีค่ะ! น้องนำทางพร้อมช่วยค่ะ ถามทางได้เลยนะคะ เช่น “ห้องน้ำอยู่ไหน” (You can ask in English too)",chips:quickChips("th")});
 lastSpeech="";stopSpeech();
 </script>
