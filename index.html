@@ -153,6 +153,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .qlog .sub{font-size:.85rem;padding:3px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
 .qlog .sub.ok{background:var(--gold-soft);text-decoration:line-through;color:var(--muted)}
 .note{margin:0;color:var(--muted);font-size:.82rem}
+.voicebox{display:flex;flex-direction:column;gap:6px}
+.vrow{display:grid;grid-template-columns:1fr auto;gap:8px}
+.vrow select{min-width:0;font:500 .95rem var(--f-body);padding:10px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
 
 .msgs{display:flex;flex-direction:column;gap:10px;overflow-y:auto;min-height:180px;flex:1}
 .msg{max-width:88%;padding:10px 14px;border-radius:16px;min-width:0;overflow-wrap:anywhere}
@@ -214,6 +217,7 @@ form input{flex:1;min-width:0;font:400 1rem var(--f-body);padding:12px 14px;bord
       <div class="sbody">
         <ol class="qlog" id="qlog"></ol>
         <p class="note" id="hint"></p>
+        <div class="voicebox" id="voiceBox" hidden><label class="note" id="voiceLbl" for="voiceSel"></label><div class="vrow"><select id="voiceSel"></select><button class="btn" id="voiceTest" type="button"></button></div></div>
         <button class="btn" id="resetBtn" type="button"></button>
         <p class="note" id="note"></p>
       </div>
@@ -302,7 +306,7 @@ const ICONS={reg:"🪪",health:"🩺",tests:"🧪",doc:"👨‍⚕️",rx:"💊"
 const UI={
   th:{quest:(a,b)=>`ภารกิจ ${a}/${b}`,log:"☰ ภารกิจ",logH:"สมุดภารกิจ",lang:"EN",go:"ไปที่",
       meds:"💊 แพทย์สั่งยา",noMeds:"ไม่มียา",ifMeds:"ถ้ามียา",tick:"ติ๊กเมื่อตรวจเสร็จ หรือถ้าไม่มีในรายการของคุณ",
-      arrived:"🚶 ถึงแล้ว",atHere:"คุณอยู่ที่นี่",finish:{reg:"ยื่นบัตรแล้ว ✓",health:"ลงทะเบียนแล้ว ✓",tests:"ตรวจเสร็จแล้ว ✓",rx:"รับยาแล้ว ✓",pay:"เขียนใบเบิกแล้ว ✓",summary:"ฟังผลแล้ว ✓"},reset:"↺ เริ่มใหม่ (ผู้ป่วยคนใหม่)",replay:"🔊 ฟังอีกครั้ง",voiceOn:"เปิดเสียงพูด",voiceOff:"ปิดเสียงพูด",noVoice:"มือถือเครื่องนี้ไม่มีเสียงภาษาไทย ลองตั้งค่าเสียงอ่านข้อความในมือถือ",go2:"ไปที่",arriveAt:n=>`ถึง${n}แล้ว`,pressGold:"ทำเสร็จแล้วกดปุ่มสีทองนะคะ",missionSay:"ภารกิจต่อไป",resetSure:"แตะอีกครั้งเพื่อยืนยันเริ่มใหม่",already:"คุณอยู่ที่นี่แล้ว",youHere:"คุณอยู่ที่นี่",entrance:"ทางเข้า",
+      arrived:"🚶 ถึงแล้ว",atHere:"คุณอยู่ที่นี่",finish:{reg:"ยื่นบัตรแล้ว ✓",health:"ลงทะเบียนแล้ว ✓",tests:"ตรวจเสร็จแล้ว ✓",rx:"รับยาแล้ว ✓",pay:"เขียนใบเบิกแล้ว ✓",summary:"ฟังผลแล้ว ✓"},reset:"↺ เริ่มใหม่ (ผู้ป่วยคนใหม่)",replay:"🔊 ฟังอีกครั้ง",voicePick:"เสียงพูด (เลือกเสียงที่ฟังเป็นธรรมชาติที่สุดในมือถือเครื่องนี้)",voiceTest:"▶ ทดลองฟัง",voiceOn:"เปิดเสียงพูด",voiceOff:"ปิดเสียงพูด",noVoice:"มือถือเครื่องนี้ไม่มีเสียงภาษาไทย ลองตั้งค่าเสียงอ่านข้อความในมือถือ",go2:"ไปที่",arriveAt:n=>`ถึง${n}แล้ว`,pressGold:"ทำเสร็จแล้วกดปุ่มสีทองนะคะ",missionSay:"ภารกิจต่อไป",resetSure:"แตะอีกครั้งเพื่อยืนยันเริ่มใหม่",already:"คุณอยู่ที่นี่แล้ว",youHere:"คุณอยู่ที่นี่",entrance:"ทางเข้า",
       stats:(m,min)=>`${m} ม. · ${min} นาที`,camAll:"⤢ ทั้งตึก",camRoute:"◎ เส้นทาง",chat:"💬 ถาม",chatH:"ถามน้องนำทาง",
       ph:"พิมพ์คำถาม เช่น ห้องน้ำอยู่ไหน",send:"ส่ง",showMap:"🗺️ ดูบนแผนที่",
       done:"ภารกิจสำเร็จ",allDone:"ครบทุกภารกิจ!",locked:"🔒",
@@ -310,7 +314,7 @@ const UI={
       note:"ต้นแบบ · แผนผังจากผังอาคารจริง ระยะทางโดยประมาณ · น้องนำทางตอบเฉพาะเรื่องทางเดินและขั้นตอนบริการ ไม่ให้คำแนะนำทางการแพทย์"},
   en:{quest:(a,b)=>`Quest ${a}/${b}`,log:"☰ Quests",logH:"Quest log",lang:"ไทย",go:"Go to",
       meds:"💊 Medicine prescribed",noMeds:"No medicine",ifMeds:"if prescribed",tick:"Tick when done, or if it is not on your list",
-      arrived:"🚶 I'm here",atHere:"You are here",finish:{reg:"Registered ✓",health:"Signed in ✓",tests:"Test done ✓",rx:"Got my medicine ✓",pay:"Form done ✓",summary:"Got my results ✓"},reset:"↺ Start over (new patient)",replay:"🔊 Repeat",voiceOn:"Voice on",voiceOff:"Voice off",noVoice:"This phone has no voice for this language. Check your phone's text-to-speech settings.",go2:"Go to",arriveAt:n=>`You have arrived at ${n}.`,pressGold:"When you are done, tap the gold button.",missionSay:"Next quest",resetSure:"Tap again to confirm",already:"You are already here",youHere:"You are here",entrance:"Entrance",
+      arrived:"🚶 I'm here",atHere:"You are here",finish:{reg:"Registered ✓",health:"Signed in ✓",tests:"Test done ✓",rx:"Got my medicine ✓",pay:"Form done ✓",summary:"Got my results ✓"},reset:"↺ Start over (new patient)",replay:"🔊 Repeat",voicePick:"Voice (pick the most natural one on this phone)",voiceTest:"▶ Try it",voiceOn:"Voice on",voiceOff:"Voice off",noVoice:"This phone has no voice for this language. Check your phone's text-to-speech settings.",go2:"Go to",arriveAt:n=>`You have arrived at ${n}.`,pressGold:"When you are done, tap the gold button.",missionSay:"Next quest",resetSure:"Tap again to confirm",already:"You are already here",youHere:"You are here",entrance:"Entrance",
       stats:(m,min)=>`${m} m · ${min} min`,camAll:"⤢ Whole floor",camRoute:"◎ Route",chat:"💬 Ask",chatH:"Ask the guide",
       ph:"Type a question, e.g. where is the toilet",send:"Send",showMap:"🗺️ Show on map",
       done:"Quest complete",allDone:"All quests complete!",locked:"🔒",
@@ -517,47 +521,88 @@ function render(){
   renderMap();save();
 }
 
-/* ================= เสียงพูด (ใช้เสียงในมือถือ ฟรี) ================= */
-let voiceOn=true;try{voiceOn=localStorage.getItem("nongnamtang-voice")!=="0"}catch(e){}
+/* ================= เสียงพูด (ใช้เสียงในมือถือ ฟรี) =================
+   เลือกเสียงที่ฟังเป็นธรรมชาติที่สุดในเครื่อง แบ่งประโยคให้มีจังหวะหยุด และใช้ภาษาพูด */
+let voiceOn=true,voicePick="";
+try{voiceOn=localStorage.getItem("nongnamtang-voice")!=="0";voicePick=localStorage.getItem("nongnamtang-voice-name")||""}catch(e){}
 const canSpeak="speechSynthesis" in window;
 let lastSpeech="",warnedVoice=false,actx=null;
-function voiceFor(L){try{return speechSynthesis.getVoices().find(v=>v.lang.replace("_","-").toLowerCase().startsWith(L==="th"?"th":"en"))}catch(e){return null}}
-function cleanSpeech(t){return t.replace(/(\d+)\s*ม\./g,"$1 เมตร").replace(/(\d+)\s*m\b/g,"$1 meters").replace(/รพ\./g,"โรงพยาบาล")
-  .replace(/[\u{1F000}-\u{1FFFF}←-⇿⌀-⏿☀-➿⬀-⯿⚑✓✕☰⤢◎⇧⇩↰↱↑]/gu,"").replace(/\s+/g," ").trim()}
+const allVoices=()=>{try{return speechSynthesis.getVoices()}catch(e){return[]}};
+const langVoices=L=>allVoices().filter(v=>v.lang.replace("_","-").toLowerCase().startsWith(L==="th"?"th":"en"));
+function voiceScore(v){const n=v.name;let s=0;
+  if(/natural|neural|online/i.test(n))s+=8; if(/premium|enhanced|plus/i.test(n))s+=6; if(/google/i.test(n))s+=4;
+  if(/premwadee|niwat|achara/i.test(n))s+=2; if(/compact|espeak/i.test(n))s-=6; if(v.default)s+=1; return s}
+function voiceFor(L){const vs=langVoices(L);if(!vs.length)return null;
+  const chosen=vs.find(v=>v.voiceURI===voicePick||v.name===voicePick);if(chosen)return chosen;
+  return vs.slice().sort((a,b)=>voiceScore(b)-voiceScore(a))[0]}
+function cleanSpeech(t){return t.replace(/(\d+)\s*ม\./g,"$1 เมตร").replace(/(\d+)\s*m\b/g,"$1 meters").replace(/รพ\./g,"โรงพยาบาล").replace(/\(.*?\)/g,"")
+  .replace(/[\u{1F000}-\u{1FFFF}←-⇿⌀-⏿☀-➿⬀-⯿⚑✓✕☰⤢◎⇧⇩↰↱↑“”"]/gu,"").replace(/\s+/g," ").trim()}
+function chunks(t){return cleanSpeech(t).split(/(?<=[.!?。]|ค่ะ|คะ|นะคะ)\s+/).map(x=>x.replace(/\.$/,"").trim()).filter(Boolean)}
 function say(text,force){
-  lastSpeech=text;if(!canSpeak||(!voiceOn&&!force))return;
-  try{speechSynthesis.cancel();const L=/[฀-๿]/.test(text)?"th":"en";
-    const u=new SpeechSynthesisUtterance(cleanSpeech(text));u.lang=L==="th"?"th-TH":"en-US";const v=voiceFor(L);if(v)u.voice=v;u.rate=L==="th"?1:.95;
-    if(!v&&!warnedVoice&&speechSynthesis.getVoices().length){warnedVoice=true;toast("🔇",UI[L].noVoice)}
-    speechSynthesis.speak(u)}catch(e){}
+  lastSpeech=text;if(!canSpeak||(!voiceOn&&!force)||!text)return;
+  try{speechSynthesis.cancel();const L=/[฀-๿]/.test(text)?"th":"en";const v=voiceFor(L);
+    if(!v&&!warnedVoice&&allVoices().length){warnedVoice=true;toast("🔇",UI[L].noVoice)}
+    chunks(text).forEach(c=>{const u=new SpeechSynthesisUtterance(c);u.lang=L==="th"?"th-TH":"en-US";if(v)u.voice=v;
+      u.rate=L==="th"?.93:.95;u.pitch=1.05;speechSynthesis.speak(u)})}catch(e){}
 }
 function chime(big){if(!voiceOn)return;try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const t=actx.currentTime;
   (big?[523,659,784,1047]:[659,988]).forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain();o.type="triangle";o.frequency.value=f;
     g.gain.setValueAtTime(0,t+i*.11);g.gain.linearRampToValueAtTime(.18,t+i*.11+.02);g.gain.exponentialRampToValueAtTime(.001,t+i*.11+.35);
     o.connect(g);g.connect(actx.destination);o.start(t+i*.11);o.stop(t+i*.11+.4)})}catch(e){}}
-function routeSpeech(){const p=here===dest?[here]:shortest(here,dest);if(here===dest)return"";
-  return`${UI[lang].go2}${lang==="en"?" ":""}${nm(dest,lang)}. `+directions(p,lang).map(d=>d.text).join(". ")}
-function sayQuest(){say(`${UI[lang].missionSay}: ${STAGES[stage][lang]}. ${stageDir(stage,lang)} ${routeSpeech()}`)}
-function sayRoute(){const r=routeSpeech();if(r)say(r)}
-function sayArrive(){const t=UI[lang];const target=stage==="tests"?(dest in done&&!done[dest]):dest===stageNode(stage);
-  say(t.arriveAt(nm(here,lang))+(target&&stage!=="doc"&&stage!=="home"?" "+t.pressGold:stage==="doc"&&here==="doc"?" "+stageDir("doc",lang):""))}
+
+/* บทพูดแบบคนพูด */
+const SPOKEN={
+  reg:{th:"เริ่มที่เวชระเบียนนะคะ ยื่นบัตรประชาชน แล้วบอกเจ้าหน้าที่ว่ามาตรวจสุขภาพค่ะ",en:"Let's start at Medical Records. Show your ID card and say you're here for a health check-up."},
+  health:{th:"ต่อไปไปห้องสุขภาพกันค่ะ ลงทะเบียนแล้วรับรายการตรวจนะคะ",en:"Next, let's head to the Health Room to sign in and get your list of tests."},
+  tests:{th:"ต่อไปไปตรวจตามรายการกันค่ะ จะตรวจห้องไหนก่อนก็ได้นะคะ น้องพาไปห้องที่ใกล้ที่สุดก่อน",en:"Now for your tests. Any order is fine, so I'll take you to the closest one first."},
+  doc:{th:"ตรวจครบแล้ว เก่งมากค่ะ ต่อไปไปพบแพทย์กันนะคะ",en:"All tests done, great job! Now let's go and see the doctor."},
+  rx:{th:"ต่อไปไปรับยาที่ห้องยากันค่ะ",en:"Next, let's pick up your medicine at the pharmacy."},
+  pay:{th:"ต่อไปไปห้องการเงินกันค่ะ เขียนใบเบิกค่าตรวจสุขภาพนะคะ",en:"Next, the cashier, to fill in your check-up reimbursement form."},
+  summary:{th:"ใกล้เสร็จแล้วค่ะ กลับไปห้องสุขภาพเพื่อฟังสรุปผลนะคะ",en:"Almost done! Let's go back to the Health Room for your results."},
+  home:{th:"เสร็จครบทุกขั้นตอนแล้วค่ะ ขอบคุณที่มาตรวจสุขภาพนะคะ กลับบ้านปลอดภัยค่ะ",en:"You're all done. Thank you for coming in, and have a safe trip home!"}
+};
+function spokenRoute(withLead=true){if(here===dest)return"";const p=shortest(here,dest),ds=directions(p,lang),th=lang==="th",out=[];
+  const num=t=>{const m=t.match(/(\d+)/);return m?+m[1]:0};
+  const dist=m=>th?(m<=5?"อีกนิดเดียว":`ประมาณ ${m} เมตร`):(m<=5?"just a few steps":`about ${m} meters`);
+  ds.forEach((d,i)=>{const m=num(d.text);
+    if(d.ic==="↑")out.push(th?`เดินตรงไป${dist(m)}`:`Walk straight ${dist(m)}`);
+    else if(d.ic==="↱"||d.ic==="↰"){const side=d.ic==="↱"?(th?"ขวา":"right"):(th?"ซ้าย":"left");out.push(th?`แล้วเลี้ยว${side} เดินต่อ${dist(m)}`:`then turn ${side} and go ${dist(m)}`)}
+    else if(d.ic==="⇧"||d.ic==="⇩")out.push(d.text);
+  });
+  const end=th?`ก็จะถึง${nm(dest,lang)}ค่ะ`:`and you'll reach ${nm(dest,lang)}.`;
+  const lead=th?`ไป${nm(dest,lang)}นะคะ`:`To ${nm(dest,lang)}:`;
+  return`${withLead?lead+" ":""}${out.join(". ")} ${end}`}
+const routeSpeech=spokenRoute;
+function sayQuest(){say(`${SPOKEN[stage][lang]} ${spokenRoute(stage==="tests")}`)}
+function sayRoute(){const r=spokenRoute();if(r)say(r)}
+function sayArrive(){const th=lang==="th",n=nm(here,lang),target=stage==="tests"?(dest in done&&!done[dest]):dest===stageNode(stage);
+  if(stage==="doc"&&here==="doc")return say(th?"ถึงห้องตรวจแพทย์แล้วค่ะ พบแพทย์เสร็จแล้ว บอกน้องด้วยนะคะว่าแพทย์สั่งยาไหม":"You've reached the doctor's room. After you see the doctor, let me know if you got any medicine.");
+  if(target)return say(th?`ถึง${n}แล้วค่ะ ทำเสร็จเมื่อไหร่ กดปุ่มสีทองได้เลยนะคะ`:`Here we are at ${n}. When you're finished, tap the gold button.`);
+  say(th?`ถึง${n}แล้วค่ะ`:`You've arrived at ${n}.`)}
+function sayTestDone(n){const th=lang==="th";say(`${th?`เยี่ยมเลยค่ะ ${n}เสร็จแล้ว`:`Nice work, ${n} is done.`} ${spokenRoute()}`)}
+function sayAllDone(){say(SPOKEN.home[lang])}
 function voiceUI(){const t=UI[lang];$("voiceBtn").textContent=voiceOn?"🔊":"🔇";$("voiceBtn").setAttribute("aria-label",voiceOn?t.voiceOff:t.voiceOn);
-  $("sayBtn").textContent=t.replay;$("sayBtn").hidden=!canSpeak;$("voiceBtn").hidden=!canSpeak}
+  $("sayBtn").textContent=t.replay;$("sayBtn").hidden=!canSpeak;$("voiceBtn").hidden=!canSpeak;fillVoices()}
+function fillVoices(){const sel=$("voiceSel");if(!sel)return;const vs=langVoices(lang),cur=voiceFor(lang);
+  $("voiceBox").hidden=!canSpeak||!vs.length;$("voiceLbl").textContent=UI[lang].voicePick;$("voiceTest").textContent=UI[lang].voiceTest;
+  sel.innerHTML=vs.slice().sort((a,b)=>voiceScore(b)-voiceScore(a)).map(v=>`<option value="${esc(v.voiceURI)}"${cur&&v.voiceURI===cur.voiceURI?" selected":""}>${esc(v.name)}</option>`).join("")}
 $("voiceBtn").onclick=()=>{voiceOn=!voiceOn;try{localStorage.setItem("nongnamtang-voice",voiceOn?"1":"0")}catch(e){}voiceUI();
   if(voiceOn)sayQuest();else try{speechSynthesis.cancel()}catch(e){}};
-$("sayBtn").onclick=()=>say(lastSpeech||`${STAGES[stage][lang]}. ${stageDir(stage,lang)} ${routeSpeech()}`,true);
-try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>{}}catch(e){}
+$("sayBtn").onclick=()=>say(lastSpeech||`${SPOKEN[stage][lang]} ${spokenRoute()}`,true);
+$("voiceSel").onchange=e=>{voicePick=e.target.value;try{localStorage.setItem("nongnamtang-voice-name",voicePick)}catch(x){}};
+$("voiceTest").onclick=()=>say(lang==="th"?"สวัสดีค่ะ น้องนำทางเองค่ะ วันนี้จะพาไปตรวจสุขภาพให้ครบทุกห้องนะคะ":"Hi, I'm your hospital guide. I'll take you through every step of your check-up today.",true);
+try{speechSynthesis.onvoiceschanged=()=>fillVoices()}catch(e){}
 function goToStage(id,from){
   const F=FLOW(),a=F.indexOf(stage);if(from)here=from;if(id==="rx")hasMeds=true;
   const b=FLOW().indexOf(id);if(b>a&&a>=0){toast(UI[lang].done,STAGES[stage][lang]);chime(id==="home")}
   stage=id;dest=stageNode(id);camMode="route";render();
-  if(id==="home"&&b>a){setTimeout(()=>toast("🎉",UI[lang].allDone),1800);say(`${UI[lang].allDone} ${stageDir("home",lang)}`)}else sayQuest();
+  if(id==="home"&&b>a){setTimeout(()=>toast("🎉",UI[lang].allDone),1800);sayAllDone()}else sayQuest();
 }
 function advance(){const F=FLOW(),i=F.indexOf(stage);if(i<F.length-1)goToStage(F[i+1])}
 $("arrivedBtn").onclick=()=>{
   if(here!==dest){here=dest;render();sayArrive();return}
   if(stage==="tests"&&dest in done){done[dest]=true;const nm2=TESTS.find(o=>o.id===dest)[lang];
-    if(!left().length){goToStage("doc");return}toast(UI[lang].done,nm2);chime();dest=nextTest();render();say(`${UI[lang].done}: ${nm2}. ${routeSpeech()}`);return}
+    if(!left().length){goToStage("doc");return}toast(UI[lang].done,nm2);chime();dest=nextTest();render();sayTestDone(nm2);return}
   if(dest===stageNode(stage)&&stage!=="doc"&&stage!=="home"){advance();return}
   render();
 };
@@ -667,7 +712,7 @@ function addBot(res){
   const d=document.createElement("div");d.className="msg bot"+(res.urgent?" urgent":"");d.textContent=res.text;msgs.appendChild(d);
   const c=document.createElement("div");c.className="chips";
   if(res.stage){goToStage(res.stage,res.from)}else if(res.dest){setDest(res.dest)}
-  say(res.text+(res.dest||res.stage?" "+routeSpeech():""));
+  say(res.text.replace(/ ดูเส้นทางบนแผนที่ได้เลยค่ะ| See the route on the map\./,"")+(res.dest||res.stage?" "+spokenRoute():""));
   if(res.stage||res.dest){const b=document.createElement("button");b.type="button";b.className="chip go";b.textContent=UI[L].showMap;b.onclick=closeSheets;c.appendChild(b)}
   (res.chips||[]).forEach(t=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=t;b.onclick=()=>send(t);c.appendChild(b)});
   if(c.children.length)msgs.appendChild(c);
