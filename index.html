@@ -371,7 +371,7 @@ const UI={
       arrived:"🚶 ถึงแล้ว",atHere:"คุณอยู่ที่นี่",finishOf:n=>`${n}เสร็จแล้ว ✓`,
       st:{done:"เสร็จแล้ว",now:"ตอนนี้",todo:"ยังไม่ได้ทำ",skipAge:"ไม่ต้อง (อายุต่ำกว่า 35)",ifDoc:"ถ้าอายุ 35 ขึ้นไป",ifMeds:"ถ้าได้ยา",noMeds:"ไม่ต้อง (ไม่ได้ยา)"},
       reset:"↺ เริ่มใหม่ (ผู้ป่วยคนใหม่)",resetSure:"แตะอีกครั้งเพื่อยืนยันเริ่มใหม่",
-      replay:"🔊 ฟังซ้ำ",talk:"🎤 พูด",mic:"กดแล้วพูด",micOn:"กำลังฟัง… พูดได้เลยค่ะ",micDenied:"ต้องอนุญาตให้ใช้ไมโครโฟนก่อน กดอนุญาตในเบราว์เซอร์แล้วลองใหม่นะคะ",micNoSpeech:"ไม่ได้ยินเสียงเลยค่ะ ลองกดแล้วพูดใหม่นะคะ",micFail:"ฟังไม่สำเร็จ ลองใหม่หรือพิมพ์แทนได้ค่ะ",voicePick:"เสียงพูด (เลือกเสียงที่ฟังเป็นธรรมชาติที่สุดในมือถือเครื่องนี้)",voiceTest:"▶ ทดลองฟัง",voiceOn:"เปิดเสียงพูด",voiceOff:"ปิดเสียงพูด",
+      replay:"🔊 ฟังซ้ำ",talk:"🎤 พูด",mic:"กดแล้วพูด",micOn:"กำลังฟัง… พูดได้เลยค่ะ",micDenied:"ต้องอนุญาตให้ใช้ไมโครโฟนก่อน กดอนุญาตในเบราว์เซอร์แล้วลองใหม่นะคะ",micNoSpeech:"ไม่ได้ยินเสียงเลยค่ะ ลองกดแล้วพูดใหม่นะคะ",micFail:"ฟังไม่สำเร็จ ลองใหม่หรือพิมพ์แทนได้ค่ะ",micBlocked:"ไมค์ยังใช้ไม่ได้ค่ะ ลองเปิดลิงก์ใน Safari หรือ Chrome หรือกด ⌨️ พิมพ์ แล้วกดไมค์บนแป้นพิมพ์แทนนะคะ",micSiri:"บน iPhone ต้องเปิด Siri และ \"การป้อนตามคำบอก\" ในการตั้งค่าก่อนนะคะ",voicePick:"เสียงพูด (เลือกเสียงที่ฟังเป็นธรรมชาติที่สุดในมือถือเครื่องนี้)",voiceTest:"▶ ทดลองฟัง",voiceOn:"เปิดเสียงพูด",voiceOff:"ปิดเสียงพูด",
       noVoice:"มือถือเครื่องนี้ไม่มีเสียงภาษาไทย ลองตั้งค่าเสียงอ่านข้อความในมือถือ",
       already:"คุณอยู่ที่นี่แล้ว",youHere:"คุณอยู่ที่นี่",entrance:"ทางเข้า",
       stats:(m,min)=>`${m} ม. · ${min} นาที`,camAll:"⤢ ทั้งตึก",camRoute:"◎ เส้นทาง",chat:"💬 ถาม",chatH:"ถามน้องนำทาง",
@@ -393,7 +393,7 @@ const UI={
       arrived:"🚶 I'm here",atHere:"You are here",finishOf:n=>`${n} done ✓`,
       st:{done:"Done",now:"Now",todo:"To do",skipAge:"Not needed (under 35)",ifDoc:"If 35 or older",ifMeds:"If you get medicine",noMeds:"Not needed (no medicine)"},
       reset:"↺ Start over (new patient)",resetSure:"Tap again to confirm",
-      replay:"🔊 Repeat",talk:"🎤 Talk",mic:"Tap and speak",micOn:"Listening… go ahead",micDenied:"Please allow the microphone in your browser, then try again.",micNoSpeech:"I didn't hear anything. Tap and try again.",micFail:"Couldn't catch that. Try again or type instead.",voicePick:"Voice (pick the most natural one on this phone)",voiceTest:"▶ Try it",voiceOn:"Voice on",voiceOff:"Voice off",
+      replay:"🔊 Repeat",talk:"🎤 Talk",mic:"Tap and speak",micOn:"Listening… go ahead",micDenied:"Please allow the microphone in your browser, then try again.",micNoSpeech:"I didn't hear anything. Tap and try again.",micFail:"Couldn't catch that. Try again or type instead.",micBlocked:"The microphone isn't available here. Open the link in Safari or Chrome, or tap ⌨️ Type and use the keyboard's mic.",micSiri:"On iPhone, turn on Siri and Dictation in Settings first.",voicePick:"Voice (pick the most natural one on this phone)",voiceTest:"▶ Try it",voiceOn:"Voice on",voiceOff:"Voice off",
       noVoice:"This phone has no voice for this language. Check your phone's text-to-speech settings.",
       already:"You are already here",youHere:"You are here",entrance:"Entrance",
       stats:(m,min)=>`${m} m · ${min} min`,camAll:"⤢ Whole floor",camRoute:"◎ Route",chat:"💬 Ask",chatH:"Ask the guide",
@@ -608,7 +608,7 @@ function setDest(id){dest=id;camMode="route";render()}
 
 /* ================= หน้าจอ: ตรวจสุขภาพ (เช็กลิสต์ยืดหยุ่น) และ เลือกห้องเอง ================= */
 let toastT=0;
-function toast(top,msg){const el=$("toast");el.innerHTML=`<small>${esc(top)}</small>${esc(msg)}`;el.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("show"),1700)}
+function toast(top,msg){const el=$("toast");el.innerHTML=`<small>${esc(top)}</small>${esc(msg)}`;el.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("show"),Math.max(1700,String(msg).length*80))}
 const PLACES=["reg","health","lab","den","xray","doc","rx","mpay","pay","wc","lobby","ent"];
 const iname=id=>ITEM[id][lang];
 
@@ -905,7 +905,10 @@ function send(text){
 $("form").addEventListener("submit",e=>{e.preventDefault();const q=$("q");send(q.value);q.value=""});
 
 /* ================= พูดคุยด้วยเสียง (ใช้ระบบฟังเสียงในเบราว์เซอร์ ฟรี) ================= */
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}
+/* ในหน้าที่ฝังอยู่ในแอปอื่น (เช่นในแชต) ไมค์ใช้ไม่ได้ จึงซ่อนปุ่มไมค์ */
+const SR=inFrame?null:(window.SpeechRecognition||window.webkitSpeechRecognition);
+let micWatch=0,micCap=0,gotAudio=false;
 let rec=null,listening=false,heard="",listenNote=null;
 function micUI(){const t=UI[lang];
   $("micBtn").hidden=!SR;$("talkBtn").hidden=!SR;
@@ -920,9 +923,15 @@ function listen(){
   try{rec=new SR()}catch(e){return}
   rec.lang=lang==="th"?"th-TH":"en-US";rec.interimResults=true;rec.continuous=false;rec.maxAlternatives=1;
   rec.onresult=e=>{let t="";for(const r of e.results)t+=r[0].transcript;heard=t;$("q").value=t};
-  rec.onerror=e=>{const t=UI[lang],m=e.error==="not-allowed"||e.error==="service-not-allowed"?t.micDenied:e.error==="no-speech"?t.micNoSpeech:e.error==="aborted"?"":t.micFail;if(m)toast("🎤",m)};
-  rec.onend=()=>{listening=false;micUI();const t=heard.trim();heard="";if(t){$("q").value="";send(t)}};
-  try{rec.start();listening=true}catch(e){listening=false}
+  rec.onaudiostart=()=>{gotAudio=true};rec.onspeechstart=()=>{gotAudio=true};
+  rec.onerror=e=>{const t=UI[lang],m=e.error==="service-not-allowed"?t.micSiri:e.error==="not-allowed"?t.micDenied:e.error==="no-speech"?t.micNoSpeech:e.error==="aborted"?"":t.micFail;if(m)toast("🎤",m)};
+  rec.onend=()=>{clearTimeout(micWatch);clearTimeout(micCap);listening=false;micUI();const t=heard.trim();heard="";if(t){$("q").value="";send(t)}};
+  gotAudio=false;
+  try{rec.start();listening=true}catch(e){listening=false;toast("🎤",UI[lang].micBlocked)}
+  /* ถ้าไมค์ไม่ทำงานภายใน 5 วินาที ให้หยุดและบอกผู้ใช้ แทนการค้างอยู่ที่ "กำลังฟัง" */
+  clearTimeout(micWatch);clearTimeout(micCap);
+  micWatch=setTimeout(()=>{if(listening&&!gotAudio&&!heard){try{rec.abort()}catch(e){}listening=false;micUI();toast("🎤",UI[lang].micBlocked)}},5000);
+  micCap=setTimeout(()=>{if(listening)try{rec.stop()}catch(e){}},15000);
   micUI();
 }
 $("micBtn").onclick=listen;
