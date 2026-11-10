@@ -297,6 +297,11 @@
    "text": "Register at Medical Records, on your right after the entrance"
   },
   {
+   "id": "67bc7070",
+   "lang": "en",
+   "text": "All steps complete!"
+  },
+  {
    "id": "68133955",
    "lang": "en",
    "text": "and there's X-ray!"
@@ -432,6 +437,11 @@
    "text": "Off to Cashier!"
   },
   {
+   "id": "96bbc21e",
+   "lang": "en",
+   "text": "Health Room is done, nice work!"
+  },
+  {
    "id": "97cafe15",
    "lang": "en",
    "text": "You're registered"
@@ -507,11 +517,6 @@
    "text": "then turn right and go about 15 meters"
   },
   {
-   "id": "aab254fb",
-   "lang": "en",
-   "text": "History check is done, nice work!"
-  },
-  {
    "id": "ac8382f1",
    "lang": "en",
    "text": "then turn left and go about 35 meters"
@@ -565,11 +570,6 @@
    "id": "c41fa928",
    "lang": "en",
    "text": "Pay for medicine is done, nice work!"
-  },
-  {
-   "id": "c42009d5",
-   "lang": "en",
-   "text": "Every quest complete!"
   },
   {
    "id": "c7992e96",
@@ -792,6 +792,11 @@
    "text": "ใกล้ถึงเส้นชัยแล้วค่ะ!"
   },
   {
+   "id": "22b90340",
+   "lang": "th",
+   "text": "ครบทุกขั้นตอนแล้วค่ะ"
+  },
+  {
    "id": "25f25489",
    "lang": "th",
    "text": "ถึงเอกซเรย์แล้วค่ะ!"
@@ -805,16 +810,6 @@
    "id": "2eb2b342",
    "lang": "th",
    "text": "แล้วเลี้ยวซ้าย เดินต่ออีกนิดเดียว"
-  },
-  {
-   "id": "2eb3a443",
-   "lang": "th",
-   "text": "ซักประวัติเสร็จแล้ว เก่งมากค่ะ"
-  },
-  {
-   "id": "2ef805c6",
-   "lang": "th",
-   "text": "ครบทุกภารกิจแล้วค่ะ"
   },
   {
    "id": "30d07925",
@@ -955,11 +950,6 @@
    "id": "6b4f2fb2",
    "lang": "th",
    "text": "อีกนิดเดียวค่ะ!"
-  },
-  {
-   "id": "6ba95c6f",
-   "lang": "th",
-   "text": "ฟังสรุปผลเสร็จแล้ว เก่งมากค่ะ"
   },
   {
    "id": "6bbad1e0",
@@ -1115,6 +1105,11 @@
    "id": "97dddd08",
    "lang": "th",
    "text": "ไม่เป็นไรค่ะ"
+  },
+  {
+   "id": "9994880d",
+   "lang": "th",
+   "text": "ห้องสุขภาพเสร็จแล้ว เก่งมากค่ะ"
   },
   {
    "id": "9c520001",
@@ -1275,6 +1270,11 @@
    "id": "dd04a791",
    "lang": "th",
    "text": "โต๊ะชำระค่ายาอยู่หน้าห้องยาค่ะ"
+  },
+  {
+   "id": "dedeac3a",
+   "lang": "th",
+   "text": "ฟังผลตรวจเสร็จแล้ว เก่งมากค่ะ"
   },
   {
    "id": "e32b475d",

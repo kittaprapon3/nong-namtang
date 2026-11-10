@@ -48,7 +48,7 @@
   --shadow:0 8px 28px rgb(0 0 0 / .45); color-scheme:dark}
 [hidden]{display:none!important}
 html{height:100%;box-sizing:border-box}
-body{height:100%;margin:0;background:var(--map-bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;overflow:hidden}
+body{height:100%;margin:0;background:var(--map-bg);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.45;overflow:hidden}
 button,select,input{font-family:inherit}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 #app{position:relative;height:100%;overflow:hidden}
@@ -64,16 +64,17 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 
 .quest{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px}
 .qhead{display:flex;align-items:center;gap:8px}
-.qtag{font:700 .78rem var(--f-display);letter-spacing:.06em;text-transform:uppercase;background:var(--gold);color:var(--gold-ink);border-radius:999px;padding:3px 10px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.qtag{font:700 .9rem var(--f-display);letter-spacing:.06em;text-transform:uppercase;background:var(--gold);color:var(--gold-ink);border-radius:999px;padding:3px 10px;white-space:nowrap;font-variant-numeric:tabular-nums}
 .qbar{flex:1;display:flex;gap:3px;min-width:0}
 .qbar i{flex:1;height:6px;border-radius:3px;background:var(--line)}
 .qbar i.ok{background:var(--gold)}
 .qbar i.now{background:var(--accent)}
-.iconbtn{font:700 .85rem var(--f-body);min-width:38px;height:34px;padding:0 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+@media (max-width:420px){.qbar{visibility:hidden}}
+.iconbtn{white-space:nowrap;flex-shrink:0;font:700 .95rem var(--f-body);min-width:44px;height:42px;padding:0 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .qtitle{display:flex;align-items:center;gap:10px;margin:0}
 .qtitle .ico{font-size:1.5rem;line-height:1}
-.qtitle h1{font:700 1.3rem/1.2 var(--f-display);margin:0;text-wrap:balance}
-.qdesc{margin:0;color:var(--muted);font-size:.92rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.qtitle h1{font:700 1.55rem/1.2 var(--f-display);margin:0;text-wrap:balance}
+.qdesc{margin:0;color:var(--ink);font-size:1rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .objs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .obj{display:grid;grid-template-columns:20px minmax(0,1fr);grid-template-rows:auto auto;column-gap:6px;align-items:center;padding:7px 8px;border-radius:12px;background:var(--bg);border:1.5px solid transparent;min-width:0}
 .obj .dist{grid-column:2}
@@ -90,20 +91,21 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .ft .swap{width:44px;height:84px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--accent);font-size:1.3rem;cursor:pointer}
 .actions.solo{grid-template-columns:1fr}
 .choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.btn{font:600 1rem var(--f-body);padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn{font:700 1.1rem var(--f-body);padding:15px 14px;min-height:56px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .btn.gold{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
 .btn:disabled{opacity:.45;cursor:default}
 
-.fabrow{display:flex;justify-content:flex-end;gap:8px;width:100%;max-width:560px;margin:0 auto;pointer-events:none}
-.fab{pointer-events:auto;font:600 .92rem var(--f-body);height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);box-shadow:var(--shadow);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
-.fab.chat{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.fabrow{display:flex;justify-content:flex-end;align-items:center;gap:6px;width:100%;max-width:560px;margin:0 auto;pointer-events:none}
+.fab{pointer-events:auto;font:700 1rem var(--f-body);height:52px;padding:0 12px;white-space:nowrap;flex-shrink:0;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);box-shadow:var(--shadow);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.fab.talk{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.fab.icon{width:52px;padding:0;justify-content:center;margin-right:auto;font-size:1.25rem}
 .navp{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
 .route{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-.route b{font:700 1.08rem var(--f-display);min-width:0}
-.route span{font-size:.85rem;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
-.turns{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;max-height:50px;overflow-y:auto}
-.turns li{display:grid;grid-template-columns:24px 1fr;gap:8px;align-items:start;font-size:.95rem}
+.route b{font:700 1.25rem var(--f-display);min-width:0}
+.route span{font-size:1rem;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.turns{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;max-height:66px;overflow-y:auto}
+.turns li{display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:start;font-size:1.08rem}
 .turns li:first-child{font-weight:600}
 .turns .ic{color:var(--accent);font-weight:700;text-align:center}
 .actions{display:grid;grid-template-columns:1fr auto;gap:8px}
@@ -121,6 +123,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .rl.hit{font-weight:700}
 #map.far .rl:not(.hit){display:none}
 #map.mid .rl{font-size:9.5px}
+#map.tiny .rl{font-size:8px}#map.tiny .rl.sm{font-size:6.5px}
 .rl.sm{font-size:8.5px}
 #map.drag{cursor:grabbing}
 .ml{font:700 12px var(--f-body);paint-order:stroke;stroke:var(--floor);stroke-width:4px;stroke-linejoin:round;pointer-events:none}
@@ -165,6 +168,21 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .seg button{font:600 .95rem var(--f-body);padding:10px;border-radius:9px;border:0;background:transparent;color:var(--muted);cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px rgb(0 0 0 / .12)}
 .objs.four{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px;border-radius:14px;background:var(--bg);border:2px solid transparent;color:var(--ink);text-align:left;cursor:pointer;min-width:0;font-family:var(--f-body)}
+.tile b{font-size:1.08rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tile span{font-size:.92rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.tile.cur{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--bg))}
+.tile.cur span{color:var(--accent);font-weight:700}
+.tile.ok{opacity:.55}.tile.ok b{text-decoration:line-through}
+.other{font-size:.95rem}
+#welcome{position:absolute;inset:0;z-index:40;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+#welcome .big{font-size:4.5rem;line-height:1}
+#welcome h2{font:700 2rem/1.2 var(--f-display);margin:0;color:var(--accent)}
+#welcome p{margin:0;font-size:1.2rem;max-width:22ch}
+#welcome .go{font:700 1.5rem var(--f-body);padding:20px 40px;border-radius:20px;border:0;background:var(--accent);color:var(--accent-ink);cursor:pointer;box-shadow:var(--shadow)}
+#welcome .en{font:600 1rem var(--f-body);background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:8px}
+.heresel{display:flex;flex-direction:column;gap:6px}
+.heresel select{font:600 1.05rem var(--f-body);padding:12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
 .other{align-self:flex-start;font:600 .85rem var(--f-body);background:none;border:0;padding:2px 0;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .qlog .row{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:stretch}
 .qlog>li>button.tg{width:46px;padding:0;display:grid;place-items:center;grid-template-columns:none;color:var(--accent);font:700 1.1rem var(--f-body)}
@@ -215,10 +233,10 @@ form input{flex:1;min-width:0;font:400 1rem var(--f-body);padding:12px 14px;bord
 
   <div class="hud bottom">
     <div class="fabrow">
+      <button class="fab icon" id="camBtn" type="button"></button>
       <button class="fab" id="sayBtn" type="button"></button>
-      <button class="fab" id="camBtn" type="button"></button>
+      <button class="fab" id="chatBtn" type="button"></button>
       <button class="fab talk" id="talkBtn" type="button" hidden></button>
-      <button class="fab chat" id="chatBtn" type="button"></button>
     </div>
     <section class="panel navp" id="navp">
       <div class="route" id="sum"></div>
@@ -236,6 +254,7 @@ form input{flex:1;min-width:0;font:400 1rem var(--f-body);padding:12px 14px;bord
     <div class="in">
       <div class="shead"><h2 id="logH"></h2><button class="iconbtn" type="button" data-close>✕</button></div>
       <div class="sbody">
+        <label class="heresel" for="hereSel2"><span class="note" id="hereLbl"></span><select id="hereSel2"></select></label>
         <div class="modes" id="modes"><p class="note" id="modeH"></p><div class="seg"><button type="button" data-mode="check"></button><button type="button" data-mode="free"></button></div></div>
         <ol class="qlog" id="qlog"></ol>
         <p class="note" id="hint"></p>
@@ -259,6 +278,13 @@ form input{flex:1;min-width:0;font:400 1rem var(--f-body);padding:12px 14px;bord
   </section>
 
   <div class="toast" id="toast" role="status"></div>
+  <div id="welcome" hidden>
+    <div class="big" aria-hidden="true">🧭</div>
+    <h2 id="wTitle"></h2>
+    <p id="wText"></p>
+    <button class="go" id="wGo" type="button"></button>
+    <button class="en" id="wLang" type="button"></button>
+  </div>
 </div>
 
 <script>
@@ -318,7 +344,7 @@ const LINES={};
 const AGE_DOCTOR=35;
 const ITEMS=[
   {id:"reg",node:"reg",ico:"🪪",grp:"start",th:"ยื่นบัตร",en:"Register",dTh:"ยื่นบัตรประชาชนที่เวชระเบียน แจ้งว่ามาตรวจสุขภาพค่ะ",dEn:"Show your ID card at Medical Records and say you're here for a check-up."},
-  {id:"health",node:"health",ico:"🩺",grp:"check",th:"ซักประวัติ",en:"History check",dTh:"พยาบาลซักประวัติและวัดความดันที่ห้องสุขภาพค่ะ",dEn:"A nurse takes your history and blood pressure in the Health Room."},
+  {id:"health",node:"health",ico:"🩺",grp:"check",th:"ห้องสุขภาพ",en:"Health Room",dTh:"ไปห้องสุขภาพ พยาบาลจะวัดความดันและถามอาการค่ะ",dEn:"Go to the Health Room. A nurse will check your blood pressure and ask how you feel."},
   {id:"lab",node:"lab",ico:"🩸",grp:"check",th:"เจาะเลือด",en:"Blood test",dTh:"ยื่นใบสั่งตรวจ แล้วรอเรียกชื่อค่ะ",dEn:"Hand in your test form and wait to be called."},
   {id:"den",node:"den",ico:"🦷",grp:"check",th:"ตรวจฟัน",en:"Dental check",dTh:"ยื่นบัตรคิวที่หน้าห้องทันตกรรมค่ะ",dEn:"Hand your queue card in at the Dental room."},
   {id:"xray",node:"xray",ico:"🩻",grp:"check",th:"เอกซเรย์",en:"X-ray",dTh:"ยื่นใบสั่งตรวจที่หน้าห้องเอกซเรย์ค่ะ",dEn:"Hand in your form at the X-ray room."},
@@ -326,7 +352,7 @@ const ITEMS=[
   {id:"rx",node:"rx",ico:"💊",grp:"meds",th:"รับยา",en:"Get medicine",dTh:"รอเรียกชื่อ รับยาและฟังคำแนะนำจากเภสัชกรค่ะ",dEn:"Wait to be called, collect your medicine and listen to the pharmacist."},
   {id:"mpay",node:"mpay",ico:"💳",grp:"meds",th:"ชำระค่ายา",en:"Pay for medicine",dTh:"ชำระค่ายาที่โต๊ะหน้าห้องยาค่ะ",dEn:"Pay for your medicine at the desk in front of the pharmacy."},
   {id:"pay",node:"pay",ico:"🧾",grp:"end",th:"เขียนใบเบิก",en:"Reimbursement form",dTh:"เขียนใบเบิกค่าตรวจสุขภาพที่ห้องการเงินค่ะ",dEn:"Fill in the check-up reimbursement form at the cashier."},
-  {id:"summary",node:"health",ico:"📋",grp:"end",th:"ฟังสรุปผล",en:"Hear your results",dTh:"กลับไปห้องสุขภาพ ฟังสรุปผลการตรวจค่ะ",dEn:"Go back to the Health Room to hear your results."}
+  {id:"summary",node:"health",ico:"📋",grp:"end",th:"ฟังผลตรวจ",en:"Hear your results",dTh:"กลับไปห้องสุขภาพอีกครั้ง พยาบาลจะบอกผลตรวจค่ะ",dEn:"Go back to the Health Room to hear your results."}
 ];
 const ITEM=Object.fromEntries(ITEMS.map(i=>[i.id,i]));
 const ONE_FLOOR=new Set(Object.values(NODES).map(n=>n.f)).size===1;
@@ -334,10 +360,10 @@ const UI={
   th:{navTag:"🧭 นำทาง",navTitle:"จะไปห้องไหนคะ?",from:"เริ่มที่",to:"ไปที่",pickTo:"— เลือกห้อง —",swap:"สลับ",menu:"☰ เมนู",menuH:"เมนู",
       pickHint:"เลือกห้องที่จะไปด้านบน หรือแตะห้องบนแผนที่",
       navHint:"แตะห้องบนแผนที่เพื่อนำทางไปห้องนั้น เดินถึงแล้วกด \"ถึงแล้ว\" ตำแหน่งของคุณจะย้ายไปห้องนั้น แล้วเลือกห้องถัดไปได้เลย",
-      quest:(a,b)=>`ภารกิจ ${a}/${b}`,log:"☰ รายการ",logH:"รายการตรวจของฉัน",lang:"EN",
+      quest:(a,b)=>`ขั้นที่ ${a}/${b}`,log:"☰ รายการ",logH:"รายการตรวจของฉัน",lang:"EN",
       modeH:"รูปแบบการใช้งาน",modeCheck:"✅ ตรวจสุขภาพ",modeFree:"🧭 เลือกห้องเอง",
-      ageQ:"อายุ 35 ปีขึ้นไปไหมคะ?",ageDesc:"ถามเพื่อดูว่าต้องพบแพทย์หรือไม่ ไม่เก็บข้อมูลค่ะ",ageOld:"35 ปีขึ้นไป",ageYoung:"ต่ำกว่า 35 ปี",
-      checkT:"ตรวจตามรายการ",checkDesc:"ห้องไหนก่อนก็ได้ ตามที่เจ้าหน้าที่แนะนำ",tick:"ติ๊กเมื่อตรวจเสร็จ หรือถ้าไม่มีในรายการของคุณ",
+      ageQ:"อายุ 35 ปีขึ้นไปไหมคะ?",ageDesc:"ถามเพื่อดูว่าต้องพบแพทย์หรือไม่ ไม่เก็บข้อมูลค่ะ",ageOld:"ใช่ 35 ขึ้นไป",ageYoung:"ไม่ใช่ ต่ำกว่า 35",
+      checkT:"ไปตรวจตามห้อง",checkDesc:"ไปห้องไหนก่อนก็ได้ ตามที่เจ้าหน้าที่บอก แตะชื่อห้องเพื่อดูทาง",tick:"ติ๊กเมื่อตรวจเสร็จ หรือถ้าไม่มีในรายการของคุณ",
       youngT:"ไม่ต้องพบแพทย์",youngDesc:"อายุต่ำกว่า 35 ปี ไม่ต้องพบแพทย์ ถ้าพยาบาลไม่ได้บอกให้พบ",youngOk:"ไปต่อเลย",youngDoc:"พยาบาลให้พบแพทย์",
       medsT:"แพทย์ให้ยากลับบ้านไหม?",medsDesc:"บอกน้องหน่อย จะได้พาไปรับยาค่ะ",meds:"💊 ได้ยา",noMeds:"ไม่ได้ยา",
       homeT:"กลับบ้านได้แล้ว",homeDesc:"ครบทุกขั้นตอนแล้ว ขอบคุณที่มาตรวจสุขภาพค่ะ 🎉",
@@ -350,16 +376,16 @@ const UI={
       already:"คุณอยู่ที่นี่แล้ว",youHere:"คุณอยู่ที่นี่",entrance:"ทางเข้า",
       stats:(m,min)=>`${m} ม. · ${min} นาที`,camAll:"⤢ ทั้งตึก",camRoute:"◎ เส้นทาง",chat:"💬 ถาม",chatH:"ถามน้องนำทาง",
       ph:"พิมพ์ หรือกด 🎤 แล้วพูด",send:"ส่ง",showMap:"🗺️ ดูบนแผนที่",
-      done:"ภารกิจสำเร็จ",allDone:"ครบทุกภารกิจ!",
+      done:"ทำเสร็จแล้ว",allDone:"ครบทุกขั้นแล้ว!",welcomeT:"น้องนำทาง",welcomeX:"พาไปตรวจสุขภาพทีละห้อง มีเสียงบอกทาง กดพูดถามได้",welcomeGo:"▶ เริ่มเลย",hereLbl:"📍 ตอนนี้อยู่ที่ไหน (ถ้าแผนที่ไม่ตรง)",talk2:"🎤 พูดถาม",chat2:"⌨️ พิมพ์",
       hint:"ทำห้องไหนก่อนก็ได้ ตามที่เจ้าหน้าที่แนะนำ แตะรายการด้านบนเพื่อนำทางไปห้องนั้น เดินถึงแล้วกด \"ถึงแล้ว\" ทำเสร็จแล้วกดปุ่มสีทอง แอปจำความคืบหน้าไว้ ปิดเว็บแล้วเปิดใหม่ก็ไม่หาย",
       note:"ต้นแบบ · แผนผังจากผังอาคารจริง ระยะทางโดยประมาณ · น้องนำทางตอบเฉพาะเรื่องทางเดินและขั้นตอนบริการ ไม่ให้คำแนะนำทางการแพทย์"},
   en:{navTag:"🧭 Directions",navTitle:"Where would you like to go?",from:"From",to:"To",pickTo:"— choose a room —",swap:"Swap",menu:"☰ Menu",menuH:"Menu",
       pickHint:"Choose a room above, or tap one on the map",
       navHint:"Tap a room on the map for directions. When you get there, tap \"I'm here\" and your location moves to that room, ready for the next trip.",
-      quest:(a,b)=>`Quest ${a}/${b}`,log:"☰ My list",logH:"My check-up list",lang:"ไทย",
+      quest:(a,b)=>`Step ${a}/${b}`,log:"☰ My list",logH:"My check-up list",lang:"ไทย",
       modeH:"Mode",modeCheck:"✅ Health check-up",modeFree:"🧭 Choose a room",
       ageQ:"Are you 35 or older?",ageDesc:"This tells us whether you need to see the doctor. Nothing is stored.",ageOld:"35 or older",ageYoung:"Under 35",
-      checkT:"Check-up tests",checkDesc:"Any order is fine, follow what the staff suggest",tick:"Tick when done, or if it isn't on your list",
+      checkT:"Visit each room",checkDesc:"Any order is fine, follow the staff. Tap a room to see the way.",tick:"Tick when done, or if it isn't on your list",
       youngT:"No doctor visit needed",youngDesc:"Under 35, you don't need to see the doctor unless the nurse asks you to.",youngOk:"Continue",youngDoc:"Nurse says see the doctor",
       medsT:"Did the doctor give you medicine?",medsDesc:"Let me know so I can take you to the pharmacy.",meds:"💊 Yes, medicine",noMeds:"No medicine",
       homeT:"You can go home",homeDesc:"Every step is done. Thank you for coming in! 🎉",
@@ -372,7 +398,7 @@ const UI={
       already:"You are already here",youHere:"You are here",entrance:"Entrance",
       stats:(m,min)=>`${m} m · ${min} min`,camAll:"⤢ Whole floor",camRoute:"◎ Route",chat:"💬 Ask",chatH:"Ask the guide",
       ph:"Type, or tap 🎤 and speak",send:"Send",showMap:"🗺️ Show on map",
-      done:"Quest complete",allDone:"All quests complete!",
+      done:"Done",allDone:"All steps complete!",welcomeT:"Hospital Guide",welcomeX:"Takes you room by room through your check-up, with spoken directions. Tap to ask by voice.",welcomeGo:"▶ Start",hereLbl:"📍 Where are you now (if the map is wrong)",talk2:"🎤 Talk",chat2:"⌨️ Type",
       hint:"Any order is fine, follow what the staff suggest. Tap an item above for directions. Tap \"I'm here\" when you arrive and the gold button when you're done. Your progress is saved.",
       note:"Prototype · based on the real floor plan, distances are approximate · The guide answers directions and service steps only, not medical advice."}
 };
@@ -522,15 +548,16 @@ function renderMap(){
   if(camMode!=="free")moveCam(target(p));
   const f=n=>esc(n[lang]);
   $("hereSel").innerHTML=Object.entries(NODES).filter(([,n])=>n.qr).map(([k,n])=>`<option value="${k}"${k===here?" selected":""}>${f(n)}</option>`).join("")+(H.qr?"":`<option value="${here}" selected>${f(H)}</option>`);
-  $("camBtn").textContent=camMode==="all"?t.camRoute:t.camAll;
+  {const toAll=camMode!=="all";$("camBtn").textContent=toAll?"⤢":"◎";$("camBtn").setAttribute("aria-label",toAll?t.camAll:t.camRoute)}
+  {const h2=$("hereSel2");if(h2)h2.innerHTML=$("hereSel").innerHTML}
 }
 function target(p){
   const r=svg.getBoundingClientRect(),W=r.width||400,Hh=r.height||700;
   let pts;
-  if(camMode==="all"||(!!QUEST_MODE_ON()&&p.length<2))pts=[P(2,2),P(102,42.5)];
+  if(camMode==="all"||(p.length<2))pts=[P(2,2),P(102,42.5)];
   else pts=p.map(k=>P(NODES[k].x,NODES[k].y));
   let x0=Math.min(...pts.map(q=>q[0])),x1=Math.max(...pts.map(q=>q[0])),y0=Math.min(...pts.map(q=>q[1])),y1=Math.max(...pts.map(q=>q[1]));
-  const wide=camMode==="all"||(!!QUEST_MODE_ON()&&p.length<2),pad=wide?3:7,min=wide?0:24;
+  const wide=camMode==="all"||(p.length<2),pad=wide?3:7,min=wide?0:24;
   x0-=pad;x1+=pad;y0-=pad;y1+=pad;
   if(x1-x0<min){const c=(x0+x1)/2;x0=c-min/2;x1=c+min/2}
   if(y1-y0<min){const c=(y0+y1)/2;y0=c-min/2;y1=c+min/2}
@@ -543,7 +570,7 @@ function target(p){
 }
 function applyCam(v){
   svg.setAttribute("viewBox",`${v.x} ${v.y} ${v.w} ${v.h}`);
-  const u=v.w/(v.W||400);svg.classList.toggle("far",1/u<3.6);svg.classList.toggle("mid",1/u<7);svg.querySelectorAll(".sc").forEach(g=>g.setAttribute("transform",`scale(${u})`));
+  const u=v.w/(v.W||400);svg.classList.toggle("far",1/u<2.4);svg.classList.toggle("mid",1/u<7);svg.classList.toggle("tiny",1/u<4);svg.querySelectorAll(".sc").forEach(g=>g.setAttribute("transform",`scale(${u})`));
 }
 function moveCam(to){
   cancelAnimationFrame(camRaf);
@@ -560,7 +587,7 @@ const ptrs=new Map();let moved=false,pinch0=null;
 function zoomAt(f,cx,cy){if(!cam)return;const r=svg.getBoundingClientRect(),u=cam.w/r.width;
   const nu=Math.min(1/3,Math.max(1/32,u*f)),k=nu/u;const px=cam.x+(cx-r.left)*u,py=cam.y+(cy-r.top)*u;
   cam={x:px-(px-cam.x)*k,y:py-(py-cam.y)*k,w:cam.w*k,h:cam.h*k,W:r.width};applyCam(cam)}
-function goFree(){if(camMode!=="free"){camMode="free";cancelAnimationFrame(camRaf);$("camBtn").textContent=UI[lang].camRoute}}
+function goFree(){if(camMode!=="free"){camMode="free";cancelAnimationFrame(camRaf);$("camBtn").textContent="◎";$("camBtn").setAttribute("aria-label",UI[lang].camRoute)}}
 svg.addEventListener("pointerdown",e=>{svg.setPointerCapture?.(e.pointerId);ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=false;
   if(ptrs.size===2){const[a,b]=[...ptrs.values()];pinch0=Math.hypot(a.x-b.x,a.y-b.y)}});
 svg.addEventListener("pointermove",e=>{const pr=ptrs.get(e.pointerId);if(!pr||!cam)return;
@@ -574,6 +601,7 @@ svg.addEventListener("pointerup",endPtr);svg.addEventListener("pointercancel",en
 svg.addEventListener("wheel",e=>{e.preventDefault();goFree();zoomAt(Math.exp(e.deltaY*.0015),e.clientX,e.clientY)},{passive:false});
 svg.addEventListener("click",e=>{if(moved)return;const r=e.target.closest("[data-node]");if(r&&r.dataset.node!==here){dest=r.dataset.node;const it=ITEMS.find(i=>i.node===dest&&!ck[i.id]);pick=QUEST_MODE_ON()&&it?it.id:pick;camMode="route";render();sayRoute()}});
 $("camBtn").onclick=()=>{camMode=camMode==="all"?"route":"all";renderMap()};
+$("hereSel2").onchange=e=>{closeSheets();$("hereSel").onchange(e)};
 $("hereSel").onchange=e=>{here=e.target.value;if(QUEST_MODE_ON())dest=phaseNode();render();sayRoute()};
 addEventListener("hashchange",()=>{if(readHash()){if(QUEST_MODE_ON())dest=phaseNode();render()}});
 function setDest(id){dest=id;camMode="route";render()}
@@ -585,7 +613,8 @@ const PLACES=["reg","health","lab","den","xray","doc","rx","mpay","pay","wc","lo
 const iname=id=>ITEM[id][lang];
 
 function commonText(){const t=UI[lang];document.documentElement.lang=lang;
-  $("langBtn").textContent=t.lang;$("chatH").textContent=t.chatH;$("chatBtn").textContent=t.chat;$("q").placeholder=t.ph;$("sendBtn").textContent=t.send;
+  $("langBtn").textContent=t.lang;$("chatH").textContent=t.chatH;$("chatBtn").textContent=t.chat2;$("hereLbl").textContent=t.hereLbl;
+  document.querySelector(".herechip").hidden=true;document.querySelector(".actions").classList.add("solo");$("q").placeholder=t.ph;$("sendBtn").textContent=t.send;
   $("note").textContent=t.note;$("modeH").textContent=t.modeH;
   document.querySelectorAll("[data-mode]").forEach(b=>{b.textContent=b.dataset.mode==="check"?t.modeCheck:t.modeFree;b.setAttribute("aria-pressed",String(b.dataset.mode===mode))});
   $("resetBtn").textContent=t.reset;voiceUI();if(typeof micUI==="function")micUI()}
@@ -607,7 +636,6 @@ function render(){
   if(mode!=="check")return renderNav();
   const t=UI[lang];commonText();
   $("logBtn").textContent=t.log;$("logH").textContent=t.logH;$("hint").textContent=t.hint;$("qlog").hidden=false;$("resetBtn").hidden=false;
-  document.querySelector(".herechip").hidden=false;document.querySelector(".actions").classList.remove("solo");
   const ph=phase(),cur=curItem(),showItem=pick&&cur===pick?pick:(ITEM[ph]?ph:null);
   const need_=ITEMS.filter(i=>need(i.id));
   $("qtag").textContent=t.quest(Math.min(need_.length,doneCount()+(ph==="home"?0:1)),need_.length);
@@ -619,8 +647,8 @@ function render(){
   else if(ph==="young"){ico="🙂";title=t.youngT;desc=t.youngDesc;x=`<div class="choice"><button type="button" class="btn primary" data-young="ok">${t.youngOk}</button><button type="button" class="btn" data-young="doc">${t.youngDoc}</button></div>`}
   else if(ph==="meds"){ico="💊";title=t.medsT;desc=t.medsDesc;x=`<div class="choice"><button type="button" class="btn primary" data-meds="1">${t.meds}</button><button type="button" class="btn" data-meds="0">${t.noMeds}</button></div>`}
   else if(ph==="home"){ico="🏠";title=t.homeT;desc=t.homeDesc}
-  if(ph==="check"&&!pick){const m=lang==="th"?" ม.":" m";
-    x=`<div class="objs four">${ITEMS.filter(i=>i.grp==="check").map(o=>`<div class="obj${ck[o.id]?" ok":""}${o.id===cur?" cur":""}"><input type="checkbox" id="t-${o.id}" data-t="${o.id}"${ck[o.id]?" checked":""} aria-label="${esc(o[lang])}"><button type="button" class="on" data-go="${o.id}">${o.ico} ${esc(o[lang])}</button><span class="dist">${ck[o.id]?"✓":dist(here,o.node)+m}</span></div>`).join("")}</div>`}
+  if(ph==="check"&&!pick){const m=lang==="th"?" ม.":" m",dn=lang==="th"?"✓ เสร็จแล้ว":"✓ Done";
+    x=`<div class="objs four">${ITEMS.filter(i=>i.grp==="check").map(o=>`<button type="button" class="tile${ck[o.id]?" ok":""}${o.id===cur?" cur":""}" data-go="${o.id}"${ck[o.id]?" disabled":""}><b>${o.ico} ${esc(o[lang])}</b><span>${ck[o.id]?dn:(o.id===cur?"👉 ":"")+dist(here,o.node)+m}</span></button>`).join("")}</div>`}
   if(ph!=="home")x+=`<button type="button" class="other" data-other>${t.other}</button>`;
   $("qico").textContent=ico||"🧭";$("qtitle").textContent=title||"";$("qdesc").textContent=desc||"";$("qdesc").hidden=!desc||(ph==="check"&&!pick);
   $("qextra").innerHTML=x;$("qextra").hidden=!x;
@@ -662,7 +690,7 @@ const player=typeof Audio!=="undefined"?new Audio():null;let sayTok=0;
 function stopSpeech(){sayTok++;try{player&&player.pause()}catch(e){}try{canSpeak&&speechSynthesis.cancel()}catch(e){}}
 function ttsChunk(c,L,next){if(!canSpeak){next();return}
   try{const v=voiceFor(L);if(!v&&!warnedVoice&&!clipSet&&allVoices().length){warnedVoice=true;toast("🔇",UI[L].noVoice)}
-    const u=new SpeechSynthesisUtterance(c);u.lang=L==="th"?"th-TH":"en-US";if(v)u.voice=v;u.rate=L==="th"?.93:.95;u.pitch=1.05;
+    const u=new SpeechSynthesisUtterance(c);u.lang=L==="th"?"th-TH":"en-US";if(v)u.voice=v;u.rate=L==="th"?.88:.92;u.pitch=1.05;
     u.onend=next;u.onerror=next;speechSynthesis.speak(u)}catch(e){next()}}
 function say(text,force){
   lastSpeech=text;if((!voiceOn&&!force)||!text)return;
@@ -690,7 +718,7 @@ const PH_SAY={
   mpay:{th:"รับยาแล้ว ไปชำระค่ายาที่โต๊ะหน้าห้องยากันค่ะ",en:"Got your medicine! Now let's pay for it at the desk in front of the pharmacy."},
   pay:{th:"อีกนิดเดียวค่ะ! ไปห้องการเงิน เขียนใบเบิกค่าตรวจสุขภาพกันนะคะ",en:"Almost there! Let's head to the cashier to fill in your reimbursement form."},
   summary:{th:"ใกล้ถึงเส้นชัยแล้วค่ะ! กลับไปห้องสุขภาพ ฟังสรุปผลกันนะคะ",en:"Final stretch! Back to the Health Room for your results."},
-  home:{th:"ครบทุกภารกิจแล้วค่ะ เก่งที่สุดเลย ขอบคุณที่มาตรวจสุขภาพนะคะ กลับบ้านปลอดภัยค่ะ!",en:"Every quest complete! You did great. Thanks for coming in, and have a safe trip home!"}
+  home:{th:"ครบทุกขั้นตอนแล้วค่ะ เก่งที่สุดเลย ขอบคุณที่มาตรวจสุขภาพนะคะ กลับบ้านปลอดภัยค่ะ!",en:"All steps complete! You did great. Thanks for coming in, and have a safe trip home!"}
 };
 const ARRIVE={
   target:{th:n=>`ถึง${n}แล้วค่ะ! ทำเสร็จเมื่อไหร่ กดปุ่มสีทองได้เลยนะคะ`,en:n=>`We made it to ${n}! When you're done, tap the gold button.`},
@@ -773,6 +801,12 @@ $("chatBtn").onclick=()=>openSheet("chatSheet");
 $("scrim").onclick=closeSheets;
 document.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeSheets);
 addEventListener("keydown",e=>{if(e.key==="Escape")closeSheets()});
+
+/* ================= หน้าต้อนรับ (แตะครั้งแรกเพื่อเปิดเสียง) ================= */
+function welcomeUI(){const t=UI[lang];$("wTitle").textContent=t.welcomeT;$("wText").textContent=t.welcomeX;$("wGo").textContent=t.welcomeGo;$("wLang").textContent=lang==="th"?"English":"ภาษาไทย"}
+$("wLang").onclick=()=>{lang=lang==="th"?"en":"th";welcomeUI();render()};
+$("wGo").onclick=()=>{$("welcome").hidden=true;try{sessionStorage.setItem("nongnamtang-welcomed","1")}catch(e){}
+  if(mode==="check")sayPhase();else say(ARRIVE.hello[lang])};
 /* ================= บอทจับคำสำคัญ (ฟรี ไม่ใช้ AI) =================
    text = ข้อความที่แสดง, speak = ข้อความที่พูด (ถ้าไม่ใส่จะพูด text), dest = ห้องที่นำทางไป */
 const norm=s=>s.toLowerCase().replace(/[\s\-.,?!'"“”]/g,"");
@@ -876,7 +910,7 @@ let rec=null,listening=false,heard="",listenNote=null;
 function micUI(){const t=UI[lang];
   $("micBtn").hidden=!SR;$("talkBtn").hidden=!SR;
   $("micBtn").textContent=listening?"■":"🎤";$("micBtn").setAttribute("aria-label",listening?t.micOn:t.mic);$("micBtn").classList.toggle("on",listening);
-  $("talkBtn").textContent=listening?"■ "+t.micOn.split("…")[0]:t.talk;$("talkBtn").classList.toggle("on",listening);
+  $("talkBtn").textContent=listening?"■ "+t.micOn.split("…")[0]:t.talk2;$("talkBtn").classList.toggle("on",listening);
   if(listening&&!listenNote){listenNote=document.createElement("div");listenNote.className="listening";listenNote.textContent=t.micOn;msgs.appendChild(listenNote);msgs.scrollTop=msgs.scrollHeight}
   if(!listening&&listenNote){listenNote.remove();listenNote=null}}
 function listen(){
@@ -897,6 +931,8 @@ const _closeSheets=closeSheets;closeSheets=function(){if(listening)try{rec.abort
 $("scrim").onclick=closeSheets;document.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeSheets);
 
 render();micUI();
+{let seen=false;try{seen=sessionStorage.getItem("nongnamtang-welcomed")==="1"}catch(e){}
+ if(!seen&&!ck.reg){welcomeUI();$("welcome").hidden=false}}
 addBot({text:mode==="check"?"สวัสดีค่ะ! น้องนำทางพร้อมช่วยค่ะ ถามทางหรือขั้นตอนได้เลย เช่น “ไปไหนต่อ” (You can ask in English too)":"สวัสดีค่ะ! น้องนำทางพร้อมช่วยค่ะ ถามทางได้เลยนะคะ เช่น “ห้องน้ำอยู่ไหน” (You can ask in English too)",chips:quickChips("th")});
 lastSpeech="";stopSpeech();
 </script>
