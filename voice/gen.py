@@ -5,8 +5,8 @@ import edge_tts
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 data = json.load(open(os.path.join(HERE, "phrases.json"), encoding="utf-8"))
-MAX_PER_RUN = 70
-GAP_SECONDS = 2.5
+MAX_PER_RUN = 400
+GAP_SECONDS = 1.0
 STOP_AFTER_FAILS = 4
 
 def write_manifest():
