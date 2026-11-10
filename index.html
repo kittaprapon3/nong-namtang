@@ -90,6 +90,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .ft select{min-width:0;font:600 1rem var(--f-body);padding:9px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
 .ft .swap{width:44px;height:84px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--accent);font-size:1.3rem;cursor:pointer}
 .actions.solo{grid-template-columns:1fr}
+.botq{display:flex;flex-direction:column;gap:10px}
+.botq p{margin:0;font:700 1.25rem/1.3 var(--f-display);text-wrap:balance}
 .choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .btn{font:700 1.1rem var(--f-body);padding:15px 14px;min-height:56px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
@@ -241,6 +243,7 @@ form input{flex:1;min-width:0;font:400 1rem var(--f-body);padding:12px 14px;bord
     <section class="panel navp" id="navp">
       <div class="route" id="sum"></div>
       <ol class="turns" id="turns"></ol>
+      <div class="botq" id="botQ" hidden></div>
       <div class="actions">
         <label class="herechip" for="hereSel"><span aria-hidden="true">📍</span><select id="hereSel"></select></label>
         <button class="btn primary" id="arrivedBtn" type="button"></button>
@@ -626,7 +629,7 @@ function renderNav(){
   const opt=(sel,none)=>(none?`<option value=""${sel?"":" selected"}>${t.pickTo}</option>`:"")+PLACES.map(k=>`<option value="${k}"${k===sel?" selected":""}>${esc(NODES[k][lang])}</option>`).join("");
   $("qextra").hidden=false;
   $("qextra").innerHTML=`<div class="ft"><div class="fields"><label for="fromSel">📍 ${t.from}<select id="fromSel">${opt(here)}</select></label><label for="toSel">🚩 ${t.to}<select id="toSel">${opt(here===dest?"":dest,true)}</select></label></div><button type="button" class="swap" data-swap aria-label="${t.swap}">⇅</button></div>`;
-  $("navp").hidden=here===dest;document.querySelector(".herechip").hidden=true;document.querySelector(".actions").classList.add("solo");
+  $("botQ").hidden=true;$("sum").hidden=false;  $("navp").hidden=here===dest;document.querySelector(".herechip").hidden=true;document.querySelector(".actions").classList.add("solo");
   const ab=$("arrivedBtn");ab.hidden=false;
   if(here!==dest){ab.textContent=t.arrived;ab.disabled=false;ab.className="btn primary"}else{ab.textContent=t.pickHint;ab.disabled=true;ab.className="btn"}
   renderMap();save();
@@ -640,12 +643,12 @@ function render(){
   const need_=ITEMS.filter(i=>need(i.id));
   $("qtag").textContent=t.quest(Math.min(need_.length,doneCount()+(ph==="home"?0:1)),need_.length);
   $("qbar").hidden=false;$("qbar").innerHTML=need_.map(i=>`<i class="${ck[i.id]?"ok":i.id===cur?"now":""}"></i>`).join("");
-  let title,desc,ico,x="";
+  let title,desc,ico,x="",q="";
   if(showItem){title=iname(showItem);desc=ITEM[showItem][lang==="th"?"dTh":"dEn"];ico=ITEM[showItem].ico}
-  else if(ph==="age"){ico="🎂";title=t.ageQ;desc=t.ageDesc;x=`<div class="choice"><button type="button" class="btn primary" data-age="old">${t.ageOld}</button><button type="button" class="btn" data-age="young">${t.ageYoung}</button></div>`}
+  else if(ph==="age"){ico="🎂";title=t.ageQ;desc=t.ageDesc;q=`<div class="choice"><button type="button" class="btn primary" data-age="old">${t.ageOld}</button><button type="button" class="btn" data-age="young">${t.ageYoung}</button></div>`}
   else if(ph==="check"){ico="🧪";title=t.checkT;desc=t.checkDesc}
-  else if(ph==="young"){ico="🙂";title=t.youngT;desc=t.youngDesc;x=`<div class="choice"><button type="button" class="btn primary" data-young="ok">${t.youngOk}</button><button type="button" class="btn" data-young="doc">${t.youngDoc}</button></div>`}
-  else if(ph==="meds"){ico="💊";title=t.medsT;desc=t.medsDesc;x=`<div class="choice"><button type="button" class="btn primary" data-meds="1">${t.meds}</button><button type="button" class="btn" data-meds="0">${t.noMeds}</button></div>`}
+  else if(ph==="young"){ico="🙂";title=t.youngT;desc=t.youngDesc;q=`<div class="choice"><button type="button" class="btn primary" data-young="ok">${t.youngOk}</button><button type="button" class="btn" data-young="doc">${t.youngDoc}</button></div>`}
+  else if(ph==="meds"){ico="💊";title=t.medsT;desc=t.medsDesc;q=`<div class="choice"><button type="button" class="btn primary" data-meds="1">${t.meds}</button><button type="button" class="btn" data-meds="0">${t.noMeds}</button></div>`}
   else if(ph==="home"){ico="🏠";title=t.homeT;desc=t.homeDesc}
   if(ph==="check"&&!pick){const m=lang==="th"?" ม.":" m",dn=lang==="th"?"✓ เสร็จแล้ว":"✓ Done";
     x=`<div class="objs four">${ITEMS.filter(i=>i.grp==="check").map(o=>`<button type="button" class="tile${ck[o.id]?" ok":""}${o.id===cur?" cur":""}" data-go="${o.id}"${ck[o.id]?" disabled":""}><b>${o.ico} ${esc(o[lang])}</b><span>${ck[o.id]?dn:(o.id===cur?"👉 ":"")+dist(here,o.node)+m}</span></button>`).join("")}</div>`}
@@ -662,8 +665,11 @@ function render(){
   if(here!==dest){ab.textContent=t.arrived;ab.disabled=false;ab.className="btn primary"}
   else if(at_&&!(ph==="meds"||ph==="age"||ph==="young")){ab.textContent=t.finishOf(iname(at_));ab.disabled=false;ab.className="btn gold";ab.dataset.item=at_}
   else{ab.textContent=t.atHere;ab.disabled=true;ab.className="btn"}
-  $("navp").hidden=here===dest&&(ab.disabled||ph==="home");
-  renderMap();save();
+  const bq=$("botQ");bq.hidden=!q;bq.innerHTML=q?`<p>${esc(title)}</p>${q}`:"";
+  if(q&&here===dest)ab.hidden=true;
+  $("sum").hidden=!!(q&&here===dest);
+  $("navp").hidden=!q&&here===dest&&(ab.disabled||ph==="home");
+  renderMap();save();if(q&&here===dest)$("turns").hidden=true;
 }
 /* ================= เสียงพูด (ใช้เสียงในมือถือ ฟรี) =================
    เลือกเสียงที่ฟังเป็นธรรมชาติที่สุดในเครื่อง แบ่งประโยคให้มีจังหวะหยุด และใช้ภาษาพูด */
@@ -769,10 +775,14 @@ $("quest").addEventListener("click",e=>{
   const g=e.target.closest("[data-go]");if(g){const id=g.dataset.go;if(!ck[id]){pick=id;dest=ITEM[id].node;camMode="route";render();sayRoute()}return}
   if(e.target.closest("[data-other]")){openSheet("logSheet");return}
   if(e.target.closest("[data-swap]")){if(here!==dest){[here,dest]=[dest,here];camMode="route";render();sayRoute()}return}
-  const a=e.target.closest("[data-age]");if(a){age=a.dataset.age;goNext();return}
-  const y=e.target.closest("[data-young]");if(y){if(y.dataset.young==="doc")docForced=true;else youngOk=true;goNext();return}
-  const m=e.target.closest("[data-meds]");if(m){meds=m.dataset.meds==="1";goNext();return}
+  choice(e);
 });
+function choice(e){
+  const a=e.target.closest("[data-age]");if(a){age=a.dataset.age;goNext();return true}
+  const y=e.target.closest("[data-young]");if(y){if(y.dataset.young==="doc")docForced=true;else youngOk=true;goNext();return true}
+  const m=e.target.closest("[data-meds]");if(m){meds=m.dataset.meds==="1";goNext();return true}
+  return false}
+$("botQ").addEventListener("click",choice);
 $("quest").addEventListener("change",e=>{
   if(e.target.id==="fromSel"){here=e.target.value;camMode="route";render();sayRoute();return}
   if(e.target.id==="toSel"){dest=e.target.value||here;camMode="route";render();sayRoute();return}
