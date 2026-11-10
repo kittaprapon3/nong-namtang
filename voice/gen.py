@@ -39,16 +39,18 @@ async def main():
             os.remove(os.path.join(OUT, f))
     todo = [it for it in data["items"] if not os.path.exists(os.path.join(OUT, f"{it['id']}.mp3"))]
     todo.sort(key=lambda it: it["lang"] != "th")  # ภาษาไทยก่อน
-    made = fails = 0
-    for it in todo[:MAX_PER_RUN]:
-        if await make(it):
-            made += 1; fails = 0
-        else:
-            fails += 1
-            if fails >= STOP_AFTER_FAILS:
-                print("service is refusing requests now; will continue next run")
-                break
-        time.sleep(GAP_SECONDS)
+    made = 0
+    for lang in ("th", "en"):  # ถ้าเสียงภาษาหนึ่งถูกปฏิเสธ ยังสร้างอีกภาษาต่อได้
+        fails = 0
+        for it in [t for t in todo if t["lang"] == lang][:MAX_PER_RUN]:
+            if await make(it):
+                made += 1; fails = 0
+            else:
+                fails += 1
+                if fails >= STOP_AFTER_FAILS:
+                    print(f"{lang}: service is refusing requests now; will continue next run")
+                    break
+            time.sleep(GAP_SECONDS)
     files = sorted(f[:-4] for f in os.listdir(OUT) if f.endswith(".mp3"))
     json.dump({"dir": SLUG, "voice": data["voices"], "files": files}, open(os.path.join(HERE, "manifest.json"), "w"))
     print(f"made {made} this run, total {len(files)}/{len(wanted)} clips")
