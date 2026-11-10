@@ -1,0 +1,14 @@
+name: ทดสอบเสียง
+on:
+  push:
+    branches: [main]
+    paths: ["voice/diag.py"]
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install "edge-tts>=6.1.9" && pip show edge-tts | head -2
+      - run: python voice/diag.py
