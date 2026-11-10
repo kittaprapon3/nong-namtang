@@ -283,7 +283,7 @@ form input{border-radius:16px;background:var(--bg);border-color:transparent}
 .pulse{opacity:.35}
 .pin{fill:#ef4444;stroke:#fff;stroke-width:2.5}
 @media (prefers-reduced-motion: no-preference){.btn.near{animation:near 1.1s ease-in-out infinite}@keyframes near{50%{transform:scale(1.03);box-shadow:0 0 0 8px rgb(20 184 166 / .25)}}}
-#motionBtn{font-size:1rem;min-height:48px;padding:10px 14px;text-align:left}
+#motionBtn,#compassBtn{font-size:1rem;min-height:48px;padding:10px 14px;text-align:left}
 .skip{align-self:center;color:var(--muted);font-size:.95rem;padding:4px 8px}
 @media (prefers-reduced-motion: reduce){.r-dash{animation:none}}
 </style>
@@ -336,6 +336,7 @@ form input{border-radius:16px;background:var(--bg);border-color:transparent}
         <label class="heresel" for="hereSel2"><span class="note" id="hereLbl"></span><select id="hereSel2"></select></label>
         <div class="modes" id="modes"><p class="note" id="modeH"></p><div class="seg"><button type="button" data-mode="check"></button><button type="button" data-mode="free"></button></div></div>
         <button class="btn" id="motionBtn" type="button" hidden></button>
+        <button class="btn" id="compassBtn" type="button" hidden></button>
         <ol class="qlog" id="qlog"></ol>
         <p class="note" id="hint"></p>
         <div class="voicebox" id="voiceBox" hidden><label class="note" id="voiceLbl" for="voiceSel"></label><div class="vrow"><select id="voiceSel"></select><button class="btn" id="voiceTest" type="button"></button></div></div>
@@ -422,6 +423,8 @@ const LINES={};
         meds = เฉพาะคนได้ยา, end = ทุกคน
    AGE_DOCTOR = อายุตั้งแต่เท่านี้ต้องพบแพทย์ */
 const AGE_DOCTOR=35;
+/* ทิศเข็มทิศ (องศา 0-359) เมื่อยืนที่ประตูทางเข้าแล้วหันหน้าเข้าตึก ใส่ตัวเลขเมื่อวัดได้ ถ้ายังไม่รู้ให้เป็น null */
+const MAP_UP_BEARING=null;
 const ITEMS=[
   {id:"reg",node:"reg",ico:"🪪",grp:"start",th:"ยื่นบัตร",en:"Register",dTh:"ยื่นบัตรประชาชนที่เวชระเบียน แจ้งว่ามาตรวจสุขภาพค่ะ",dEn:"Show your ID card at Medical Records and say you're here for a check-up."},
   {id:"health",node:"health",ico:"🩺",grp:"check",th:"ห้องสุขภาพ",en:"Health Room",dTh:"ไปห้องสุขภาพ พยาบาลจะวัดความดันและถามอาการค่ะ",dEn:"Go to the Health Room. A nurse will check your blood pressure and ask how you feel."},
@@ -449,7 +452,7 @@ const UI={
       medsT:"แพทย์ให้ยากลับบ้านไหม?",medsDesc:"บอกน้องหน่อย จะได้พาไปรับยาค่ะ",meds:"💊 ได้ยา",noMeds:"ไม่ได้ยา",
       homeT:"กลับบ้านได้แล้ว",homeDesc:"ครบทุกขั้นตอนแล้ว ขอบคุณที่มาตรวจสุขภาพค่ะ 🎉",
       other:"🔀 เจ้าหน้าที่ให้ไปห้องอื่น",
-      arrived:"🚩 ถึงห้องแล้ว",motionLbl:"👣 ลูกศรขยับตามก้าวเดิน",on:"เปิด",off:"ปิด",motionWorking:"กำลังนับก้าว",motionDenied:"มือถือไม่อนุญาตให้นับก้าว ยังกดปุ่มทีละขั้นได้ตามปกติค่ะ",nextStep:"ถึงทางเลี้ยวแล้ว ▶",skip:"ถึงห้องแล้ว กดตรงนี้",straight:"เดินตรงไป",turnR:"เลี้ยวขวา",turnL:"เลี้ยวซ้าย",thenWalk:"แล้วเดินตรงไป",meters:m=>`${m} เมตร`,nextIs:"ต่อไป",thenArrive:"แล้วถึง",atHere:"คุณอยู่ที่นี่",finishOf:n=>`${n}เสร็จแล้ว ✓`,
+      arrived:"🚩 ถึงห้องแล้ว",motionLbl:"👣 ลูกศรขยับตามก้าวเดิน",compassSet:"🧭 ตั้งทิศตึก: ยืนที่ประตูทางเข้า หันหน้าเข้าตึก แล้วกดปุ่มนี้",compassNow:"ตอนนี้",compassNone:"ยังอ่านเข็มทิศไม่ได้ค่ะ ลองขยับมือถือเป็นเลข 8 แล้วกดใหม่",compassDone:d=>`ตั้งทิศตึกแล้ว ${d} องศา`,on:"เปิด",off:"ปิด",motionWorking:"กำลังนับก้าว",motionDenied:"มือถือไม่อนุญาตให้นับก้าว ยังกดปุ่มทีละขั้นได้ตามปกติค่ะ",nextStep:"ถึงทางเลี้ยวแล้ว ▶",skip:"ถึงห้องแล้ว กดตรงนี้",straight:"เดินตรงไป",turnR:"เลี้ยวขวา",turnL:"เลี้ยวซ้าย",thenWalk:"แล้วเดินตรงไป",meters:m=>`${m} เมตร`,nextIs:"ต่อไป",thenArrive:"แล้วถึง",atHere:"คุณอยู่ที่นี่",finishOf:n=>`${n}เสร็จแล้ว ✓`,
       st:{done:"เสร็จแล้ว",now:"ตอนนี้",todo:"ยังไม่ได้ทำ",skipAge:"ไม่ต้อง (อายุต่ำกว่า 35)",ifDoc:"ถ้าอายุ 35 ขึ้นไป",ifMeds:"ถ้าได้ยา",noMeds:"ไม่ต้อง (ไม่ได้ยา)"},
       reset:"↺ เริ่มใหม่ (ผู้ป่วยคนใหม่)",resetSure:"แตะอีกครั้งเพื่อยืนยันเริ่มใหม่",
       replay:"🔊 ฟังซ้ำ",talk:"🎤 พูด",mic:"กดแล้วพูด",micOn:"กำลังฟัง… พูดได้เลยค่ะ",micDenied:"ต้องอนุญาตให้ใช้ไมโครโฟนก่อน กดอนุญาตในเบราว์เซอร์แล้วลองใหม่นะคะ",micNoSpeech:"ไม่ได้ยินเสียงเลยค่ะ ลองกดแล้วพูดใหม่นะคะ",micFail:"ฟังไม่สำเร็จ ลองใหม่หรือพิมพ์แทนได้ค่ะ",micBlocked:"ไมค์ยังใช้ไม่ได้ค่ะ ลองเปิดลิงก์ใน Safari หรือ Chrome หรือกด ⌨️ พิมพ์ แล้วกดไมค์บนแป้นพิมพ์แทนนะคะ",micSiri:"บน iPhone ต้องเปิด Siri และ \"การป้อนตามคำบอก\" ในการตั้งค่าก่อนนะคะ",voicePick:"เสียงพูด (เลือกเสียงที่ฟังเป็นธรรมชาติที่สุดในมือถือเครื่องนี้)",voiceTest:"▶ ทดลองฟัง",voiceOn:"เปิดเสียงพูด",voiceOff:"ปิดเสียงพูด",
@@ -471,7 +474,7 @@ const UI={
       medsT:"Did the doctor give you medicine?",medsDesc:"Let me know so I can take you to the pharmacy.",meds:"💊 Yes, medicine",noMeds:"No medicine",
       homeT:"You can go home",homeDesc:"Every step is done. Thank you for coming in! 🎉",
       other:"🔀 Staff sent me somewhere else",
-      arrived:"🚩 I'm at the room",motionLbl:"👣 Arrow follows my steps",on:"on",off:"off",motionWorking:"counting steps",motionDenied:"Step counting isn't allowed on this phone. You can still tap through each step.",nextStep:"I'm at the turn ▶",skip:"Already at the room? Tap here",straight:"Go straight",turnR:"Turn right",turnL:"Turn left",thenWalk:"then go straight",meters:m=>`${m} meters`,nextIs:"Next:",thenArrive:"then you reach",atHere:"You are here",finishOf:n=>`${n} done ✓`,
+      arrived:"🚩 I'm at the room",motionLbl:"👣 Arrow follows my steps",compassSet:"🧭 Set building direction: stand at the entrance facing in, then tap",compassNow:"now",compassNone:"No compass reading yet. Move the phone in a figure 8 and tap again.",compassDone:d=>`Building direction set: ${d}°`,on:"on",off:"off",motionWorking:"counting steps",motionDenied:"Step counting isn't allowed on this phone. You can still tap through each step.",nextStep:"I'm at the turn ▶",skip:"Already at the room? Tap here",straight:"Go straight",turnR:"Turn right",turnL:"Turn left",thenWalk:"then go straight",meters:m=>`${m} meters`,nextIs:"Next:",thenArrive:"then you reach",atHere:"You are here",finishOf:n=>`${n} done ✓`,
       st:{done:"Done",now:"Now",todo:"To do",skipAge:"Not needed (under 35)",ifDoc:"If 35 or older",ifMeds:"If you get medicine",noMeds:"Not needed (no medicine)"},
       reset:"↺ Start over (new patient)",resetSure:"Tap again to confirm",
       replay:"🔊 Repeat",talk:"🎤 Talk",mic:"Tap and speak",micOn:"Listening… go ahead",micDenied:"Please allow the microphone in your browser, then try again.",micNoSpeech:"I didn't hear anything. Tap and try again.",micFail:"Couldn't catch that. Try again or type instead.",micBlocked:"The microphone isn't available here. Open the link in Safari or Chrome, or tap ⌨️ Type and use the keyboard's mic.",micSiri:"On iPhone, turn on Siri and Dictation in Settings first.",voicePick:"Voice (pick the most natural one on this phone)",voiceTest:"▶ Try it",voiceOn:"Voice on",voiceOff:"Voice off",
@@ -749,7 +752,7 @@ function commonText(){const t=UI[lang];document.documentElement.lang=lang;
   document.querySelector(".herechip").hidden=true;document.querySelector(".actions").classList.add("solo");$("q").placeholder=t.ph;$("sendBtn").textContent=t.send;
   $("note").textContent=t.note;$("modeH").textContent=t.modeH;
   document.querySelectorAll("[data-mode]").forEach(b=>{b.textContent=b.dataset.mode==="check"?t.modeCheck:t.modeFree;b.setAttribute("aria-pressed",String(b.dataset.mode===mode))});
-  $("resetBtn").textContent=t.reset;voiceUI();if(typeof micUI==="function")micUI();if(typeof motionUI==="function")motionUI()}
+  $("resetBtn").textContent=t.reset;voiceUI();if(typeof micUI==="function")micUI();if(typeof motionUI==="function")motionUI();if(typeof compassUI==="function")compassUI()}
 
 function renderNav(){
   const t=UI[lang];commonText();
@@ -968,7 +971,10 @@ function onMotion(e){
 }
 function onStep(){
   if(!motionWanted||document.hidden||!navigating()||!$("scrim").hidden||!$("welcome").hidden)return;
-  const sg=NAV.segs[segIdx];stepsSeg++;prog=Math.min(sg.len,prog+stride);
+  const sg=NAV.segs[segIdx],way=walkWay(sg);
+  if(way===0)return;                       /* เดินออกข้าง ไม่นับ */
+  if(way<0){prog=Math.max(0,prog-stride);nearSaid=false;updatePos();return}   /* หันกลับแล้วเดินย้อน ลูกศรถอย */
+  stepsSeg++;prog=Math.min(sg.len,prog+stride);
   if(prog>=sg.len-1.2){
     if(!lastStep()){segIdx++;skipShort();prog=0;stepsSeg=0;camMode="route";renderMap();say(stepSpeech(segIdx,false));return}
     prog=Math.max(0,sg.len-.8);
@@ -995,6 +1001,51 @@ $("motionBtn").onclick=()=>{motionWanted=!motionWanted;try{localStorage.setItem(
   if(motionWanted)enableMotion();else{prog=0;if(navigating())updatePos()}motionUI()};
 /* ต้องขออนุญาตตอนผู้ใช้แตะจอ (iPhone บังคับ) จึงผูกกับการแตะครั้งแรก */
 addEventListener("click",function first(){removeEventListener("click",first,true);enableMotion()},true);
+
+/* ================= เข็มทิศ: รู้ว่าเดินไปข้างหน้าหรือเดินย้อน =================
+   MAP_UP_BEARING (ใน parts_data) = ทิศเข็มทิศของ "ด้านบนของแผนผัง" คือทิศที่หันหน้าเข้าตึกจากประตูทางเข้า
+   ถ้ายังไม่ได้ตั้ง แอปจะเดาจากก้าวแรกๆ ของเส้นทาง (ถือว่าเริ่มเดินไปข้างหน้า) หรือใช้ค่าที่ตั้งไว้ในมือถือเครื่องนั้น */
+let heading=null,upBearing=typeof MAP_UP_BEARING==="number"?MAP_UP_BEARING:null,calSamples=[],calKey="",faceDiff=0;
+try{const v=parseFloat(localStorage.getItem("nongnamtang-upbearing"));if(upBearing===null&&v>=0&&v<360)upBearing=v}catch(e){}
+const adiff=(a,b)=>((a-b)%360+540)%360-180;
+const segBearingFromUp=sg=>Math.atan2(sg.d.x,-sg.d.y)*180/Math.PI;
+function onHeading(e){
+  let h=null;
+  if(typeof e.webkitCompassHeading==="number"&&e.webkitCompassHeading>=0)h=e.webkitCompassHeading;
+  else if((e.absolute||e.type==="deviceorientationabsolute")&&typeof e.alpha==="number")h=(360-e.alpha)%360;
+  if(h===null)return;
+  heading=heading===null?h:(heading+adiff(h,heading)*.25+360)%360;
+  if(upBearing!==null&&navigating()){const sg=NAV.segs[segIdx],d=adiff(heading,upBearing+segBearingFromUp(sg));
+    const hd=svg.querySelector("#me .hd"),ang=Math.atan2(sg.d.y,sg.d.x)*180/Math.PI+90+d;faceDiff=d;
+    if(hd&&cam&&Math.abs(adiff(ang,+hd.dataset.ang))>6){hd.dataset.ang=ang;hd.setAttribute("transform",`rotate(${ang}) scale(${1/cam.s})`)}}
+}
+/* 1 = เดินตามเส้นทาง, -1 = เดินย้อน, 0 = เดินออกข้าง */
+function walkWay(sg){
+  if(heading===null)return 1;
+  if(upBearing===null){            /* ยังไม่รู้ทิศตึก: ใช้ 4 ก้าวแรกของเส้นทางเป็นตัวตั้ง */
+    if(calKey!==NAV.key){calKey=NAV.key;calSamples=[]}
+    calSamples.push(adiff(heading,segBearingFromUp(sg)));
+    if(calSamples.length>=4){const x=calSamples.reduce((a,v)=>a+Math.cos(v*Math.PI/180),0),y=calSamples.reduce((a,v)=>a+Math.sin(v*Math.PI/180),0);
+      upBearing=(Math.atan2(y,x)*180/Math.PI+360)%360;compassUI()}
+    return 1}
+  const d=Math.abs(adiff(heading,upBearing+segBearingFromUp(sg)));
+  return d>=125?-1:1;   /* ย้อนเมื่อหันกลับชัดเจนเท่านั้น เข็มทิศในตึกเพี้ยนได้ จึงไม่ตัดสินเข้มเกินไป */
+}
+async function enableCompass(){
+  let framed=false;try{framed=window.self!==window.top}catch(e){framed=true}
+  if(framed||!("DeviceOrientationEvent" in window))return;
+  try{
+    if(typeof DeviceOrientationEvent.requestPermission==="function"){const r=await DeviceOrientationEvent.requestPermission();if(r!=="granted")return}
+    addEventListener("deviceorientationabsolute",onHeading);addEventListener("deviceorientation",onHeading);
+  }catch(e){}
+}
+function compassUI(){const b=$("compassBtn");if(!b)return;const t=UI[lang];let framed=false;try{framed=window.self!==window.top}catch(e){framed=true}
+  b.hidden=framed||!("DeviceOrientationEvent" in window);
+  b.textContent=`${t.compassSet}${upBearing!==null?` (${t.compassNow} ${Math.round(upBearing)}°)`:""}`}
+$("compassBtn").onclick=()=>{const t=UI[lang];
+  if(heading===null){toast("🧭",t.compassNone);enableCompass();return}
+  upBearing=heading;try{localStorage.setItem("nongnamtang-upbearing",upBearing.toFixed(0))}catch(e){}compassUI();toast("🧭",t.compassDone(Math.round(upBearing)))};
+addEventListener("click",function firstC(){removeEventListener("click",firstC,true);if(motionWanted)enableCompass()},true);
 /* ================= บอทจับคำสำคัญ (ฟรี ไม่ใช้ AI) =================
    text = ข้อความที่แสดง, speak = ข้อความที่พูด (ถ้าไม่ใส่จะพูด text), dest = ห้องที่นำทางไป */
 const norm=s=>s.toLowerCase().replace(/[\s\-.,?!'"“”]/g,"");
