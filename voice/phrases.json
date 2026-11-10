@@ -22,11 +22,6 @@
    "text": "X-ray is in the far right corner of the building"
   },
   {
-   "id": "0a6265c2",
-   "lang": "en",
-   "text": "Yay, Dental check is done!"
-  },
-  {
    "id": "0a688cad",
    "lang": "en",
    "text": "and there's Cashier!"
@@ -47,6 +42,11 @@
    "text": "Final stretch!"
   },
   {
+   "id": "0d77f12b",
+   "lang": "en",
+   "text": "Blood test is done, nice work!"
+  },
+  {
    "id": "0ea47a49",
    "lang": "en",
    "text": "Show your ID card and say you're here for a check-up!"
@@ -57,9 +57,9 @@
    "text": "Sorry, I didn't understand that"
   },
   {
-   "id": "11d38aab",
+   "id": "10eb195d",
    "lang": "en",
-   "text": "Yay, Hear your results is done!"
+   "text": "Reimbursement form is done, nice work!"
   },
   {
    "id": "12f444c7",
@@ -77,19 +77,9 @@
    "text": "We made it to Toilet!"
   },
   {
-   "id": "186e6637",
-   "lang": "en",
-   "text": "Yay, See the doctor is done!"
-  },
-  {
    "id": "18dcc2d9",
    "lang": "en",
    "text": "I'll take you to the closest one first"
-  },
-  {
-   "id": "1d70a35a",
-   "lang": "en",
-   "text": "Yay, Get medicine is done!"
   },
   {
    "id": "1d89ada6",
@@ -167,11 +157,6 @@
    "text": "then turn left and go about 10 meters"
   },
   {
-   "id": "32679190",
-   "lang": "en",
-   "text": "Yay, Reimbursement form is done!"
-  },
-  {
    "id": "33113b10",
    "lang": "en",
    "text": "Now let's go see the doctor"
@@ -232,11 +217,6 @@
    "text": "then turn right and go about 10 meters"
   },
   {
-   "id": "442ba0ae",
-   "lang": "en",
-   "text": "Yay, Blood test is done!"
-  },
-  {
    "id": "44f4a055",
    "lang": "en",
    "text": "and there's Doctor's Exam Room!"
@@ -275,6 +255,16 @@
    "id": "53da5d60",
    "lang": "en",
    "text": "Walk straight about 35 meters"
+  },
+  {
+   "id": "54a7a13f",
+   "lang": "en",
+   "text": "All tests done, amazing job!"
+  },
+  {
+   "id": "57e6b167",
+   "lang": "en",
+   "text": "Get medicine is done, nice work!"
   },
   {
    "id": "5861be4b",
@@ -317,11 +307,6 @@
    "text": "Everyone fills in the check-up reimbursement form at the cashier"
   },
   {
-   "id": "69793eea",
-   "lang": "en",
-   "text": "Amazing job"
-  },
-  {
    "id": "69e77699",
    "lang": "en",
    "text": "Walk straight just a few steps"
@@ -350,11 +335,6 @@
    "id": "6e78294b",
    "lang": "en",
    "text": "then turn right and go about 50 meters"
-  },
-  {
-   "id": "6f9be8ff",
-   "lang": "en",
-   "text": "Yay, X-ray is done!"
   },
   {
    "id": "71bb0853",
@@ -392,6 +372,11 @@
    "text": "Off to Medicine payment desk!"
   },
   {
+   "id": "79e01fab",
+   "lang": "en",
+   "text": "Dental check is done, nice work!"
+  },
+  {
    "id": "7a71ce9c",
    "lang": "en",
    "text": "Walk straight about 40 meters"
@@ -412,19 +397,9 @@
    "text": "We made it to Main hall!"
   },
   {
-   "id": "80f8848b",
-   "lang": "en",
-   "text": "Yay, Pay for medicine is done!"
-  },
-  {
    "id": "8133534b",
    "lang": "en",
    "text": "Off to Main hall!"
-  },
-  {
-   "id": "81b30fc8",
-   "lang": "en",
-   "text": "Yay, all tests done!"
   },
   {
    "id": "83f33d5e",
@@ -435,6 +410,11 @@
    "id": "867a890a",
    "lang": "en",
    "text": "Walk straight about 20 meters"
+  },
+  {
+   "id": "884c563e",
+   "lang": "en",
+   "text": "X-ray is done, nice work!"
   },
   {
    "id": "8c53581d",
@@ -450,11 +430,6 @@
    "id": "941681ac",
    "lang": "en",
    "text": "Off to Cashier!"
-  },
-  {
-   "id": "957d980c",
-   "lang": "en",
-   "text": "Yay, History check is done!"
   },
   {
    "id": "97cafe15",
@@ -492,19 +467,14 @@
    "text": "All tests done, great job!"
   },
   {
+   "id": "9d42b552",
+   "lang": "en",
+   "text": "Hear your results is done, nice work!"
+  },
+  {
    "id": "9e0b6561",
    "lang": "en",
    "text": "Walk straight about 45 meters"
-  },
-  {
-   "id": "a332fb5c",
-   "lang": "en",
-   "text": "Nice work"
-  },
-  {
-   "id": "a38ad5a5",
-   "lang": "en",
-   "text": "Yay, Register is done!"
   },
   {
    "id": "a78fca44",
@@ -537,9 +507,19 @@
    "text": "then turn right and go about 15 meters"
   },
   {
+   "id": "aab254fb",
+   "lang": "en",
+   "text": "History check is done, nice work!"
+  },
+  {
    "id": "ac8382f1",
    "lang": "en",
    "text": "then turn left and go about 35 meters"
+  },
+  {
+   "id": "aeeff16e",
+   "lang": "en",
+   "text": "Register is done, nice work!"
   },
   {
    "id": "b1a7068a",
@@ -575,6 +555,21 @@
    "id": "c140165d",
    "lang": "en",
    "text": "The toilets are in the top-left corner, next to Dental"
+  },
+  {
+   "id": "c14cf530",
+   "lang": "en",
+   "text": "See the doctor is done, nice work!"
+  },
+  {
+   "id": "c41fa928",
+   "lang": "en",
+   "text": "Pay for medicine is done, nice work!"
+  },
+  {
+   "id": "c42009d5",
+   "lang": "en",
+   "text": "Every quest complete!"
   },
   {
    "id": "c7992e96",
@@ -640,11 +635,6 @@
    "id": "ec8f0b2e",
    "lang": "en",
    "text": "Quick question!"
-  },
-  {
-   "id": "ef2faa9c",
-   "lang": "en",
-   "text": "Woohoo, every quest complete!"
   },
   {
    "id": "efc2e7c3",
@@ -975,11 +965,6 @@
    "id": "6bbad1e0",
    "lang": "th",
    "text": "ยื่นบัตรเสร็จแล้ว เก่งมากค่ะ"
-  },
-  {
-   "id": "6e0f4ecf",
-   "lang": "th",
-   "text": "เย้!"
   },
   {
    "id": "7139fd18",

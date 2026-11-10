@@ -678,18 +678,18 @@ const PH_SAY={
   age:{th:"ขอถามนิดนึงนะคะ อายุ 35 ปีขึ้นไปไหมคะ",en:"Quick question! Are you 35 or older?"},
   check:{th:"ลุยกันเลยค่ะ! ตรวจห้องไหนก่อนก็ได้ ตามที่เจ้าหน้าที่แนะนำ น้องพาไปห้องที่ใกล้ที่สุดก่อนนะคะ",en:"Time for your tests! Any order works, just follow the staff. I'll take you to the closest one first."},
   young:{th:"ตรวจครบแล้ว เก่งมากค่ะ! ถ้าพยาบาลไม่ได้บอกให้พบแพทย์ ไปต่อได้เลยนะคะ",en:"All tests done, great job! If the nurse didn't ask you to see the doctor, let's keep going."},
-  doc:{th:"เย้! ตรวจครบแล้ว เก่งมากเลยค่ะ ต่อไปไปพบคุณหมอกันนะคะ",en:"Yay, all tests done! Amazing job. Now let's go see the doctor."},
+  doc:{th:"ตรวจครบแล้ว เก่งมากเลยค่ะ ต่อไปไปพบคุณหมอกันนะคะ",en:"All tests done, amazing job! Now let's go see the doctor."},
   meds:{th:"พบคุณหมอแล้ว คุณหมอให้ยากลับบ้านไหมคะ",en:"Did the doctor give you any medicine to take home?"},
   rx:{th:"ไปรับยากันค่ะ ห้องยาอยู่ไม่ไกลเลย",en:"Let's pick up your medicine. The pharmacy is just around here."},
   mpay:{th:"รับยาแล้ว ไปชำระค่ายาที่โต๊ะหน้าห้องยากันค่ะ",en:"Got your medicine! Now let's pay for it at the desk in front of the pharmacy."},
   pay:{th:"อีกนิดเดียวค่ะ! ไปห้องการเงิน เขียนใบเบิกค่าตรวจสุขภาพกันนะคะ",en:"Almost there! Let's head to the cashier to fill in your reimbursement form."},
   summary:{th:"ใกล้ถึงเส้นชัยแล้วค่ะ! กลับไปห้องสุขภาพ ฟังสรุปผลกันนะคะ",en:"Final stretch! Back to the Health Room for your results."},
-  home:{th:"เย้! ครบทุกภารกิจแล้วค่ะ เก่งที่สุดเลย ขอบคุณที่มาตรวจสุขภาพนะคะ กลับบ้านปลอดภัยค่ะ!",en:"Woohoo, every quest complete! You did great. Thanks for coming in, and have a safe trip home!"}
+  home:{th:"ครบทุกภารกิจแล้วค่ะ เก่งที่สุดเลย ขอบคุณที่มาตรวจสุขภาพนะคะ กลับบ้านปลอดภัยค่ะ!",en:"Every quest complete! You did great. Thanks for coming in, and have a safe trip home!"}
 };
 const ARRIVE={
   target:{th:n=>`ถึง${n}แล้วค่ะ! ทำเสร็จเมื่อไหร่ กดปุ่มสีทองได้เลยนะคะ`,en:n=>`We made it to ${n}! When you're done, tap the gold button.`},
   plain:{th:n=>`ถึง${n}แล้วค่ะ!`,en:n=>`We made it to ${n}!`},
-  item:{th:n=>`เย้! ${n}เสร็จแล้ว เก่งมากค่ะ`,en:n=>`Yay, ${n} is done! Nice work.`},
+  item:{th:n=>`${n}เสร็จแล้ว เก่งมากค่ะ`,en:n=>`${n} is done, nice work!`},
   hello:{th:"สวัสดีค่ะ! น้องนำทางเองค่ะ วันนี้จะพาไปตรวจสุขภาพให้ครบทุกห้องเลยนะคะ",en:"Hi! I'm your hospital guide, and I'll take you through every step of your check-up today!"}
 };
 function spokenRoute(withLead=true){if(here===dest)return"";const p=shortest(here,dest),ds=directions(p,lang),th=lang==="th",out=[];
