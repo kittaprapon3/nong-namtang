@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>น้องนำทาง OPD</title>
-<meta name="theme-color" content="#0a6b61">
+<meta name="theme-color" content="#0d9488">
 <meta name="description" content="นำทางผู้ป่วยตรวจสุขภาพ บอกขั้นตอนและเส้นทางในโรงพยาบาล">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -19,33 +19,22 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Bai+Jamjuree:wght@600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600;700&family=Prompt:wght@500;600;700&display=swap">
 <style>
-/* Layout: full-screen floor-plan map like a game world; a quest tracker floats on top, the turn-by-turn panel on the bottom, quest log and chat open as sheets. */
+/* Layout: full-screen floor-plan map; a glass quest card floats on top, the directions card at the bottom, list and chat open as sheets.
+   Single light theme on purpose (bright, clinical, readable for older patients). Body face is a looped Thai font, easier for seniors to read. */
 :root{
-  --bg:#eef3f2; --surface:#ffffff; --ink:#132522; --muted:#566b67; --line:#d5e0de;
-  --accent:#0a6b61; --accent-ink:#ffffff; --bot:#e5f0ed; --me:#0a6b61; --me-ink:#ffffff;
-  --warn-bg:#fdecea; --warn-ink:#9b1c12;
-  --gold:#d29a06; --gold-ink:#2b1d00; --gold-soft:#fbefc8;
-  --map-bg:#e7efed; --grid:#d8e3e0; --floor:#f8fbfa; --room:#e3ebe9; --wall:#93a9a4; --here:#2a6ff0;
-  --shadow:0 8px 28px rgb(10 40 36 / .16);
-  --f-display:"Bai Jamjuree","Anuphan",system-ui,sans-serif;
-  --f-body:"Anuphan","Noto Sans Thai",system-ui,sans-serif;
+  color-scheme:light;
+  --bg:#f1f5f9; --surface:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0;
+  --accent:#0d9488; --accent-2:#14b8a6; --accent-ink:#ffffff; --bot:#f0fdfa; --me:#0d9488; --me-ink:#ffffff;
+  --warn-bg:#fef2f2; --warn-ink:#b91c1c;
+  --gold:#f59e0b; --gold-2:#fbbf24; --gold-ink:#3b2300; --gold-soft:#fef3c7;
+  --map-bg:#e8eff5; --grid:#d7e1ea; --floor:#ffffff; --room:#eef3f8; --wall:#b6c3d1; --here:#2563eb;
+  --glass:rgb(255 255 255 / .88);
+  --shadow:0 14px 34px -10px rgb(15 23 42 / .22),0 2px 6px rgb(15 23 42 / .06);
+  --f-display:"Prompt","IBM Plex Sans Thai Looped",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans Thai Looped","Noto Sans Thai Looped","Noto Sans Thai",system-ui,sans-serif;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0e1716; --surface:#16211f; --ink:#e2ecea; --muted:#94a8a4; --line:#2a3a37;
-  --accent:#4fc0b1; --accent-ink:#06201c; --bot:#1d2b29; --me:#2f8f84; --me-ink:#ffffff;
-  --warn-bg:#3a1714; --warn-ink:#ffb4ab;
-  --gold:#f2c14e; --gold-ink:#2b1d00; --gold-soft:#3a2f12;
-  --map-bg:#0a1311; --grid:#14211e; --floor:#111c1a; --room:#1c2a27; --wall:#4d625d; --here:#5b95ff;
-  --shadow:0 8px 28px rgb(0 0 0 / .45); color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0e1716; --surface:#16211f; --ink:#e2ecea; --muted:#94a8a4; --line:#2a3a37;
-  --accent:#4fc0b1; --accent-ink:#06201c; --bot:#1d2b29; --me:#2f8f84; --me-ink:#ffffff;
-  --warn-bg:#3a1714; --warn-ink:#ffb4ab;
-  --gold:#f2c14e; --gold-ink:#2b1d00; --gold-soft:#3a2f12;
-  --map-bg:#0a1311; --grid:#14211e; --floor:#111c1a; --room:#1c2a27; --wall:#4d625d; --here:#5b95ff;
-  --shadow:0 8px 28px rgb(0 0 0 / .45); color-scheme:dark}
 [hidden]{display:none!important}
 html{height:100%;box-sizing:border-box}
 body{height:100%;margin:0;background:var(--map-bg);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.45;overflow:hidden}
@@ -213,6 +202,52 @@ form input{flex:1;min-width:0;font:400 1rem var(--f-body);padding:12px 14px;bord
 .toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .toast small{display:block;font:600 .8rem var(--f-body);letter-spacing:.08em;text-transform:uppercase;opacity:.8}
 @media (prefers-reduced-motion: reduce){.r-line,.pulse{animation:none}.walker{display:none}.toast{transition:none}}
+
+/* ---------- modern look ---------- */
+.panel{background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);border:1px solid rgb(255 255 255 / .8);border-radius:26px}
+.quest{padding:16px 16px 18px;gap:10px}
+.qtag{background:var(--gold-soft);color:#92400e;letter-spacing:0;text-transform:none;padding:6px 12px;font-weight:600;font-size:.95rem}
+.qbar i{height:5px;background:#e2e8f0}.qbar i.ok{background:var(--accent-2)}.qbar i.now{background:var(--gold)}
+.iconbtn{border:0;background:var(--bg);border-radius:14px;color:var(--ink)}
+.qtitle h1{font-weight:600;letter-spacing:-.01em}
+.qtitle .ico{display:grid;place-items:center;width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#ccfbf1,#e0f2fe);font-size:1.45rem}
+.qdesc{color:var(--muted)}
+.tile{background:var(--bg);border-radius:18px;border:2px solid transparent;padding:12px 14px}
+.tile.cur{background:#f0fdfa;border-color:var(--accent-2);box-shadow:0 6px 16px -8px rgb(13 148 136 / .5)}
+.btn{border:0;border-radius:18px;background:var(--bg);font-family:var(--f-body)}
+.btn.primary{background:linear-gradient(135deg,var(--accent-2),var(--accent));color:#fff;box-shadow:0 10px 20px -8px rgb(13 148 136 / .7)}
+.btn.gold{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:var(--gold-ink);box-shadow:0 10px 20px -8px rgb(245 158 11 / .7)}
+.btn:disabled{box-shadow:none}
+.other{color:var(--accent);text-decoration-thickness:1.5px}
+.fab{border:0;background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.fab.talk{background:linear-gradient(135deg,var(--accent-2),var(--accent));color:#fff}
+.route b{font-family:var(--f-display);font-weight:600}
+.turns .ic{display:grid;place-items:center;width:26px;height:26px;border-radius:9px;background:#ccfbf1;color:var(--accent);font-size:.9rem}
+.turns li{align-items:center}
+.room{stroke:var(--wall);stroke-width:1px}
+.room.quest{fill:#fff7e0}
+.room.hit{fill:#ccfbf1;stroke:var(--accent);stroke-width:2.4px}
+.floorr{filter:drop-shadow(0 6px 14px rgb(15 23 42 / .08))}
+.r-under{stroke:var(--accent-2);opacity:.25}
+.r-line{stroke:var(--accent)}
+.sheet{border-radius:28px 28px 0 0;background:var(--surface)}
+.scrim{background:rgb(15 23 42 / .28);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.msg.bot{background:var(--bot);border:1px solid #ccfbf1}
+.msg.me{background:linear-gradient(135deg,var(--accent-2),var(--accent))}
+.chip{border-width:1.5px;background:#fff}
+.chip.go{background:linear-gradient(135deg,var(--accent-2),var(--accent));border-color:transparent;color:#fff}
+form input{border-radius:16px;background:var(--bg);border-color:transparent}
+.qlog>li>button{border-radius:16px;border-color:var(--line)}
+.qlog .ok .st{background:var(--accent-2);color:#fff}
+.qlog .now .st{background:var(--gold);color:var(--gold-ink)}
+.qlog .now>button{border-color:var(--gold);background:#fffbeb}
+.seg{border-radius:16px}.seg button{border-radius:12px}
+.toast{background:linear-gradient(135deg,var(--gold-2),var(--gold));border-radius:22px}
+#welcome{background:radial-gradient(120% 80% at 50% 0%,#ccfbf1 0%,#f0f9ff 55%,#ffffff 100%)}
+#welcome .big{width:110px;height:110px;border-radius:34px;display:grid;place-items:center;background:#fff;box-shadow:var(--shadow);font-size:3.6rem}
+#welcome h2{font-weight:600;color:var(--ink)}
+#welcome p{color:var(--muted)}
+#welcome .go{background:linear-gradient(135deg,var(--accent-2),var(--accent));border-radius:22px;box-shadow:0 14px 28px -10px rgb(13 148 136 / .8)}
 </style>
 
 <div id="app">
