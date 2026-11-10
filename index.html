@@ -282,6 +282,8 @@ form input{border-radius:16px;background:var(--bg);border-color:transparent}
 .corner{fill:#fff;stroke:var(--here);stroke-width:3}
 .pulse{opacity:.35}
 .pin{fill:#ef4444;stroke:#fff;stroke-width:2.5}
+@media (prefers-reduced-motion: no-preference){.btn.near{animation:near 1.1s ease-in-out infinite}@keyframes near{50%{transform:scale(1.03);box-shadow:0 0 0 8px rgb(20 184 166 / .25)}}}
+#motionBtn{font-size:1rem;min-height:48px;padding:10px 14px;text-align:left}
 .skip{align-self:center;color:var(--muted);font-size:.95rem;padding:4px 8px}
 @media (prefers-reduced-motion: reduce){.r-dash{animation:none}}
 </style>
@@ -333,6 +335,7 @@ form input{border-radius:16px;background:var(--bg);border-color:transparent}
       <div class="sbody">
         <label class="heresel" for="hereSel2"><span class="note" id="hereLbl"></span><select id="hereSel2"></select></label>
         <div class="modes" id="modes"><p class="note" id="modeH"></p><div class="seg"><button type="button" data-mode="check"></button><button type="button" data-mode="free"></button></div></div>
+        <button class="btn" id="motionBtn" type="button" hidden></button>
         <ol class="qlog" id="qlog"></ol>
         <p class="note" id="hint"></p>
         <div class="voicebox" id="voiceBox" hidden><label class="note" id="voiceLbl" for="voiceSel"></label><div class="vrow"><select id="voiceSel"></select><button class="btn" id="voiceTest" type="button"></button></div></div>
@@ -446,7 +449,7 @@ const UI={
       medsT:"แพทย์ให้ยากลับบ้านไหม?",medsDesc:"บอกน้องหน่อย จะได้พาไปรับยาค่ะ",meds:"💊 ได้ยา",noMeds:"ไม่ได้ยา",
       homeT:"กลับบ้านได้แล้ว",homeDesc:"ครบทุกขั้นตอนแล้ว ขอบคุณที่มาตรวจสุขภาพค่ะ 🎉",
       other:"🔀 เจ้าหน้าที่ให้ไปห้องอื่น",
-      arrived:"🚩 ถึงห้องแล้ว",nextStep:"ถึงทางเลี้ยวแล้ว ▶",skip:"ถึงห้องแล้ว กดตรงนี้",straight:"เดินตรงไป",turnR:"เลี้ยวขวา",turnL:"เลี้ยวซ้าย",thenWalk:"แล้วเดินตรงไป",meters:m=>`${m} เมตร`,nextIs:"ต่อไป",thenArrive:"แล้วถึง",atHere:"คุณอยู่ที่นี่",finishOf:n=>`${n}เสร็จแล้ว ✓`,
+      arrived:"🚩 ถึงห้องแล้ว",motionLbl:"👣 ลูกศรขยับตามก้าวเดิน",on:"เปิด",off:"ปิด",motionWorking:"กำลังนับก้าว",motionDenied:"มือถือไม่อนุญาตให้นับก้าว ยังกดปุ่มทีละขั้นได้ตามปกติค่ะ",nextStep:"ถึงทางเลี้ยวแล้ว ▶",skip:"ถึงห้องแล้ว กดตรงนี้",straight:"เดินตรงไป",turnR:"เลี้ยวขวา",turnL:"เลี้ยวซ้าย",thenWalk:"แล้วเดินตรงไป",meters:m=>`${m} เมตร`,nextIs:"ต่อไป",thenArrive:"แล้วถึง",atHere:"คุณอยู่ที่นี่",finishOf:n=>`${n}เสร็จแล้ว ✓`,
       st:{done:"เสร็จแล้ว",now:"ตอนนี้",todo:"ยังไม่ได้ทำ",skipAge:"ไม่ต้อง (อายุต่ำกว่า 35)",ifDoc:"ถ้าอายุ 35 ขึ้นไป",ifMeds:"ถ้าได้ยา",noMeds:"ไม่ต้อง (ไม่ได้ยา)"},
       reset:"↺ เริ่มใหม่ (ผู้ป่วยคนใหม่)",resetSure:"แตะอีกครั้งเพื่อยืนยันเริ่มใหม่",
       replay:"🔊 ฟังซ้ำ",talk:"🎤 พูด",mic:"กดแล้วพูด",micOn:"กำลังฟัง… พูดได้เลยค่ะ",micDenied:"ต้องอนุญาตให้ใช้ไมโครโฟนก่อน กดอนุญาตในเบราว์เซอร์แล้วลองใหม่นะคะ",micNoSpeech:"ไม่ได้ยินเสียงเลยค่ะ ลองกดแล้วพูดใหม่นะคะ",micFail:"ฟังไม่สำเร็จ ลองใหม่หรือพิมพ์แทนได้ค่ะ",micBlocked:"ไมค์ยังใช้ไม่ได้ค่ะ ลองเปิดลิงก์ใน Safari หรือ Chrome หรือกด ⌨️ พิมพ์ แล้วกดไมค์บนแป้นพิมพ์แทนนะคะ",micSiri:"บน iPhone ต้องเปิด Siri และ \"การป้อนตามคำบอก\" ในการตั้งค่าก่อนนะคะ",voicePick:"เสียงพูด (เลือกเสียงที่ฟังเป็นธรรมชาติที่สุดในมือถือเครื่องนี้)",voiceTest:"▶ ทดลองฟัง",voiceOn:"เปิดเสียงพูด",voiceOff:"ปิดเสียงพูด",
@@ -468,7 +471,7 @@ const UI={
       medsT:"Did the doctor give you medicine?",medsDesc:"Let me know so I can take you to the pharmacy.",meds:"💊 Yes, medicine",noMeds:"No medicine",
       homeT:"You can go home",homeDesc:"Every step is done. Thank you for coming in! 🎉",
       other:"🔀 Staff sent me somewhere else",
-      arrived:"🚩 I'm at the room",nextStep:"I'm at the turn ▶",skip:"Already at the room? Tap here",straight:"Go straight",turnR:"Turn right",turnL:"Turn left",thenWalk:"then go straight",meters:m=>`${m} meters`,nextIs:"Next:",thenArrive:"then you reach",atHere:"You are here",finishOf:n=>`${n} done ✓`,
+      arrived:"🚩 I'm at the room",motionLbl:"👣 Arrow follows my steps",on:"on",off:"off",motionWorking:"counting steps",motionDenied:"Step counting isn't allowed on this phone. You can still tap through each step.",nextStep:"I'm at the turn ▶",skip:"Already at the room? Tap here",straight:"Go straight",turnR:"Turn right",turnL:"Turn left",thenWalk:"then go straight",meters:m=>`${m} meters`,nextIs:"Next:",thenArrive:"then you reach",atHere:"You are here",finishOf:n=>`${n} done ✓`,
       st:{done:"Done",now:"Now",todo:"To do",skipAge:"Not needed (under 35)",ifDoc:"If 35 or older",ifMeds:"If you get medicine",noMeds:"Not needed (no medicine)"},
       reset:"↺ Start over (new patient)",resetSure:"Tap again to confirm",
       replay:"🔊 Repeat",talk:"🎤 Talk",mic:"Tap and speak",micOn:"Listening… go ahead",micDenied:"Please allow the microphone in your browser, then try again.",micNoSpeech:"I didn't hear anything. Tap and try again.",micFail:"Couldn't catch that. Try again or type instead.",micBlocked:"The microphone isn't available here. Open the link in Safari or Chrome, or tap ⌨️ Type and use the keyboard's mic.",micSiri:"On iPhone, turn on Siri and Dictation in Settings first.",voicePick:"Voice (pick the most natural one on this phone)",voiceTest:"▶ Try it",voiceOn:"Voice on",voiceOff:"Voice off",
@@ -595,15 +598,16 @@ function segsOf(p){const out=[];
     const d={x:dx/len,y:dy/len},l=out[out.length-1];
     if(l&&l.d.x*d.x+l.d.y*d.y>.985){l.len+=len;l.b=[b.x,b.y]}else out.push({a:[a.x,a.y],b:[b.x,b.y],d,len})}
   out.forEach((s,i)=>{if(i){const q=out[i-1].d;s.turn=q.x*s.d.y-q.y*s.d.x>0?"R":"L"}});return out}
-let NAV={key:"",p:[],segs:[]},segIdx=0;
+let NAV={key:"",p:[],segs:[]},segIdx=0,prog=0,stepsSeg=0,nearSaid=false;
+const curPos=()=>{const sg=NAV.segs[segIdx];return sg?[sg.a[0]+sg.d.x*prog,sg.a[1]+sg.d.y*prog]:[NODES[here].x,NODES[here].y]};
 function navState(){const key=here+">"+dest;
-  if(NAV.key!==key){const p=here===dest?[here]:shortest(here,dest);NAV={key,p,segs:segsOf(p)};segIdx=0;skipShort()}
+  if(NAV.key!==key){const p=here===dest?[here]:shortest(here,dest);NAV={key,p,segs:segsOf(p)};segIdx=0;prog=0;stepsSeg=0;nearSaid=false;skipShort()}
   if(segIdx>=NAV.segs.length)segIdx=Math.max(0,NAV.segs.length-1);return NAV}
 /* ช่วงสั้นมาก (ไม่ถึง 7 เมตร) ไม่ต้องให้กดแยก รวมไปกับทางเลี้ยวถัดไปเลย */
 function skipShort(){while(segIdx<NAV.segs.length-1&&NAV.segs[segIdx].len<7)segIdx++}
 const navigating=()=>here!==dest&&navState().segs.length>0;
 const lastStep=()=>segIdx>=navState().segs.length-1;
-const remaining=()=>navState().segs.slice(segIdx).reduce((a,s)=>a+s.len,0);
+const remaining=()=>navState().segs.slice(segIdx).reduce((a,s)=>a+s.len,0)-prog;
 
 const ARW={
   up:'<path d="M24 40V10M12 22 24 10l12 12"/>',
@@ -613,23 +617,37 @@ const ARW={
 };
 const arw=k=>`<svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ARW[k]}</svg>`;
 
+function renderBanner(){
+  const t=UI[lang],nav=navState(),going=navigating(),sg=going?nav.segs[segIdx]:null;
+  const bn=$("banner");bn.hidden=!going;$("quest").classList.toggle("navig",going);
+  if(going){const nx=nav.segs[segIdx+1],m=r5(sg.len-prog);
+    const head=sg.turn&&prog<2?(sg.turn==="R"?t.turnR:t.turnL):t.straight;
+    const sub=sg.turn&&prog<2?`${t.thenWalk} ${t.meters(m)}`:t.meters(m);
+    const next=nx?`${t.nextIs} ${nx.turn==="R"?t.turnR:t.turnL}`:`${t.thenArrive} ${nm(dest,lang)}`;
+    bn.innerHTML=`<span class="arw">${arw(sg.turn&&prog<2?sg.turn:"up")}</span><span class="tx"><b>${esc(head)}</b><span class="m">${esc(sub)}</span><span class="nx">${nx?"":"🚩 "}${esc(next)}</span></span>`;
+    const rem=r5(remaining());
+    $("sum").innerHTML=`<b>🚩 ${esc(nm(dest,lang))}</b><span>${typeof motionSeen!=="undefined"&&motionSeen?"👣 ":""}${t.stats(rem,Math.max(1,Math.ceil(rem/45)))}</span>`;
+    const ab=$("arrivedBtn");ab.hidden=false;ab.disabled=false;ab.className="btn primary"+(nearSaid?" near":"");ab.textContent=lastStep()?t.arrived:t.nextStep;
+    $("skipBtn").hidden=lastStep();$("skipBtn").textContent=t.skip;
+  }else{$("sum").innerHTML=`<b>${t.already}: ${esc(nm(here,lang))}</b>`;$("skipBtn").hidden=true}
+}
+/* ขยับลูกศรตามก้าวเดินโดยไม่วาดแผนที่ใหม่ทั้งหมด */
+function updatePos(){
+  const me=svg.querySelector("#me");if(!me||!navigating()){renderMap();return}
+  const pos=curPos(),pts=[pos].concat(NAV.segs.slice(segIdx).map(x=>x.b)).map(q=>q.join(",")).join(" ");
+  me.setAttribute("transform",`translate(${pos[0]} ${pos[1]})`);
+  svg.querySelectorAll(".r-case,.r-main,.r-dash").forEach(p=>p.setAttribute("points",pts));
+  const mh=$("mini").querySelector(".mhere"),mr=$("mini").querySelector(".mroute");
+  if(mh){mh.setAttribute("cx",pos[0]);mh.setAttribute("cy",pos[1])}if(mr)mr.setAttribute("points",pts);
+  renderBanner();if(camMode!=="free")moveCam(target(),350);
+}
 function renderMap(){
   const t=UI[lang],nav=navState(),p=nav.p,D=NODES[dest],H=NODES[here],going=navigating();
   const r=svg.getBoundingClientRect(),W=r.width||390,Hh=r.height||760;
   svg.setAttribute("viewBox",`0 0 ${W} ${Hh}`);
-  const sg=going?nav.segs[segIdx]:null,pos=sg?sg.a:[H.x,H.y];
+  const sg=going?nav.segs[segIdx]:null,pos=going?curPos():[H.x,H.y];
   /* ---- ป้ายบอกทาง + แถบด้านล่าง ---- */
-  const bn=$("banner");bn.hidden=!going;$("quest").classList.toggle("navig",going);
-  if(going){const nx=nav.segs[segIdx+1],m=r5(sg.len);
-    const head=sg.turn?(sg.turn==="R"?t.turnR:t.turnL):t.straight;
-    const sub=sg.turn?`${t.thenWalk} ${t.meters(m)}`:t.meters(m);
-    const next=nx?`${t.nextIs} ${nx.turn==="R"?t.turnR:t.turnL}`:`${t.thenArrive} ${nm(dest,lang)}`;
-    bn.innerHTML=`<span class="arw">${arw(sg.turn||"up")}</span><span class="tx"><b>${esc(head)}</b><span class="m">${esc(sub)}</span><span class="nx">${nx?"":"🚩 "}${esc(next)}</span></span>`;
-    const rem=r5(remaining());
-    $("sum").innerHTML=`<b>🚩 ${esc(nm(dest,lang))}</b><span>${t.stats(rem,Math.max(1,Math.ceil(rem/45)))}</span>`;
-    const ab=$("arrivedBtn");ab.hidden=false;ab.disabled=false;ab.className="btn primary";ab.textContent=lastStep()?t.arrived:t.nextStep;
-    $("skipBtn").hidden=lastStep();$("skipBtn").textContent=t.skip;
-  }else{$("sum").innerHTML=`<b>${t.already}: ${esc(nm(here,lang))}</b>`;$("skipBtn").hidden=true}
+  renderBanner();
   $("turns").hidden=true;
   /* ---- แผนที่ ---- */
   let s=`<defs><pattern id="grid" width="4" height="4" patternUnits="userSpaceOnUse"><path class="gl" d="M4 0H0V4"/></pattern></defs><g id="world">`;
@@ -640,7 +658,7 @@ function renderMap(){
   WALLS.forEach(([a,b,c,d])=>{s+=`<line class="wall" x1="${a}" y1="${b}" x2="${c}" y2="${d}"/>`});
   s+=`<polyline class="outline" points="${OUTPTS.map(q=>q.join(",")).join(" ")}"/>`;
   if(going){const all=p.map(k=>`${NODES[k].x},${NODES[k].y}`).join(" ");
-    const rest=[sg.a].concat(nav.segs.slice(segIdx).map(x=>x.b)),pts=rest.map(q=>q.join(",")).join(" ");
+    const rest=[pos].concat(nav.segs.slice(segIdx).map(x=>x.b)),pts=rest.map(q=>q.join(",")).join(" ");
     s+=`<polyline class="r-past" points="${all}"/><polyline class="r-case" points="${pts}"/><polyline class="r-main" points="${pts}"/><polyline class="r-dash" points="${pts}"/>`;
     nav.segs.slice(segIdx+1).forEach(x=>{s+=at(x.a[0],x.a[1],`<circle class="corner" r="6"/>`)})}
   ROOMS.forEach(rm=>{if(!rm.th)return;const ls=rm[lang].split("\n"),hit=rm.node===dest&&here!==dest;
@@ -650,7 +668,7 @@ function renderMap(){
     s+=at(n.x,n.y,`<circle class="badge ${ok?"ok":"todo"}" r="10" cy="-2"/><text class="bt ${ok?"ok":"todo"}" y="2.5">${ok?"✓":"!"}</text>`)});
   if(here!==dest)s+=at(D.x,D.y,`<path class="pin" d="M0 0 C-5 -9 -14 -14 -14 -23 A14 14 0 1 1 14 -23 C14 -14 5 -9 0 0Z"/><text y="-17.5" text-anchor="middle" font-size="15">${QUEST_MODE_ON()&&curItem()&&ITEM[curItem()].node===dest?ITEM[curItem()].ico:"🚩"}</text>`);
   if(going){const ang=Math.atan2(sg.d.y,sg.d.x)*180/Math.PI+90;
-    s+=`<g transform="translate(${pos[0]} ${pos[1]})"><g class="sc"><circle class="pulse" r="15"/></g><g class="hd" data-ang="${ang}"><circle class="here" r="15"/><path d="M0 -8.5 7 7 0 3-7 7Z" fill="#fff"/></g></g>`}
+    s+=`<g id="me" transform="translate(${pos[0]} ${pos[1]})"><g class="sc"><circle class="pulse" r="15"/></g><g class="hd" data-ang="${ang}"><circle class="here" r="15"/><path d="M0 -8.5 7 7 0 3-7 7Z" fill="#fff"/></g></g>`}
   else s+=at(pos[0],pos[1],`<circle class="pulse" r="10"/><circle class="here" r="9"/><text class="ml" y="-17" text-anchor="middle" fill="var(--here)">${t.youHere}</text>`);
   svg.innerHTML=s+`</g>`;
   if(cam)applyCam(cam);
@@ -666,7 +684,7 @@ function renderMini(going,pos){
   b.setAttribute("aria-label",camMode==="all"?t.camRoute:t.camAll);b.classList.toggle("on",camMode==="all");
   let s=`<rect class="mfloor" x="2" y="2" width="100" height="40.5" rx="2"/>`;
   ROOMS.forEach(rm=>{s+=`<rect class="mroom${rm.node===dest?" hit":""}" x="${rm.x}" y="${rm.y}" width="${rm.w}" height="${rm.h}"/>`});
-  s+=`<polyline class="mroute" points="${[NAV.segs[segIdx].a].concat(NAV.segs.slice(segIdx).map(x=>x.b)).map(q=>q.join(",")).join(" ")}"/>`;
+  s+=`<polyline class="mroute" points="${[pos].concat(NAV.segs.slice(segIdx).map(x=>x.b)).map(q=>q.join(",")).join(" ")}"/>`;
   s+=`<circle class="mdest" cx="${NODES[dest].x}" cy="${NODES[dest].y}" r="3.2"/><circle class="mhere" cx="${pos[0]}" cy="${pos[1]}" r="3.6"/>`;
   $("mini").innerHTML=s;
 }
@@ -679,7 +697,7 @@ function target(){
   if(camMode==="all"||!navigating()){const port=Hh>W*1.05,bw=port?46:106,bh=port?106:46;
     return{cx:52,cy:22.25,s:Math.min(W/bw,Hv/bh,20),th:port?90:0,ax:W/2,ay:top+Hv/2}}
   const sg=NAV.segs[segIdx],ay=top+Hv*.8,up=ay-top-36;
-  return{cx:sg.a[0],cy:sg.a[1],s:Math.max(5.5,Math.min(13,up/Math.max(10,sg.len+5))),th:-90-Math.atan2(sg.d.y,sg.d.x)*180/Math.PI,ax:W/2,ay};
+  const cp=curPos();return{cx:cp[0],cy:cp[1],s:Math.max(5.5,Math.min(13,up/Math.max(10,sg.len-prog+5))),th:-90-Math.atan2(sg.d.y,sg.d.x)*180/Math.PI,ax:W/2,ay};
 }
 function applyCam(c){
   const w=svg.querySelector("#world");if(!w)return;
@@ -688,11 +706,11 @@ function applyCam(c){
   const tr=`rotate(${-c.th}) scale(${1/c.s})`;svg.querySelectorAll(".sc").forEach(g=>g.setAttribute("transform",tr));
   svg.querySelectorAll(".hd").forEach(g=>g.setAttribute("transform",`rotate(${g.dataset.ang}) scale(${1/c.s})`));
 }
-function moveCam(to){
+function moveCam(to,ms=650){
   cancelAnimationFrame(camRaf);
   if(!cam||reduced){cam=to;applyCam(cam);return}
   const from={...cam},t0=performance.now();let dth=((to.th-from.th)%360+540)%360-180;
-  const step=now=>{let k=Math.min(1,(now-t0)/650);k=1-Math.pow(1-k,3);const L=a=>from[a]+(to[a]-from[a])*k;
+  const step=now=>{let k=Math.min(1,(now-t0)/ms);k=1-Math.pow(1-k,3);const L=a=>from[a]+(to[a]-from[a])*k;
     cam={cx:L("cx"),cy:L("cy"),s:L("s"),ax:L("ax"),ay:L("ay"),th:from.th+dth*k};applyCam(cam);
     if(k<1)camRaf=requestAnimationFrame(step);else{cam.th=to.th;applyCam(cam)}};
   camRaf=requestAnimationFrame(step);
@@ -731,7 +749,7 @@ function commonText(){const t=UI[lang];document.documentElement.lang=lang;
   document.querySelector(".herechip").hidden=true;document.querySelector(".actions").classList.add("solo");$("q").placeholder=t.ph;$("sendBtn").textContent=t.send;
   $("note").textContent=t.note;$("modeH").textContent=t.modeH;
   document.querySelectorAll("[data-mode]").forEach(b=>{b.textContent=b.dataset.mode==="check"?t.modeCheck:t.modeFree;b.setAttribute("aria-pressed",String(b.dataset.mode===mode))});
-  $("resetBtn").textContent=t.reset;voiceUI();if(typeof micUI==="function")micUI()}
+  $("resetBtn").textContent=t.reset;voiceUI();if(typeof micUI==="function")micUI();if(typeof motionUI==="function")motionUI()}
 
 function renderNav(){
   const t=UI[lang];commonText();
@@ -882,7 +900,7 @@ function completeItem(id){
 }
 $("arrivedBtn").onclick=()=>{
   if(here!==dest){navState();
-    if(!lastStep()){segIdx++;skipShort();camMode="route";renderMap();say(stepSpeech(segIdx,false));return}
+    if(!lastStep()){calibrate();segIdx++;skipShort();prog=0;stepsSeg=0;camMode="route";renderMap();say(stepSpeech(segIdx,false));return}
     here=dest;render();sayArrive();return}
   if(mode!=="check")return;
   const id=itemAtHere();if(id)completeItem(id);
@@ -935,6 +953,48 @@ function welcomeUI(){const t=UI[lang];$("wTitle").textContent=t.welcomeT;$("wTex
 $("wLang").onclick=()=>{lang=lang==="th"?"en":"th";welcomeUI();render()};
 $("wGo").onclick=()=>{$("welcome").hidden=true;try{sessionStorage.setItem("nongnamtang-welcomed","1")}catch(e){}
   if(mode==="check")sayPhase();else say(ARRIVE.hello[lang])};
+/* ================= ขยับตามก้าวเดิน =================
+   ใช้เซ็นเซอร์จับการเคลื่อนไหวของมือถือนับก้าว แล้วเลื่อนลูกศรไปตามเส้นทาง (ในตึกใช้ GPS ไม่ได้)
+   ความยาวก้าวเริ่มที่ 0.6 เมตร และปรับตามคนเดินจริงทุกครั้งที่กด "ถึงทางเลี้ยวแล้ว" */
+let motionWanted=true,motionOn=false,motionSeen=false,stride=.6;
+try{motionWanted=localStorage.getItem("nongnamtang-steps")!=="0";const v=parseFloat(localStorage.getItem("nongnamtang-stride"));if(v>=.35&&v<=.9)stride=v}catch(e){}
+const NEAR={th:"ใกล้ถึงแล้วค่ะ ถึงห้องแล้วกดปุ่มได้เลยนะคะ",en:"You're almost there. Tap the button when you reach the room."};
+let gEst=9.8,lastStepT=0,armed=true;
+function onMotion(e){
+  const a=e.accelerationIncludingGravity;if(!a||a.x==null)return;
+  if(!motionSeen){motionSeen=true;renderBanner();motionUI()}
+  const m=Math.hypot(a.x,a.y,a.z);gEst=gEst*.92+m*.08;const d=m-gEst,now=performance.now();
+  if(armed&&d>1.3&&now-lastStepT>320){lastStepT=now;armed=false;onStep()}else if(d<.4)armed=true;
+}
+function onStep(){
+  if(!motionWanted||document.hidden||!navigating()||!$("scrim").hidden||!$("welcome").hidden)return;
+  const sg=NAV.segs[segIdx];stepsSeg++;prog=Math.min(sg.len,prog+stride);
+  if(prog>=sg.len-1.2){
+    if(!lastStep()){segIdx++;skipShort();prog=0;stepsSeg=0;camMode="route";renderMap();say(stepSpeech(segIdx,false));return}
+    prog=Math.max(0,sg.len-.8);
+    if(!nearSaid){nearSaid=true;say(NEAR[lang])}
+  }
+  updatePos();
+}
+/* ผู้ใช้กดเองว่าถึงทางเลี้ยว: ใช้ระยะจริงของช่วงนั้นปรับความยาวก้าว */
+function calibrate(){const sg=NAV.segs[segIdx];if(!sg||stepsSeg<6)return;
+  const est=Math.max(.35,Math.min(.9,sg.len/stepsSeg));stride=stride*.5+est*.5;try{localStorage.setItem("nongnamtang-stride",stride.toFixed(3))}catch(e){}}
+async function enableMotion(){
+  if(motionOn||!motionWanted)return;
+  let framed=false;try{framed=window.self!==window.top}catch(e){framed=true}
+  if(framed||!("DeviceMotionEvent" in window))return;
+  try{
+    if(typeof DeviceMotionEvent.requestPermission==="function"){const r=await DeviceMotionEvent.requestPermission();if(r!=="granted"){toast("👣",UI[lang].motionDenied);return}}
+    addEventListener("devicemotion",onMotion);motionOn=true;
+  }catch(e){}
+  motionUI();
+}
+function motionUI(){const b=$("motionBtn");if(!b)return;const t=UI[lang];let framed=false;try{framed=window.self!==window.top}catch(e){framed=true}
+  b.hidden=framed||!("DeviceMotionEvent" in window);b.textContent=`${t.motionLbl}: ${motionWanted?(motionSeen?t.motionWorking:t.on):t.off}`;b.setAttribute("aria-pressed",String(motionWanted))}
+$("motionBtn").onclick=()=>{motionWanted=!motionWanted;try{localStorage.setItem("nongnamtang-steps",motionWanted?"1":"0")}catch(e){}
+  if(motionWanted)enableMotion();else{prog=0;if(navigating())updatePos()}motionUI()};
+/* ต้องขออนุญาตตอนผู้ใช้แตะจอ (iPhone บังคับ) จึงผูกกับการแตะครั้งแรก */
+addEventListener("click",function first(){removeEventListener("click",first,true);enableMotion()},true);
 /* ================= บอทจับคำสำคัญ (ฟรี ไม่ใช้ AI) =================
    text = ข้อความที่แสดง, speak = ข้อความที่พูด (ถ้าไม่ใส่จะพูด text), dest = ห้องที่นำทางไป */
 const norm=s=>s.toLowerCase().replace(/[\s\-.,?!'"“”]/g,"");

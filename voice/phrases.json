@@ -87,6 +87,11 @@
    "text": "Now head back to the Health Room and wait for your blood results before seeing the doctor"
   },
   {
+   "id": "19e2f6b6",
+   "lang": "en",
+   "text": "Tap the button when you reach the room"
+  },
+  {
    "id": "1d89ada6",
    "lang": "en",
    "text": "Get your medicine first, then pay there"
@@ -530,6 +535,11 @@
    "id": "ac8382f1",
    "lang": "en",
    "text": "then turn left and go about 35 meters"
+  },
+  {
+   "id": "aeae7f31",
+   "lang": "en",
+   "text": "You're almost there"
   },
   {
    "id": "aeeff16e",
@@ -1067,6 +1077,11 @@
    "text": "ถึงการเงินแล้วค่ะ!"
   },
   {
+   "id": "82f9ea9c",
+   "lang": "th",
+   "text": "ถึงห้องแล้วกดปุ่มได้เลยนะคะ"
+  },
+  {
    "id": "8449b5d4",
    "lang": "th",
    "text": "️ ถ้ามีอาการรุนแรง เช่น เจ็บหน้าอก หายใจไม่ออก หมดสติ กรุณาแจ้งเจ้าหน้าที่ที่อยู่ใกล้ที่สุดทันที ไม่ต้องรอคิวค่ะ"
@@ -1220,6 +1235,11 @@
    "id": "b5b1a43b",
    "lang": "th",
    "text": "ห้องน้ำอยู่มุมซ้ายบนของตึก ถัดจากทันตกรรมค่ะ"
+  },
+  {
+   "id": "b6f449f8",
+   "lang": "th",
+   "text": "ใกล้ถึงแล้วค่ะ"
   },
   {
    "id": "b97f0154",
