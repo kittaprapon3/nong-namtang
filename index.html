@@ -180,6 +180,7 @@ form input{flex:1;min-width:0;font:400 1rem var(--f-body);padding:12px 14px;bord
       <div class="qhead">
         <span class="qtag" id="qtag"></span>
         <div class="qbar" id="qbar" aria-hidden="true"></div>
+        <button class="iconbtn" id="voiceBtn" type="button"></button>
         <button class="iconbtn" id="langBtn" type="button"></button>
         <button class="iconbtn" id="logBtn" type="button"></button>
       </div>
@@ -191,6 +192,7 @@ form input{flex:1;min-width:0;font:400 1rem var(--f-body);padding:12px 14px;bord
 
   <div class="hud bottom">
     <div class="fabrow">
+      <button class="fab" id="sayBtn" type="button"></button>
       <button class="fab" id="camBtn" type="button"></button>
       <button class="fab chat" id="chatBtn" type="button"></button>
     </div>
@@ -300,7 +302,7 @@ const ICONS={reg:"🪪",health:"🩺",tests:"🧪",doc:"👨‍⚕️",rx:"💊"
 const UI={
   th:{quest:(a,b)=>`ภารกิจ ${a}/${b}`,log:"☰ ภารกิจ",logH:"สมุดภารกิจ",lang:"EN",go:"ไปที่",
       meds:"💊 แพทย์สั่งยา",noMeds:"ไม่มียา",ifMeds:"ถ้ามียา",tick:"ติ๊กเมื่อตรวจเสร็จ หรือถ้าไม่มีในรายการของคุณ",
-      arrived:"🚶 ถึงแล้ว",atHere:"คุณอยู่ที่นี่",finish:{reg:"ยื่นบัตรแล้ว ✓",health:"ลงทะเบียนแล้ว ✓",tests:"ตรวจเสร็จแล้ว ✓",rx:"รับยาแล้ว ✓",pay:"เขียนใบเบิกแล้ว ✓",summary:"ฟังผลแล้ว ✓"},reset:"↺ เริ่มใหม่ (ผู้ป่วยคนใหม่)",resetSure:"แตะอีกครั้งเพื่อยืนยันเริ่มใหม่",already:"คุณอยู่ที่นี่แล้ว",youHere:"คุณอยู่ที่นี่",entrance:"ทางเข้า",
+      arrived:"🚶 ถึงแล้ว",atHere:"คุณอยู่ที่นี่",finish:{reg:"ยื่นบัตรแล้ว ✓",health:"ลงทะเบียนแล้ว ✓",tests:"ตรวจเสร็จแล้ว ✓",rx:"รับยาแล้ว ✓",pay:"เขียนใบเบิกแล้ว ✓",summary:"ฟังผลแล้ว ✓"},reset:"↺ เริ่มใหม่ (ผู้ป่วยคนใหม่)",replay:"🔊 ฟังอีกครั้ง",voiceOn:"เปิดเสียงพูด",voiceOff:"ปิดเสียงพูด",noVoice:"มือถือเครื่องนี้ไม่มีเสียงภาษาไทย ลองตั้งค่าเสียงอ่านข้อความในมือถือ",go2:"ไปที่",arriveAt:n=>`ถึง${n}แล้ว`,pressGold:"ทำเสร็จแล้วกดปุ่มสีทองนะคะ",missionSay:"ภารกิจต่อไป",resetSure:"แตะอีกครั้งเพื่อยืนยันเริ่มใหม่",already:"คุณอยู่ที่นี่แล้ว",youHere:"คุณอยู่ที่นี่",entrance:"ทางเข้า",
       stats:(m,min)=>`${m} ม. · ${min} นาที`,camAll:"⤢ ทั้งตึก",camRoute:"◎ เส้นทาง",chat:"💬 ถาม",chatH:"ถามน้องนำทาง",
       ph:"พิมพ์คำถาม เช่น ห้องน้ำอยู่ไหน",send:"ส่ง",showMap:"🗺️ ดูบนแผนที่",
       done:"ภารกิจสำเร็จ",allDone:"ครบทุกภารกิจ!",locked:"🔒",
@@ -308,7 +310,7 @@ const UI={
       note:"ต้นแบบ · แผนผังจากผังอาคารจริง ระยะทางโดยประมาณ · น้องนำทางตอบเฉพาะเรื่องทางเดินและขั้นตอนบริการ ไม่ให้คำแนะนำทางการแพทย์"},
   en:{quest:(a,b)=>`Quest ${a}/${b}`,log:"☰ Quests",logH:"Quest log",lang:"ไทย",go:"Go to",
       meds:"💊 Medicine prescribed",noMeds:"No medicine",ifMeds:"if prescribed",tick:"Tick when done, or if it is not on your list",
-      arrived:"🚶 I'm here",atHere:"You are here",finish:{reg:"Registered ✓",health:"Signed in ✓",tests:"Test done ✓",rx:"Got my medicine ✓",pay:"Form done ✓",summary:"Got my results ✓"},reset:"↺ Start over (new patient)",resetSure:"Tap again to confirm",already:"You are already here",youHere:"You are here",entrance:"Entrance",
+      arrived:"🚶 I'm here",atHere:"You are here",finish:{reg:"Registered ✓",health:"Signed in ✓",tests:"Test done ✓",rx:"Got my medicine ✓",pay:"Form done ✓",summary:"Got my results ✓"},reset:"↺ Start over (new patient)",replay:"🔊 Repeat",voiceOn:"Voice on",voiceOff:"Voice off",noVoice:"This phone has no voice for this language. Check your phone's text-to-speech settings.",go2:"Go to",arriveAt:n=>`You have arrived at ${n}.`,pressGold:"When you are done, tap the gold button.",missionSay:"Next quest",resetSure:"Tap again to confirm",already:"You are already here",youHere:"You are here",entrance:"Entrance",
       stats:(m,min)=>`${m} m · ${min} min`,camAll:"⤢ Whole floor",camRoute:"◎ Route",chat:"💬 Ask",chatH:"Ask the guide",
       ph:"Type a question, e.g. where is the toilet",send:"Send",showMap:"🗺️ Show on map",
       done:"Quest complete",allDone:"All quests complete!",locked:"🔒",
@@ -474,9 +476,9 @@ svg.addEventListener("pointermove",e=>{const pr=ptrs.get(e.pointerId);if(!pr||!c
 const endPtr=e=>{ptrs.delete(e.pointerId);if(ptrs.size<2)pinch0=null;if(!ptrs.size)svg.classList.remove("drag")};
 svg.addEventListener("pointerup",endPtr);svg.addEventListener("pointercancel",endPtr);
 svg.addEventListener("wheel",e=>{e.preventDefault();goFree();zoomAt(Math.exp(e.deltaY*.0015),e.clientX,e.clientY)},{passive:false});
-svg.addEventListener("click",e=>{if(moved)return;const r=e.target.closest("[data-node]");if(r&&r.dataset.node!==here){dest=r.dataset.node;camMode="route";renderMap()}});
+svg.addEventListener("click",e=>{if(moved)return;const r=e.target.closest("[data-node]");if(r&&r.dataset.node!==here){dest=r.dataset.node;camMode="route";renderMap();sayRoute()}});
 $("camBtn").onclick=()=>{camMode=camMode==="all"?"route":"all";renderMap()};
-$("hereSel").onchange=e=>{here=e.target.value;if(stage==="tests"&&dest in done)dest=nextTest()||dest;render()};
+$("hereSel").onchange=e=>{here=e.target.value;if(stage==="tests"&&dest in done)dest=nextTest()||dest;render();sayRoute()};
 addEventListener("hashchange",()=>{if(readHash()){if(stage==="tests")dest=nextTest()||dest;render()}});
 function setDest(id){dest=id;camMode="route";renderMap()}
 
@@ -511,25 +513,56 @@ function render(){
   if(here!==dest){ab.textContent=t.arrived;ab.disabled=false;ab.className="btn primary"}
   else if(target){ab.textContent=t.finish[stage];ab.disabled=false;ab.className="btn gold"}
   else{ab.textContent=t.atHere;ab.disabled=true;ab.className="btn"}
-  $("resetBtn").textContent=t.reset;
+  $("resetBtn").textContent=t.reset;voiceUI();
   renderMap();save();
 }
+
+/* ================= เสียงพูด (ใช้เสียงในมือถือ ฟรี) ================= */
+let voiceOn=true;try{voiceOn=localStorage.getItem("nongnamtang-voice")!=="0"}catch(e){}
+const canSpeak="speechSynthesis" in window;
+let lastSpeech="",warnedVoice=false,actx=null;
+function voiceFor(L){try{return speechSynthesis.getVoices().find(v=>v.lang.replace("_","-").toLowerCase().startsWith(L==="th"?"th":"en"))}catch(e){return null}}
+function cleanSpeech(t){return t.replace(/(\d+)\s*ม\./g,"$1 เมตร").replace(/(\d+)\s*m\b/g,"$1 meters").replace(/รพ\./g,"โรงพยาบาล")
+  .replace(/[\u{1F000}-\u{1FFFF}←-⇿⌀-⏿☀-➿⬀-⯿⚑✓✕☰⤢◎⇧⇩↰↱↑]/gu,"").replace(/\s+/g," ").trim()}
+function say(text,force){
+  lastSpeech=text;if(!canSpeak||(!voiceOn&&!force))return;
+  try{speechSynthesis.cancel();const L=/[฀-๿]/.test(text)?"th":"en";
+    const u=new SpeechSynthesisUtterance(cleanSpeech(text));u.lang=L==="th"?"th-TH":"en-US";const v=voiceFor(L);if(v)u.voice=v;u.rate=L==="th"?1:.95;
+    if(!v&&!warnedVoice&&speechSynthesis.getVoices().length){warnedVoice=true;toast("🔇",UI[L].noVoice)}
+    speechSynthesis.speak(u)}catch(e){}
+}
+function chime(big){if(!voiceOn)return;try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const t=actx.currentTime;
+  (big?[523,659,784,1047]:[659,988]).forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain();o.type="triangle";o.frequency.value=f;
+    g.gain.setValueAtTime(0,t+i*.11);g.gain.linearRampToValueAtTime(.18,t+i*.11+.02);g.gain.exponentialRampToValueAtTime(.001,t+i*.11+.35);
+    o.connect(g);g.connect(actx.destination);o.start(t+i*.11);o.stop(t+i*.11+.4)})}catch(e){}}
+function routeSpeech(){const p=here===dest?[here]:shortest(here,dest);if(here===dest)return"";
+  return`${UI[lang].go2}${lang==="en"?" ":""}${nm(dest,lang)}. `+directions(p,lang).map(d=>d.text).join(". ")}
+function sayQuest(){say(`${UI[lang].missionSay}: ${STAGES[stage][lang]}. ${stageDir(stage,lang)} ${routeSpeech()}`)}
+function sayRoute(){const r=routeSpeech();if(r)say(r)}
+function sayArrive(){const t=UI[lang];const target=stage==="tests"?(dest in done&&!done[dest]):dest===stageNode(stage);
+  say(t.arriveAt(nm(here,lang))+(target&&stage!=="doc"&&stage!=="home"?" "+t.pressGold:stage==="doc"&&here==="doc"?" "+stageDir("doc",lang):""))}
+function voiceUI(){const t=UI[lang];$("voiceBtn").textContent=voiceOn?"🔊":"🔇";$("voiceBtn").setAttribute("aria-label",voiceOn?t.voiceOff:t.voiceOn);
+  $("sayBtn").textContent=t.replay;$("sayBtn").hidden=!canSpeak;$("voiceBtn").hidden=!canSpeak}
+$("voiceBtn").onclick=()=>{voiceOn=!voiceOn;try{localStorage.setItem("nongnamtang-voice",voiceOn?"1":"0")}catch(e){}voiceUI();
+  if(voiceOn)sayQuest();else try{speechSynthesis.cancel()}catch(e){}};
+$("sayBtn").onclick=()=>say(lastSpeech||`${STAGES[stage][lang]}. ${stageDir(stage,lang)} ${routeSpeech()}`,true);
+try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>{}}catch(e){}
 function goToStage(id,from){
   const F=FLOW(),a=F.indexOf(stage);if(from)here=from;if(id==="rx")hasMeds=true;
-  const b=FLOW().indexOf(id);if(b>a&&a>=0)toast(UI[lang].done,STAGES[stage][lang]);
+  const b=FLOW().indexOf(id);if(b>a&&a>=0){toast(UI[lang].done,STAGES[stage][lang]);chime(id==="home")}
   stage=id;dest=stageNode(id);camMode="route";render();
-  if(id==="home"&&b>a)setTimeout(()=>toast("🎉",UI[lang].allDone),1800);
+  if(id==="home"&&b>a){setTimeout(()=>toast("🎉",UI[lang].allDone),1800);say(`${UI[lang].allDone} ${stageDir("home",lang)}`)}else sayQuest();
 }
 function advance(){const F=FLOW(),i=F.indexOf(stage);if(i<F.length-1)goToStage(F[i+1])}
 $("arrivedBtn").onclick=()=>{
-  if(here!==dest){here=dest;render();return}
+  if(here!==dest){here=dest;render();sayArrive();return}
   if(stage==="tests"&&dest in done){done[dest]=true;const nm2=TESTS.find(o=>o.id===dest)[lang];
-    if(!left().length){goToStage("doc");return}toast(UI[lang].done,nm2);dest=nextTest();render();return}
+    if(!left().length){goToStage("doc");return}toast(UI[lang].done,nm2);chime();dest=nextTest();render();say(`${UI[lang].done}: ${nm2}. ${routeSpeech()}`);return}
   if(dest===stageNode(stage)&&stage!=="doc"&&stage!=="home"){advance();return}
   render();
 };
 $("quest").addEventListener("click",e=>{
-  const g=e.target.closest("[data-go]");if(g){if(!done[g.dataset.go]){dest=g.dataset.go;render()}return}
+  const g=e.target.closest("[data-go]");if(g){if(!done[g.dataset.go]){dest=g.dataset.go;render();sayRoute()}return}
   const m=e.target.closest("[data-meds]");if(m){hasMeds=m.dataset.meds==="1";goToStage(hasMeds?"rx":"pay","doc")}
 });
 $("quest").addEventListener("change",e=>{const c=e.target.closest("[data-t]");if(!c)return;done[c.dataset.t]=c.checked;
@@ -634,6 +667,7 @@ function addBot(res){
   const d=document.createElement("div");d.className="msg bot"+(res.urgent?" urgent":"");d.textContent=res.text;msgs.appendChild(d);
   const c=document.createElement("div");c.className="chips";
   if(res.stage){goToStage(res.stage,res.from)}else if(res.dest){setDest(res.dest)}
+  say(res.text+(res.dest||res.stage?" "+routeSpeech():""));
   if(res.stage||res.dest){const b=document.createElement("button");b.type="button";b.className="chip go";b.textContent=UI[L].showMap;b.onclick=closeSheets;c.appendChild(b)}
   (res.chips||[]).forEach(t=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=t;b.onclick=()=>send(t);c.appendChild(b)});
   if(c.children.length)msgs.appendChild(c);
@@ -648,6 +682,7 @@ $("form").addEventListener("submit",e=>{e.preventDefault();const q=$("q");send(q
 
 render();
 addBot({text:"สวัสดีค่ะ น้องนำทางพร้อมช่วยค่ะ ถามทางหรือขั้นตอนตรวจสุขภาพได้เลย เช่น “รับบัตรแล้วไปไหนต่อ” (You can ask in English too)",chips:quickChips("th")});
+lastSpeech="";try{speechSynthesis.cancel()}catch(e){}
 </script>
 
 <script>
