@@ -1,24 +1,21 @@
 """สร้างไฟล์เสียงพูดของน้องนำทางจาก voice/phrases.json (รันบน GitHub Actions ทุกชั่วโมงจนครบ)
-บริการเสียงฟรีจะปฏิเสธถ้าขอถี่เกินไป จึงสร้างทีละน้อยแล้วเก็บไฟล์ไว้ทุกรอบ"""
-import asyncio, json, os, time
+บริการเสียงฟรีจะปฏิเสธถ้าขอถี่เกินไป จึงสร้างทีละน้อยแล้วเก็บไฟล์ไว้ทุกรอบ
+ไฟล์เก็บแยกโฟลเดอร์ตามเสียงที่ใช้ ถ้าเปลี่ยนเสียง จะสร้างชุดใหม่ทั้งหมด"""
+import asyncio, json, os, re, shutil, time
 import edge_tts
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 data = json.load(open(os.path.join(HERE, "phrases.json"), encoding="utf-8"))
-MAX_PER_RUN = 400
-GAP_SECONDS = 1.0
-STOP_AFTER_FAILS = 4
-
-def write_manifest():
-    files = sorted(f[:-4] for f in os.listdir(HERE) if f.endswith(".mp3"))
-    json.dump({"voice": data["voices"], "files": files}, open(os.path.join(HERE, "manifest.json"), "w"))
-    return files
+RATE, PITCH = data.get("rate", "+0%"), data.get("pitch", "+0Hz")
+SLUG = re.sub(r"[^A-Za-z0-9]+", "-", f"{data['voices']['th']}-{data['voices']['en']}-{RATE}-{PITCH}").strip("-").lower()
+OUT = os.path.join(HERE, SLUG)
+MAX_PER_RUN, GAP_SECONDS, STOP_AFTER_FAILS = 400, 1.0, 4
 
 async def make(item):
-    path = os.path.join(HERE, f"{item['id']}.mp3")
+    path = os.path.join(OUT, f"{item['id']}.mp3")
     for attempt in range(2):
         try:
-            await edge_tts.Communicate(item["text"], data["voices"][item["lang"]], rate=data.get("rate", "+0%")).save(path)
+            await edge_tts.Communicate(item["text"], data["voices"][item["lang"]], rate=RATE, pitch=PITCH).save(path)
             if os.path.getsize(path) > 0:
                 return True
         except Exception as e:
@@ -29,11 +26,18 @@ async def make(item):
     return False
 
 async def main():
+    os.makedirs(OUT, exist_ok=True)
+    for name in os.listdir(HERE):  # ล้างชุดเสียงเก่า
+        p = os.path.join(HERE, name)
+        if os.path.isdir(p) and name != SLUG:
+            shutil.rmtree(p)
+        elif name.endswith(".mp3"):
+            os.remove(p)
     wanted = {it["id"] for it in data["items"]}
-    for f in os.listdir(HERE):
-        if f.endswith(".mp3") and f[:-4] not in wanted:
-            os.remove(os.path.join(HERE, f))
-    todo = [it for it in data["items"] if not os.path.exists(os.path.join(HERE, f"{it['id']}.mp3"))]
+    for f in os.listdir(OUT):
+        if f[:-4] not in wanted:
+            os.remove(os.path.join(OUT, f))
+    todo = [it for it in data["items"] if not os.path.exists(os.path.join(OUT, f"{it['id']}.mp3"))]
     todo.sort(key=lambda it: it["lang"] != "th")  # ภาษาไทยก่อน
     made = fails = 0
     for it in todo[:MAX_PER_RUN]:
@@ -45,7 +49,8 @@ async def main():
                 print("service is refusing requests now; will continue next run")
                 break
         time.sleep(GAP_SECONDS)
-    files = write_manifest()
+    files = sorted(f[:-4] for f in os.listdir(OUT) if f.endswith(".mp3"))
+    json.dump({"dir": SLUG, "voice": data["voices"], "files": files}, open(os.path.join(HERE, "manifest.json"), "w"))
     print(f"made {made} this run, total {len(files)}/{len(wanted)} clips")
 
 asyncio.run(main())

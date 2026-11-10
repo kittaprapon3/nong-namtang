@@ -292,21 +292,21 @@ const TESTS=[
   {id:"xray",th:"เอกซเรย์",en:"X-ray"}
 ];
 const STAGES={
-  reg:{th:"ยื่นบัตร",en:"Register",dTh:"ยื่นบัตรประชาชนที่เวชระเบียน แจ้งว่ามาตรวจสุขภาพ แล้วไปห้องสุขภาพครับ",dEn:"Show your ID card at Medical Records and say you are here for a health check-up. Then go to the Health Room."},
-  health:{th:"ห้องสุขภาพ",en:"Health Room",dTh:"ลงทะเบียนตรวจสุขภาพและรับรายการตรวจ แล้วไปตรวจตามรายการครับ",dEn:"Register for your check-up and get your list of tests."},
+  reg:{th:"ยื่นบัตร",en:"Register",dTh:"ยื่นบัตรประชาชนที่เวชระเบียน แจ้งว่ามาตรวจสุขภาพ แล้วไปห้องสุขภาพค่ะ",dEn:"Show your ID card at Medical Records and say you are here for a health check-up. Then go to the Health Room."},
+  health:{th:"ห้องสุขภาพ",en:"Health Room",dTh:"ลงทะเบียนตรวจสุขภาพและรับรายการตรวจ แล้วไปตรวจตามรายการค่ะ",dEn:"Register for your check-up and get your list of tests."},
   tests:{th:"ตรวจตามรายการ",en:"Check-up tests",dTh:"ตรวจลำดับไหนก่อนก็ได้ แผนที่จะพาไปจุดที่ใกล้ที่สุดที่ยังไม่ได้ตรวจ",dEn:"Any order is fine. The map takes you to the nearest test you have not done yet."},
-  doc:{th:"พบแพทย์",en:"See the doctor",dTh:"ตรวจครบแล้ว ไปพบแพทย์ที่ห้องตรวจแพทย์ เมื่อพบแพทย์เสร็จ แพทย์สั่งยาไหมครับ?",dEn:"All tests done. See the doctor in the exam room. Afterwards, did the doctor prescribe medicine?"},
-  rx:{th:"รับยา",en:"Pharmacy",dTh:"รอเรียกชื่อ รับยาและฟังคำแนะนำจากเภสัชกร แล้วไปการเงินต่อครับ",dEn:"Wait to be called, collect your medicine and listen to the pharmacist. Then go to the cashier."},
-  pay:{th:"การเงิน",en:"Cashier",dTh:"เขียนใบเบิกค่าตรวจสุขภาพที่ห้องการเงินครับ",dEn:"Fill in the health check-up reimbursement form at the cashier."},
-  summary:{th:"สรุปผล ห้องสุขภาพ",en:"Results, Health Room",dTh:"กลับไปห้องสุขภาพเพื่อฟังสรุปผลการตรวจครับ",dEn:"Go back to the Health Room for your results summary."},
-  home:{th:"กลับบ้าน",en:"Go home",dTh:"เสร็จครบทุกขั้นตอนแล้ว ขอบคุณที่มาตรวจสุขภาพ กลับบ้านปลอดภัยนะครับ 🎉",dEn:"All done. Thank you for your check-up, have a safe trip home! 🎉"}
+  doc:{th:"พบแพทย์",en:"See the doctor",dTh:"ตรวจครบแล้ว ไปพบแพทย์ที่ห้องตรวจแพทย์ เมื่อพบแพทย์เสร็จ แพทย์สั่งยาไหมคะ?",dEn:"All tests done. See the doctor in the exam room. Afterwards, did the doctor prescribe medicine?"},
+  rx:{th:"รับยา",en:"Pharmacy",dTh:"รอเรียกชื่อ รับยาและฟังคำแนะนำจากเภสัชกร แล้วไปการเงินต่อค่ะ",dEn:"Wait to be called, collect your medicine and listen to the pharmacist. Then go to the cashier."},
+  pay:{th:"การเงิน",en:"Cashier",dTh:"เขียนใบเบิกค่าตรวจสุขภาพที่ห้องการเงินค่ะ",dEn:"Fill in the health check-up reimbursement form at the cashier."},
+  summary:{th:"สรุปผล ห้องสุขภาพ",en:"Results, Health Room",dTh:"กลับไปห้องสุขภาพเพื่อฟังสรุปผลการตรวจค่ะ",dEn:"Go back to the Health Room for your results summary."},
+  home:{th:"กลับบ้าน",en:"Go home",dTh:"เสร็จครบทุกขั้นตอนแล้ว ขอบคุณที่มาตรวจสุขภาพ กลับบ้านปลอดภัยนะคะ 🎉",dEn:"All done. Thank you for your check-up, have a safe trip home! 🎉"}
 };
 const ONE_FLOOR=new Set(Object.values(NODES).map(n=>n.f)).size===1;
 const ICONS={reg:"🪪",health:"🩺",tests:"🧪",doc:"👨‍⚕️",rx:"💊",pay:"🧾",summary:"📋",home:"🏠"};
 const UI={
   th:{quest:(a,b)=>`ภารกิจ ${a}/${b}`,log:"☰ ภารกิจ",logH:"สมุดภารกิจ",lang:"EN",go:"ไปที่",
       meds:"💊 แพทย์สั่งยา",noMeds:"ไม่มียา",ifMeds:"ถ้ามียา",tick:"ติ๊กเมื่อตรวจเสร็จ หรือถ้าไม่มีในรายการของคุณ",
-      arrived:"🚶 ถึงแล้ว",atHere:"คุณอยู่ที่นี่",finish:{reg:"ยื่นบัตรแล้ว ✓",health:"ลงทะเบียนแล้ว ✓",tests:"ตรวจเสร็จแล้ว ✓",rx:"รับยาแล้ว ✓",pay:"เขียนใบเบิกแล้ว ✓",summary:"ฟังผลแล้ว ✓"},reset:"↺ เริ่มใหม่ (ผู้ป่วยคนใหม่)",replay:"🔊 ฟังอีกครั้ง",voicePick:"เสียงพูด (เลือกเสียงที่ฟังเป็นธรรมชาติที่สุดในมือถือเครื่องนี้)",voiceTest:"▶ ทดลองฟัง",voiceOn:"เปิดเสียงพูด",voiceOff:"ปิดเสียงพูด",noVoice:"มือถือเครื่องนี้ไม่มีเสียงภาษาไทย ลองตั้งค่าเสียงอ่านข้อความในมือถือ",go2:"ไปที่",arriveAt:n=>`ถึง${n}แล้ว`,pressGold:"ทำเสร็จแล้วกดปุ่มสีทองนะครับ",missionSay:"ภารกิจต่อไป",resetSure:"แตะอีกครั้งเพื่อยืนยันเริ่มใหม่",already:"คุณอยู่ที่นี่แล้ว",youHere:"คุณอยู่ที่นี่",entrance:"ทางเข้า",
+      arrived:"🚶 ถึงแล้ว",atHere:"คุณอยู่ที่นี่",finish:{reg:"ยื่นบัตรแล้ว ✓",health:"ลงทะเบียนแล้ว ✓",tests:"ตรวจเสร็จแล้ว ✓",rx:"รับยาแล้ว ✓",pay:"เขียนใบเบิกแล้ว ✓",summary:"ฟังผลแล้ว ✓"},reset:"↺ เริ่มใหม่ (ผู้ป่วยคนใหม่)",replay:"🔊 ฟังอีกครั้ง",voicePick:"เสียงพูด (เลือกเสียงที่ฟังเป็นธรรมชาติที่สุดในมือถือเครื่องนี้)",voiceTest:"▶ ทดลองฟัง",voiceOn:"เปิดเสียงพูด",voiceOff:"ปิดเสียงพูด",noVoice:"มือถือเครื่องนี้ไม่มีเสียงภาษาไทย ลองตั้งค่าเสียงอ่านข้อความในมือถือ",go2:"ไปที่",arriveAt:n=>`ถึง${n}แล้ว`,pressGold:"ทำเสร็จแล้วกดปุ่มสีทองนะคะ",missionSay:"ภารกิจต่อไป",resetSure:"แตะอีกครั้งเพื่อยืนยันเริ่มใหม่",already:"คุณอยู่ที่นี่แล้ว",youHere:"คุณอยู่ที่นี่",entrance:"ทางเข้า",
       stats:(m,min)=>`${m} ม. · ${min} นาที`,camAll:"⤢ ทั้งตึก",camRoute:"◎ เส้นทาง",chat:"💬 ถาม",chatH:"ถามน้องนำทาง",
       ph:"พิมพ์คำถาม เช่น ห้องน้ำอยู่ไหน",send:"ส่ง",showMap:"🗺️ ดูบนแผนที่",
       done:"ภารกิจสำเร็จ",allDone:"ครบทุกภารกิจ!",locked:"🔒",
@@ -537,10 +537,10 @@ function voiceFor(L){const vs=langVoices(L);if(!vs.length)return null;
   return vs.slice().sort((a,b)=>voiceScore(b)-voiceScore(a))[0]}
 function cleanSpeech(t){return t.replace(/(\d+)\s*ม\./g,"$1 เมตร").replace(/(\d+)\s*m\b/g,"$1 meters").replace(/รพ\./g,"โรงพยาบาล").replace(/\(.*?\)/g,"")
   .replace(/[\u{1F000}-\u{1FFFF}←-⇿⌀-⏿☀-➿⬀-⯿⚑✓✕☰⤢◎⇧⇩↰↱↑“”"]/gu,"").replace(/\s+/g," ").trim()}
-function chunks(t){return cleanSpeech(t).split(/\s*§\s*/).flatMap(x=>x.split(/(?<=[.!?。]|ครับ)\s+/)).map(x=>x.replace(/\.$/,"").trim()).filter(Boolean)}
+function chunks(t){return cleanSpeech(t).split(/\s*§\s*/).flatMap(x=>x.split(/(?<=[.!?。]|ค่ะ|คะ|นะคะ)\s+/)).map(x=>x.replace(/\.$/,"").trim()).filter(Boolean)}
 /* ไฟล์เสียงคนแบบธรรมชาติ (สร้างไว้ล่วงหน้าในโฟลเดอร์ voice/) ถ้าไม่มีไฟล์ จะใช้เสียงในมือถือแทน */
-let clipSet=null;
-try{fetch("voice/manifest.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.files){clipSet=new Set(j.files);fillVoices()}}).catch(()=>{})}catch(e){}
+let clipSet=null,clipDir="";
+try{fetch("voice/manifest.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.files){clipSet=new Set(j.files);clipDir=j.dir||"";fillVoices()}}).catch(()=>{})}catch(e){}
 const clipId=(L,c)=>{let h=0x811c9dc5;for(const ch of L+"|"+c){h^=ch.codePointAt(0);h=Math.imul(h,0x01000193)>>>0}return h.toString(16).padStart(8,"0")};
 const player=typeof Audio!=="undefined"?new Audio():null;let sayTok=0;
 function stopSpeech(){sayTok++;try{player&&player.pause()}catch(e){}try{canSpeak&&speechSynthesis.cancel()}catch(e){}}
@@ -553,7 +553,7 @@ function say(text,force){
   stopSpeech();const tok=sayTok,L=/[฀-๿]/.test(text)?"th":"en",parts=chunks(text);
   const go=i=>{if(tok!==sayTok||i>=parts.length)return;const c=parts[i],id=clipId(L,c),nx=()=>go(i+1);
     if(player&&clipSet&&clipSet.has(id)){let fell=false;const fb=()=>{if(fell||tok!==sayTok)return;fell=true;ttsChunk(c,L,nx)};
-      player.onended=()=>{if(!fell)nx()};player.onerror=fb;player.src=`voice/${id}.mp3`;const pr=player.play();if(pr&&pr.catch)pr.catch(fb)}
+      player.onended=()=>{if(!fell)nx()};player.onerror=fb;player.src=`voice/${clipDir?clipDir+"/":""}${id}.mp3`;const pr=player.play();if(pr&&pr.catch)pr.catch(fb)}
     else ttsChunk(c,L,nx)};
   go(0);
 }
@@ -564,14 +564,21 @@ function chime(big){if(!voiceOn)return;try{actx=actx||new (window.AudioContext||
 
 /* บทพูดแบบคนพูด */
 const SPOKEN={
-  reg:{th:"เริ่มที่เวชระเบียนนะครับ ยื่นบัตรประชาชน แล้วบอกเจ้าหน้าที่ว่ามาตรวจสุขภาพครับ",en:"Let's start at Medical Records. Show your ID card and say you're here for a health check-up."},
-  health:{th:"ต่อไปไปห้องสุขภาพกันครับ ลงทะเบียนแล้วรับรายการตรวจนะครับ",en:"Next, let's head to the Health Room to sign in and get your list of tests."},
-  tests:{th:"ต่อไปไปตรวจตามรายการกันครับ จะตรวจห้องไหนก่อนก็ได้นะครับ น้องพาไปห้องที่ใกล้ที่สุดก่อน",en:"Now for your tests. Any order is fine, so I'll take you to the closest one first."},
-  doc:{th:"ตรวจครบแล้ว เก่งมากครับ ต่อไปไปพบแพทย์กันนะครับ",en:"All tests done, great job! Now let's go and see the doctor."},
-  rx:{th:"ต่อไปไปรับยาที่ห้องยากันครับ",en:"Next, let's pick up your medicine at the pharmacy."},
-  pay:{th:"ต่อไปไปห้องการเงินกันครับ เขียนใบเบิกค่าตรวจสุขภาพนะครับ",en:"Next, the cashier, to fill in your check-up reimbursement form."},
-  summary:{th:"ใกล้เสร็จแล้วครับ กลับไปห้องสุขภาพเพื่อฟังสรุปผลนะครับ",en:"Almost done! Let's go back to the Health Room for your results."},
-  home:{th:"เสร็จครบทุกขั้นตอนแล้วครับ ขอบคุณที่มาตรวจสุขภาพนะครับ กลับบ้านปลอดภัยครับ",en:"You're all done. Thank you for coming in, and have a safe trip home!"}
+  reg:{th:"สวัสดีค่ะ! วันนี้น้องนำทางจะพาไปตรวจสุขภาพเองค่ะ เริ่มที่เวชระเบียนเลย ยื่นบัตรประชาชน แล้วบอกว่ามาตรวจสุขภาพนะคะ",en:"Hi there! I'll be your guide today. We start at Medical Records. Show your ID card and say you're here for a check-up!"},
+  health:{th:"ไปต่อกันเลยค่ะ! ไปห้องสุขภาพ ลงทะเบียนแล้วรับรายการตรวจนะคะ",en:"Let's keep going! Head to the Health Room to sign in and grab your list of tests."},
+  tests:{th:"ลุยกันเลยค่ะ! ตรวจห้องไหนก่อนก็ได้ น้องพาไปห้องที่ใกล้ที่สุดก่อนนะคะ",en:"Time for your tests! Any order works, so I'll take you to the closest one first."},
+  doc:{th:"เย้! ตรวจครบแล้ว เก่งมากเลยค่ะ ต่อไปไปพบคุณหมอกันนะคะ",en:"Yay, all tests done! Amazing job. Now let's go see the doctor."},
+  rx:{th:"ไปรับยากันค่ะ ห้องยาอยู่ไม่ไกลเลย",en:"Let's pick up your medicine. The pharmacy is just around here."},
+  pay:{th:"อีกนิดเดียวค่ะ! ไปห้องการเงิน เขียนใบเบิกค่าตรวจสุขภาพกันนะคะ",en:"Almost there! Let's head to the cashier to fill in your reimbursement form."},
+  summary:{th:"ใกล้ถึงเส้นชัยแล้วค่ะ! กลับไปห้องสุขภาพ ฟังสรุปผลกันนะคะ",en:"Final stretch! Back to the Health Room for your results."},
+  home:{th:"เย้! ครบทุกภารกิจแล้วค่ะ เก่งที่สุดเลย ขอบคุณที่มาตรวจสุขภาพนะคะ กลับบ้านปลอดภัยค่ะ!",en:"Woohoo, every quest complete! You did great. Thanks for coming in, and have a safe trip home!"}
+};
+const ARRIVE={
+  doc:{th:"ถึงห้องตรวจแพทย์แล้วค่ะ! คุยกับคุณหมอเสร็จแล้ว บอกน้องด้วยนะคะว่าได้ยาไหม",en:"Here's the doctor's room! After your visit, let me know if you got any medicine."},
+  target:{th:n=>`ถึง${n}แล้วค่ะ! ทำเสร็จเมื่อไหร่ กดปุ่มสีทองได้เลยนะคะ`,en:n=>`We made it to ${n}! When you're done, tap the gold button.`},
+  plain:{th:n=>`ถึง${n}แล้วค่ะ!`,en:n=>`We made it to ${n}!`},
+  test:{th:n=>`เย้! ${n}เสร็จแล้ว เก่งมากค่ะ`,en:n=>`Yay, ${n} is done! Nice work.`},
+  hello:{th:"สวัสดีค่ะ! น้องนำทางเองค่ะ วันนี้จะพาไปตรวจสุขภาพให้ครบทุกห้องเลยนะคะ",en:"Hi! I'm your hospital guide, and I'll take you through every step of your check-up today!"}
 };
 function spokenRoute(withLead=true){if(here===dest)return"";const p=shortest(here,dest),ds=directions(p,lang),th=lang==="th",out=[];
   const num=t=>{const m=t.match(/(\d+)/);return m?+m[1]:0};
@@ -581,17 +588,16 @@ function spokenRoute(withLead=true){if(here===dest)return"";const p=shortest(her
     else if(d.ic==="↱"||d.ic==="↰"){const side=d.ic==="↱"?(th?"ขวา":"right"):(th?"ซ้าย":"left");out.push(th?`แล้วเลี้ยว${side} เดินต่อ${dist(m)}`:`then turn ${side} and go ${dist(m)}`)}
     else if(d.ic==="⇧"||d.ic==="⇩")out.push(d.text);
   });
-  const end=th?`ก็จะถึง${nm(dest,lang)}ครับ`:`and you'll reach ${nm(dest,lang)}.`;
-  const lead=th?`ไป${nm(dest,lang)}นะครับ`:`To ${nm(dest,lang)}:`;
+  const end=th?`ก็ถึง${nm(dest,lang)}แล้วค่ะ!`:`and there's ${nm(dest,lang)}!`;
+  const lead=th?`ไป${nm(dest,lang)}กันค่ะ`:`Off to ${nm(dest,lang)}!`;
   return`${withLead?lead+" § ":""}${out.join(" § ")} § ${end}`}
 const routeSpeech=spokenRoute;
 function sayQuest(){say(`${SPOKEN[stage][lang]} § ${spokenRoute(stage==="tests")}`)}
 function sayRoute(){const r=spokenRoute();if(r)say(r)}
-function sayArrive(){const th=lang==="th",n=nm(here,lang),target=stage==="tests"?(dest in done&&!done[dest]):dest===stageNode(stage);
-  if(stage==="doc"&&here==="doc")return say(th?"ถึงห้องตรวจแพทย์แล้วครับ พบแพทย์เสร็จแล้ว บอกน้องด้วยนะครับว่าแพทย์สั่งยาไหม":"You've reached the doctor's room. After you see the doctor, let me know if you got any medicine.");
-  if(target)return say(th?`ถึง${n}แล้วครับ ทำเสร็จเมื่อไหร่ กดปุ่มสีทองได้เลยนะครับ`:`Here we are at ${n}. When you're finished, tap the gold button.`);
-  say(th?`ถึง${n}แล้วครับ`:`You've arrived at ${n}.`)}
-function sayTestDone(n){const th=lang==="th";say(`${th?`เยี่ยมเลยครับ ${n}เสร็จแล้ว`:`Nice work, ${n} is done.`} § ${spokenRoute()}`)}
+function sayArrive(){const n=nm(here,lang),target=stage==="tests"?(dest in done&&!done[dest]):dest===stageNode(stage);
+  if(stage==="doc"&&here==="doc")return say(ARRIVE.doc[lang]);
+  say(target&&stage!=="home"?ARRIVE.target[lang](n):ARRIVE.plain[lang](n))}
+function sayTestDone(n){say(`${ARRIVE.test[lang](n)} § ${spokenRoute()}`)}
 function sayAllDone(){say(SPOKEN.home[lang])}
 function voiceUI(){const t=UI[lang];$("voiceBtn").textContent=voiceOn?"🔊":"🔇";$("voiceBtn").setAttribute("aria-label",voiceOn?t.voiceOff:t.voiceOn);
   $("sayBtn").textContent=t.replay;fillVoices()}
@@ -602,7 +608,7 @@ $("voiceBtn").onclick=()=>{voiceOn=!voiceOn;try{localStorage.setItem("nongnamtan
   if(voiceOn)sayQuest();else stopSpeech()};
 $("sayBtn").onclick=()=>say(lastSpeech||`${SPOKEN[stage][lang]} § ${spokenRoute()}`,true);
 $("voiceSel").onchange=e=>{voicePick=e.target.value;try{localStorage.setItem("nongnamtang-voice-name",voicePick)}catch(x){}};
-$("voiceTest").onclick=()=>say(lang==="th"?"สวัสดีครับ น้องนำทางเองครับ วันนี้จะพาไปตรวจสุขภาพให้ครบทุกห้องนะครับ":"Hi, I'm your hospital guide. I'll take you through every step of your check-up today.",true);
+$("voiceTest").onclick=()=>say(ARRIVE.hello[lang],true);
 try{speechSynthesis.onvoiceschanged=()=>fillVoices()}catch(e){}
 function goToStage(id,from){
   const F=FLOW(),a=F.indexOf(stage);if(from)here=from;if(id==="rx")hasMeds=true;
@@ -643,68 +649,68 @@ $("qlog").addEventListener("click",e=>{const b=e.target.closest("[data-s]");if(b
 
 /* ================= บอทจับคำสำคัญ (ฟรี ไม่ใช้ AI) ================= */
 const norm=s=>s.toLowerCase().replace(/[\s\-.,?!'"“”]/g,"");
-const SEE={th:" ดูเส้นทางบนแผนที่ได้เลยครับ",en:" See the route on the map."};
+const SEE={th:" ดูเส้นทางบนแผนที่ได้เลยค่ะ",en:" See the route on the map."};
 const place=(L,th,en,node)=>({text:T(L,th,en)+SEE[L],dest:node});
 const goStage=(id,L,lead,from)=>({text:`${lead} ${stageDir(id,L)}`.trim(),stage:id,from});
 const quickChips=L=>L==="th"?["รับบัตรแล้วไปไหนต่อ","ตรวจครบแล้วไปไหน","ห้องน้ำอยู่ไหน","กลับบ้านได้หรือยัง"]:["I registered, what next?","All tests done, where next?","Where is the toilet?","Can I go home?"];
-const testsLeftText=L=>{const l=left();return T(L,`ยังเหลือตรวจอีก ${l.map(x=>x.th).join(", ")} ครับ`,`You still have: ${l.map(x=>x.en).join(", ")}.`)};
+const testsLeftText=L=>{const l=left();return T(L,`ยังเหลือตรวจอีก ${l.map(x=>x.th).join(", ")} ค่ะ`,`You still have: ${l.map(x=>x.en).join(", ")}.`)};
 const INTENTS=[
   {urgent:true,kw:["เจ็บหน้าอก","แน่นหน้าอก","หายใจไม่ออก","หายใจลำบาก","หมดสติ","เป็นลม","ชัก","เลือดออกมาก","ฉุกเฉิน","chestpain","cantbreathe","unconscious","fainted","emergency","bleeding"],
-   r:L=>({urgent:true,text:T(L,"⚠️ ถ้ามีอาการรุนแรง เช่น เจ็บหน้าอก หายใจไม่ออก หมดสติ กรุณาแจ้งเจ้าหน้าที่ที่อยู่ใกล้ที่สุดทันที ไม่ต้องรอคิวครับ","⚠️ For severe symptoms such as chest pain, trouble breathing or fainting, tell the nearest staff member right away. Do not wait in the queue.")})},
+   r:L=>({urgent:true,text:T(L,"⚠️ ถ้ามีอาการรุนแรง เช่น เจ็บหน้าอก หายใจไม่ออก หมดสติ กรุณาแจ้งเจ้าหน้าที่ที่อยู่ใกล้ที่สุดทันที ไม่ต้องรอคิวค่ะ","⚠️ For severe symptoms such as chest pain, trouble breathing or fainting, tell the nearest staff member right away. Do not wait in the queue.")})},
   {kw:["กินยา","ยานี้","ยาตัวนี้","ผลข้างเคียง","อาการ","เป็นโรค","เป็นอะไร","ปวด","มีไข้","ค่าผิดปกติ","ผลเลือด","dose","dosage","symptom","sideeffect","diagnos","whatdoihave"],
-   r:L=>({text:T(L,"ขอโทษครับ น้องนำทางตอบได้เฉพาะเรื่องทางเดินและขั้นตอน เรื่องอาการ ผลตรวจ หรือการใช้ยา รบกวนสอบถามแพทย์ พยาบาลห้องสุขภาพ หรือเภสัชกรนะครับ","Sorry, I can only help with directions and steps. For symptoms, results or medicines, please ask the doctor, Health Room nurse or pharmacist.")})},
+   r:L=>({text:T(L,"ขอโทษค่ะ น้องนำทางตอบได้เฉพาะเรื่องทางเดินและขั้นตอน เรื่องอาการ ผลตรวจ หรือการใช้ยา รบกวนสอบถามแพทย์ พยาบาลห้องสุขภาพ หรือเภสัชกรนะคะ","Sorry, I can only help with directions and steps. For symptoms, results or medicines, please ask the doctor, Health Room nurse or pharmacist.")})},
   {kw:["รับบัตรแล้ว","ยื่นบัตรแล้ว","ได้บัตรแล้ว","ได้บัตรคิว","ทำบัตรแล้ว","บัตรแล้ว","registered","gotmycard"],
-   r:L=>goStage("health",L,T(L,"ขั้นต่อไปคือห้องสุขภาพครับ","Next: the Health Room."),"reg")},
+   r:L=>goStage("health",L,T(L,"ขั้นต่อไปคือห้องสุขภาพค่ะ","Next: the Health Room."),"reg")},
   {kw:["ยื่นบัตร","ทำบัตร","เวชระเบียน","ลงทะเบียน","register","registration","checkin"],
-   r:L=>goStage("reg",L,T(L,"เริ่มที่เวชระเบียนครับ","Start at Medical Records."))},
+   r:L=>goStage("reg",L,T(L,"เริ่มที่เวชระเบียนค่ะ","Start at Medical Records."))},
   {kw:["ห้องสุขภาพ","ตรวจสุขภาพ","สุขภาพ","healthroom","checkup","healthcheck"],
-   r:L=>place(L,"ห้องสุขภาพอยู่แถวเดียวกับเวชระเบียน ติดกับห้องเอกซเรย์ครับ","The Health Room is in the same row as Medical Records, next to X-ray.","health")},
+   r:L=>place(L,"ห้องสุขภาพอยู่แถวเดียวกับเวชระเบียน ติดกับห้องเอกซเรย์ค่ะ","The Health Room is in the same row as Medical Records, next to X-ray.","health")},
   {kw:["ตรวจครบ","ครบแล้ว","ตรวจหมดแล้ว","ตรวจเสร็จหมด","ไปไหนต่อ","ทำอะไรต่อ","alltestsdone","finishedtests","wherenext","whatnext"],
    r:L=>{const F=FLOW();
      if(["reg","health"].includes(stage))return goStage(F[F.indexOf(stage)+1],L,T(L,"ขั้นต่อไปคือ","Next:")+" "+STAGES[F[F.indexOf(stage)+1]][L]+".");
      if(stage==="tests"){const l=left();if(l.length)return{text:testsLeftText(L)+SEE[L],dest:nextTest()};return goStage("doc",L,"")}
-     if(stage==="doc")return{text:T(L,"พบแพทย์เสร็จแล้ว แพทย์สั่งยาไหมครับ?","Did the doctor prescribe medicine?"),chips:L==="th"?["มียา","ไม่มียา"]:["Medicine prescribed","No medicine"]};
+     if(stage==="doc")return{text:T(L,"พบแพทย์เสร็จแล้ว แพทย์สั่งยาไหมคะ?","Did the doctor prescribe medicine?"),chips:L==="th"?["มียา","ไม่มียา"]:["Medicine prescribed","No medicine"]};
      const nx=F[F.indexOf(stage)+1];return nx?goStage(nx,L,T(L,"ขั้นต่อไปคือ","Next:")+" "+STAGES[nx][L]+"."):goStage("home",L,"")}},
   {kw:["พบหมอแล้ว","หมอตรวจแล้ว","ออกจากห้องตรวจ","พบแพทย์แล้ว","seenthedoctor","afterdoctor"],
-   r:L=>({text:T(L,"แพทย์สั่งยาไหมครับ?","Did the doctor prescribe medicine?"),chips:L==="th"?["มียา","ไม่มียา"]:["Medicine prescribed","No medicine"]})},
+   r:L=>({text:T(L,"แพทย์สั่งยาไหมคะ?","Did the doctor prescribe medicine?"),chips:L==="th"?["มียา","ไม่มียา"]:["Medicine prescribed","No medicine"]})},
   {kw:["พบหมอ","หาหมอ","พบแพทย์","ห้องตรวจแพทย์","ห้องหมอ","doctor","seedoctor","examroom"],
-   r:L=>left().length?{text:T(L,"ต้องตรวจตามรายการให้ครบก่อนพบแพทย์นะครับ ","Please finish your tests before seeing the doctor. ")+testsLeftText(L),dest:nextTest()}:goStage("doc",L,"")},
+   r:L=>left().length?{text:T(L,"ต้องตรวจตามรายการให้ครบก่อนพบแพทย์นะคะ ","Please finish your tests before seeing the doctor. ")+testsLeftText(L),dest:nextTest()}:goStage("doc",L,"")},
   {kw:["มียา","หมอสั่งยา","แพทย์สั่งยา","ได้ยา","medicineprescribed","prescribed"],
-   r:L=>{hasMeds=true;return goStage("rx",L,T(L,"ไปรับยาที่ห้องยาครับ","Go to the pharmacy."),"doc")}},
+   r:L=>{hasMeds=true;return goStage("rx",L,T(L,"ไปรับยาที่ห้องยาค่ะ","Go to the pharmacy."),"doc")}},
   {kw:["ไม่มียา","ไม่ได้ยา","ไม่สั่งยา","nomedicine","noprescription"],
-   r:L=>{hasMeds=false;return goStage("pay",L,T(L,"ไม่มียา ไปห้องการเงินได้เลยครับ","No medicine, go straight to the cashier."),"doc")}},
+   r:L=>{hasMeds=false;return goStage("pay",L,T(L,"ไม่มียา ไปห้องการเงินได้เลยค่ะ","No medicine, go straight to the cashier."),"doc")}},
   {kw:["รับยาแล้ว","ได้ยาแล้ว","gotmymedicine"],
-   r:L=>goStage("pay",L,T(L,"ขั้นต่อไปคือการเงินครับ","Next: the cashier."),"rx")},
+   r:L=>goStage("pay",L,T(L,"ขั้นต่อไปคือการเงินค่ะ","Next: the cashier."),"rx")},
   {kw:["ห้องยา","รับยา","เภสัช","pharmacy"],
-   r:L=>place(L,"ห้องยาอยู่ติดกับการเงิน ตรงกลางตึกครับ","The pharmacy is next to the cashier in the middle of the building.","rx")},
+   r:L=>place(L,"ห้องยาอยู่ติดกับการเงิน ตรงกลางตึกค่ะ","The pharmacy is next to the cashier in the middle of the building.","rx")},
   {kw:["ใบเบิก","เขียนใบเบิก","เบิก","จ่ายเงิน","ชำระเงิน","การเงิน","pay","cashier","reimburse","claimform"],
-   r:L=>goStage("pay",L,T(L,"ห้องการเงินอยู่ตรงกลางตึก ติดกับห้องยาครับ","The cashier is in the middle of the building, next to the pharmacy."))},
+   r:L=>goStage("pay",L,T(L,"ห้องการเงินอยู่ตรงกลางตึก ติดกับห้องยาค่ะ","The cashier is in the middle of the building, next to the pharmacy."))},
   {kw:["เบิกแล้ว","เขียนเสร็จ","เขียนใบเบิกแล้ว","จ่ายแล้ว","จ่ายเงินแล้ว","paid","formdone"],
-   r:L=>goStage("summary",L,T(L,"ขั้นสุดท้ายคือกลับไปห้องสุขภาพครับ","Last step: back to the Health Room."),"pay")},
+   r:L=>goStage("summary",L,T(L,"ขั้นสุดท้ายคือกลับไปห้องสุขภาพค่ะ","Last step: back to the Health Room."),"pay")},
   {kw:["สรุปผล","ฟังผล","รับผล","ผลตรวจ","results"],
    r:L=>goStage("summary",L,"")},
   {kw:["กลับบ้าน","กลับได้","ได้กลับ","gohome","canileave","canigohome"],
    r:L=>{const F=FLOW(),i=F.indexOf(stage);if(stage==="home"||stage==="summary")return goStage("home",L,"");
      const rest=F.slice(i,F.length-1).map(id=>STAGES[id][L]).join(" → ");
-     return{text:T(L,`ยังกลับไม่ได้นะครับ ยังเหลือ: ${rest}`,`Not yet. Still to do: ${rest}`)}}},
+     return{text:T(L,`ยังกลับไม่ได้นะคะ ยังเหลือ: ${rest}`,`Not yet. Still to do: ${rest}`)}}},
   {kw:["เจาะเลือด","ตรวจเลือด","แล็บ","แลป","ห้องแลบ","ตรวจปัสสาวะ","lab","bloodtest","urine"],
-   r:L=>place(L,"ห้องเจาะเลือดอยู่ฝั่งซ้ายสุดของตึกครับ","The blood test room is at the far left of the building.","lab")},
+   r:L=>place(L,"ห้องเจาะเลือดอยู่ฝั่งซ้ายสุดของตึกค่ะ","The blood test room is at the far left of the building.","lab")},
   {kw:["ตรวจฟัน","ทันต","หมอฟัน","ฟัน","dental","dentist","teeth"],
-   r:L=>place(L,"ห้องทันตกรรมอยู่แถวบนของตึก ข้างห้องน้ำครับ","Dental is in the top row of the building, next to the toilets.","den")},
+   r:L=>place(L,"ห้องทันตกรรมอยู่แถวบนของตึก ข้างห้องน้ำค่ะ","Dental is in the top row of the building, next to the toilets.","den")},
   {kw:["เอกซเรย์","เอ็กซเรย์","เอ็กซ์เรย์","xray","x-ray","radiology"],
-   r:L=>place(L,"ห้องเอกซเรย์อยู่มุมขวาสุดของตึกครับ","X-ray is in the far right corner of the building.","xray")},
+   r:L=>place(L,"ห้องเอกซเรย์อยู่มุมขวาสุดของตึกค่ะ","X-ray is in the far right corner of the building.","xray")},
   {kw:["ห้องน้ำ","สุขา","ปวดฉี่","เข้าห้องน้ำ","toilet","restroom","bathroom","wc"],
-   r:L=>place(L,"ห้องน้ำอยู่มุมซ้ายบนของตึก ถัดจากทันตกรรมครับ","The toilets are in the top-left corner, next to Dental.","wc")},
+   r:L=>place(L,"ห้องน้ำอยู่มุมซ้ายบนของตึก ถัดจากทันตกรรมค่ะ","The toilets are in the top-left corner, next to Dental.","wc")},
   {kw:["รถเข็น","วีลแชร์","เดินไม่ไหว","wheelchair"],
-   r:L=>({text:T(L,"แจ้งเจ้าหน้าที่ที่เวชระเบียนเพื่อขอรถเข็นได้เลยครับ","Ask staff at Medical Records for a wheelchair."),dest:"reg"})},
+   r:L=>({text:T(L,"แจ้งเจ้าหน้าที่ที่เวชระเบียนเพื่อขอรถเข็นได้เลยค่ะ","Ask staff at Medical Records for a wheelchair."),dest:"reg"})},
   {kw:["ใบรับรองแพทย์","ใบรับรอง","medicalcertificate","certificate"],
-   r:L=>({text:T(L,"ขอใบรับรองแพทย์ได้ตอนพบแพทย์ แล้วนำไปประทับตราที่เวชระเบียนครับ","Ask the doctor for a medical certificate, then get it stamped at Medical Records."),dest:"reg"})},
+   r:L=>({text:T(L,"ขอใบรับรองแพทย์ได้ตอนพบแพทย์ แล้วนำไปประทับตราที่เวชระเบียนค่ะ","Ask the doctor for a medical certificate, then get it stamped at Medical Records."),dest:"reg"})},
   {kw:["ลืมบัตร","ไม่มีบัตร","บัตรหาย","ไม่ได้เอาบัตร","passport","lostcard","forgotmyid","noid"],
-   r:L=>({text:T(L,"ไม่เป็นไรครับ แจ้งชื่อ-นามสกุลและวันเกิดที่เวชระเบียน เจ้าหน้าที่ค้นประวัติให้ได้ ผู้ป่วยต่างชาติใช้พาสปอร์ตครับ","No problem. Give your full name and date of birth at Medical Records. International patients please show your passport."),dest:"reg"})},
+   r:L=>({text:T(L,"ไม่เป็นไรค่ะ แจ้งชื่อ-นามสกุลและวันเกิดที่เวชระเบียน เจ้าหน้าที่ค้นประวัติให้ได้ ผู้ป่วยต่างชาติใช้พาสปอร์ตค่ะ","No problem. Give your full name and date of birth at Medical Records. International patients please show your passport."),dest:"reg"})},
   {kw:["สวัสดี","หวัดดี","hello","hi","hey"],
-   r:L=>({text:T(L,"สวัสดีครับ ถามทางหรือขั้นตอนตรวจสุขภาพได้เลยนะครับ","Hello! Ask me about directions or your check-up steps."),chips:quickChips(L)})},
+   r:L=>({text:T(L,"สวัสดีค่ะ ถามทางหรือขั้นตอนตรวจสุขภาพได้เลยนะคะ","Hello! Ask me about directions or your check-up steps."),chips:quickChips(L)})},
   {kw:["ขอบคุณ","thank","thanks"],
-   r:L=>({text:T(L,"ยินดีครับ ขอให้สุขภาพแข็งแรงนะครับ 🙏","You're welcome. Stay healthy! 🙏")})}
+   r:L=>({text:T(L,"ยินดีค่ะ ขอให้สุขภาพแข็งแรงนะคะ 🙏","You're welcome. Stay healthy! 🙏")})}
 ];
 INTENTS.forEach(it=>it.nkw=it.kw.map(norm));
 function answer(q){
@@ -713,7 +719,7 @@ function answer(q){
   for(const it of INTENTS){const s=it.nkw.reduce((a,k)=>n.includes(k)?a+k.length:a,0);
     if(s>0&&it.urgent)return it.r(L);if(s>score){score=s;best=it}}
   if(best)return best.r(L);
-  return{text:T(L,"ขอโทษครับ น้องนำทางยังไม่เข้าใจคำถามนี้ ลองเลือกหัวข้อด้านล่าง หรือสอบถามเจ้าหน้าที่ที่เคาน์เตอร์เวชระเบียนได้เลยครับ","Sorry, I didn't understand that. Try a topic below or ask staff at the Medical Records counter."),chips:quickChips(L)};
+  return{text:T(L,"ขอโทษค่ะ น้องนำทางยังไม่เข้าใจคำถามนี้ ลองเลือกหัวข้อด้านล่าง หรือสอบถามเจ้าหน้าที่ที่เคาน์เตอร์เวชระเบียนได้เลยค่ะ","Sorry, I didn't understand that. Try a topic below or ask staff at the Medical Records counter."),chips:quickChips(L)};
 }
 
 /* ================= แชต ================= */
@@ -724,7 +730,7 @@ function addBot(res){
   const d=document.createElement("div");d.className="msg bot"+(res.urgent?" urgent":"");d.textContent=res.text;msgs.appendChild(d);
   const c=document.createElement("div");c.className="chips";
   if(res.stage){goToStage(res.stage,res.from)}else if(res.dest){setDest(res.dest)}
-  say(res.text.replace(/ ดูเส้นทางบนแผนที่ได้เลยครับ| See the route on the map\./,"")+(res.dest||res.stage?" § "+spokenRoute():""));
+  say(res.text.replace(/ ดูเส้นทางบนแผนที่ได้เลยค่ะ| See the route on the map\./,"")+(res.dest||res.stage?" § "+spokenRoute():""));
   if(res.stage||res.dest){const b=document.createElement("button");b.type="button";b.className="chip go";b.textContent=UI[L].showMap;b.onclick=closeSheets;c.appendChild(b)}
   (res.chips||[]).forEach(t=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=t;b.onclick=()=>send(t);c.appendChild(b)});
   if(c.children.length)msgs.appendChild(c);
@@ -738,7 +744,7 @@ function send(text){
 $("form").addEventListener("submit",e=>{e.preventDefault();const q=$("q");send(q.value);q.value=""});
 
 render();
-addBot({text:"สวัสดีครับ น้องนำทางพร้อมช่วยครับ ถามทางหรือขั้นตอนตรวจสุขภาพได้เลย เช่น “รับบัตรแล้วไปไหนต่อ” (You can ask in English too)",chips:quickChips("th")});
+addBot({text:"สวัสดีค่ะ น้องนำทางพร้อมช่วยค่ะ ถามทางหรือขั้นตอนตรวจสุขภาพได้เลย เช่น “รับบัตรแล้วไปไหนต่อ” (You can ask in English too)",chips:quickChips("th")});
 lastSpeech="";stopSpeech();
 </script>
 

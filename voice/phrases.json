@@ -1,9 +1,10 @@
 {
  "voices": {
-  "th": "th-TH-NiwatNeural",
-  "en": "en-US-AndrewNeural"
+  "th": "th-TH-PremwadeeNeural",
+  "en": "en-US-AvaNeural"
  },
- "rate": "-6%",
+ "rate": "+5%",
+ "pitch": "+8Hz",
  "items": [
   {
    "id": "0060efa9",
@@ -16,9 +17,9 @@
    "text": "The pharmacy is next to the cashier in the middle of the building"
   },
   {
-   "id": "02a8527d",
+   "id": "02024069",
    "lang": "en",
-   "text": "I'll take you through every step of your check-up today"
+   "text": "You did great"
   },
   {
    "id": "04895a32",
@@ -26,19 +27,24 @@
    "text": "You still have: Dental check, X-ray"
   },
   {
-   "id": "0517d4ca",
-   "lang": "en",
-   "text": "You've reached the doctor's room"
-  },
-  {
    "id": "059eefb7",
    "lang": "en",
    "text": "X-ray is in the far right corner of the building"
   },
   {
-   "id": "0a32fb80",
+   "id": "0a6265c2",
    "lang": "en",
-   "text": "You're all done"
+   "text": "Yay, Dental check is done!"
+  },
+  {
+   "id": "0a688cad",
+   "lang": "en",
+   "text": "and there's Cashier!"
+  },
+  {
+   "id": "0ae6d73c",
+   "lang": "en",
+   "text": "Hi!"
   },
   {
    "id": "0b0a87f2",
@@ -51,9 +57,14 @@
    "text": "then turn left and go just a few steps"
   },
   {
-   "id": "0bd39522",
+   "id": "0c2a2b42",
    "lang": "en",
-   "text": "Here we are at Doctor's Exam Room"
+   "text": "Final stretch!"
+  },
+  {
+   "id": "0ea47a49",
+   "lang": "en",
+   "text": "Show your ID card and say you're here for a check-up!"
   },
   {
    "id": "0f646703",
@@ -76,9 +87,29 @@
    "text": "then turn left and go about 20 meters"
   },
   {
+   "id": "149c55dd",
+   "lang": "en",
+   "text": "and there's Health Room!"
+  },
+  {
    "id": "14d51ac0",
    "lang": "en",
    "text": "Show your ID card at Medical Records and say you are here for a health check-up"
+  },
+  {
+   "id": "15dc9009",
+   "lang": "en",
+   "text": "We made it to Toilet!"
+  },
+  {
+   "id": "1e4be83a",
+   "lang": "en",
+   "text": "We start at Medical Records"
+  },
+  {
+   "id": "223298fb",
+   "lang": "en",
+   "text": "We made it to Medical Records!"
   },
   {
    "id": "2252d616",
@@ -96,34 +127,19 @@
    "text": "then turn left and go about 45 meters"
   },
   {
-   "id": "26851eb4",
-   "lang": "en",
-   "text": "To Medical Records:"
-  },
-  {
-   "id": "2822c5af",
-   "lang": "en",
-   "text": "Let's start at Medical Records"
-  },
-  {
-   "id": "2a7c8ab9",
-   "lang": "en",
-   "text": "When you're finished, tap the gold button"
-  },
-  {
-   "id": "2d077752",
-   "lang": "en",
-   "text": "Here we are at Health Room"
-  },
-  {
-   "id": "2e03f07d",
-   "lang": "en",
-   "text": "You've arrived at Blood test"
-  },
-  {
    "id": "2ebfdd62",
    "lang": "en",
    "text": "No problem"
+  },
+  {
+   "id": "2faf513e",
+   "lang": "en",
+   "text": "We made it to Blood test!"
+  },
+  {
+   "id": "30e1ce1a",
+   "lang": "en",
+   "text": "We made it to Dental!"
   },
   {
    "id": "31578a0e",
@@ -131,19 +147,29 @@
    "text": "then turn left and go about 10 meters"
   },
   {
-   "id": "32ecfa60",
+   "id": "33113b10",
    "lang": "en",
-   "text": "Show your ID card and say you're here for a health check-up"
+   "text": "Now let's go see the doctor"
   },
   {
-   "id": "342a5342",
+   "id": "34e00ea0",
    "lang": "en",
-   "text": "Here we are at X-ray"
+   "text": "Off to Pharmacy!"
   },
   {
-   "id": "37016a3f",
+   "id": "35a07bda",
    "lang": "en",
-   "text": "and you'll reach Pharmacy"
+   "text": "and there's Entrance!"
+  },
+  {
+   "id": "36211dc7",
+   "lang": "en",
+   "text": "When you're done, tap the gold button"
+  },
+  {
+   "id": "37699221",
+   "lang": "en",
+   "text": "We made it to Pharmacy!"
   },
   {
    "id": "38c2d43e",
@@ -151,24 +177,24 @@
    "text": "Walk straight about 15 meters"
   },
   {
+   "id": "39b53ae4",
+   "lang": "en",
+   "text": "Back to the Health Room for your results"
+  },
+  {
    "id": "3ac2e1ca",
    "lang": "en",
    "text": "then turn left and go about 25 meters"
   },
   {
-   "id": "3e0079ad",
+   "id": "3b520e63",
    "lang": "en",
-   "text": "Here we are at Dental"
+   "text": "Off to Blood test!"
   },
   {
    "id": "3f7bec1d",
    "lang": "en",
    "text": "Still to do: Health Room Check-up tests See the doctor Cashier Results, Health Room"
-  },
-  {
-   "id": "41946a80",
-   "lang": "en",
-   "text": "and you'll reach Entrance"
   },
   {
    "id": "43602016",
@@ -191,14 +217,19 @@
    "text": "then turn right and go about 10 meters"
   },
   {
-   "id": "475fcaa3",
+   "id": "442ba0ae",
    "lang": "en",
-   "text": "and you'll reach Cashier"
+   "text": "Yay, Blood test is done!"
   },
   {
-   "id": "49036376",
+   "id": "44f4a055",
    "lang": "en",
-   "text": "and you'll reach Blood test"
+   "text": "and there's Doctor's Exam Room!"
+  },
+  {
+   "id": "46fc6a83",
+   "lang": "en",
+   "text": "I'm your hospital guide, and I'll take you through every step of your check-up today!"
   },
   {
    "id": "4bb99007",
@@ -211,24 +242,9 @@
    "text": "then turn right and go about 30 meters"
   },
   {
-   "id": "4c54416b",
-   "lang": "en",
-   "text": "and you'll reach Health Room"
-  },
-  {
    "id": "4c7ab1a6",
    "lang": "en",
    "text": "You still have: Blood test, X-ray"
-  },
-  {
-   "id": "4d2b97ed",
-   "lang": "en",
-   "text": "Any order is fine, so I'll take you to the closest one first"
-  },
-  {
-   "id": "4e96716a",
-   "lang": "en",
-   "text": "You've arrived at Doctor's Exam Room"
   },
   {
    "id": "4fc19a37",
@@ -236,24 +252,9 @@
    "text": "Walk straight about 50 meters"
   },
   {
-   "id": "50251a86",
-   "lang": "en",
-   "text": "Next, let's pick up your medicine at the pharmacy"
-  },
-  {
-   "id": "5360dcb0",
-   "lang": "en",
-   "text": "Thank you for coming in, and have a safe trip home!"
-  },
-  {
    "id": "53da5d60",
    "lang": "en",
    "text": "Walk straight about 35 meters"
-  },
-  {
-   "id": "54c44aa3",
-   "lang": "en",
-   "text": "Here we are at Entrance"
   },
   {
    "id": "55ad8ed5",
@@ -266,14 +267,14 @@
    "text": "then turn right and go about 25 meters"
   },
   {
-   "id": "587b7748",
+   "id": "59142ede",
    "lang": "en",
-   "text": "To Doctor's Exam Room:"
+   "text": "Off to Doctor's Exam Room!"
   },
   {
-   "id": "59f24045",
+   "id": "59ee3cf2",
    "lang": "en",
-   "text": "and you'll reach Doctor's Exam Room"
+   "text": "Let's pick up your medicine"
   },
   {
    "id": "5aa54c76",
@@ -281,9 +282,19 @@
    "text": "Thank you for your check-up, have a safe trip home!"
   },
   {
-   "id": "622342fa",
+   "id": "5e04be46",
    "lang": "en",
-   "text": "You've arrived at Health Room"
+   "text": "Let's head to the cashier to fill in your reimbursement form"
+  },
+  {
+   "id": "68133955",
+   "lang": "en",
+   "text": "and there's X-ray!"
+  },
+  {
+   "id": "69793eea",
+   "lang": "en",
+   "text": "Amazing job"
   },
   {
    "id": "69e77699",
@@ -291,9 +302,19 @@
    "text": "Walk straight just a few steps"
   },
   {
+   "id": "6ad6a279",
+   "lang": "en",
+   "text": "The pharmacy is just around here"
+  },
+  {
    "id": "6b73c6f4",
    "lang": "en",
    "text": "No medicine, go straight to the cashier"
+  },
+  {
+   "id": "6be23240",
+   "lang": "en",
+   "text": "Off to Toilet!"
   },
   {
    "id": "6c0b0d8e",
@@ -301,14 +322,9 @@
    "text": "Next: Check-up tests"
   },
   {
-   "id": "6dafb838",
+   "id": "6c8030e5",
    "lang": "en",
-   "text": "To Health Room:"
-  },
-  {
-   "id": "6e36f2cc",
-   "lang": "en",
-   "text": "Next, let's head to the Health Room to sign in and get your list of tests"
+   "text": "Almost there!"
   },
   {
    "id": "6e687715",
@@ -321,9 +337,9 @@
    "text": "then turn right and go about 50 meters"
   },
   {
-   "id": "6f98cc46",
+   "id": "6f9be8ff",
    "lang": "en",
-   "text": "Here we are at Medical Records"
+   "text": "Yay, X-ray is done!"
   },
   {
    "id": "717db889",
@@ -331,14 +347,19 @@
    "text": "See the doctor in the exam room"
   },
   {
-   "id": "73d349e9",
+   "id": "71fdc9b3",
    "lang": "en",
-   "text": "Next, the cashier, to fill in your check-up reimbursement form"
+   "text": "Off to Dental!"
   },
   {
-   "id": "73dc699b",
+   "id": "7235910a",
    "lang": "en",
-   "text": "You've arrived at Main hall"
+   "text": "and there's Main hall!"
+  },
+  {
+   "id": "741f1c91",
+   "lang": "en",
+   "text": "and there's Medical Records!"
   },
   {
    "id": "748a32f8",
@@ -371,11 +392,6 @@
    "text": "All quests complete!"
   },
   {
-   "id": "7b969f8c",
-   "lang": "en",
-   "text": "Nice work, Dental check is done"
-  },
-  {
    "id": "7c9939dd",
    "lang": "en",
    "text": "Walk straight about 30 meters"
@@ -386,14 +402,24 @@
    "text": "then turn left and go about 30 meters"
   },
   {
+   "id": "7d5f1168",
+   "lang": "en",
+   "text": "We made it to Main hall!"
+  },
+  {
    "id": "7e3a65e8",
    "lang": "en",
    "text": "The map takes you to the nearest test you have not done yet"
   },
   {
-   "id": "7f39ce86",
+   "id": "7fcfa3a0",
    "lang": "en",
-   "text": "To Toilet:"
+   "text": "Head to the Health Room to sign in and grab your list of tests"
+  },
+  {
+   "id": "8133534b",
+   "lang": "en",
+   "text": "Off to Main hall!"
   },
   {
    "id": "8159a791",
@@ -401,24 +427,14 @@
    "text": "Register for your check-up and get your list of tests"
   },
   {
-   "id": "8407909c",
+   "id": "81b30fc8",
    "lang": "en",
-   "text": "Nice work, Blood test is done"
-  },
-  {
-   "id": "84690b73",
-   "lang": "en",
-   "text": "and you'll reach Medical Records"
+   "text": "Yay, all tests done!"
   },
   {
    "id": "867a890a",
    "lang": "en",
    "text": "Walk straight about 20 meters"
-  },
-  {
-   "id": "8877b7da",
-   "lang": "en",
-   "text": "You've arrived at X-ray"
   },
   {
    "id": "89c0e327",
@@ -436,19 +452,14 @@
    "text": "Do not wait in the queue"
   },
   {
-   "id": "8d5a8b0e",
-   "lang": "en",
-   "text": "You've arrived at Medical Records"
-  },
-  {
    "id": "8fedf974",
    "lang": "en",
    "text": "Still to do: Cashier Results, Health Room"
   },
   {
-   "id": "91a90168",
+   "id": "941681ac",
    "lang": "en",
-   "text": "To X-ray:"
+   "text": "Off to Cashier!"
   },
   {
    "id": "94b418ed",
@@ -461,9 +472,14 @@
    "text": "Next: Go home"
   },
   {
-   "id": "997c7f0a",
+   "id": "98401aa4",
    "lang": "en",
-   "text": "Here we are at Cashier"
+   "text": "Off to Health Room!"
+  },
+  {
+   "id": "9a636407",
+   "lang": "en",
+   "text": "I'll be your guide today"
   },
   {
    "id": "9abaca34",
@@ -481,24 +497,14 @@
    "text": "Hello!"
   },
   {
-   "id": "9bf67d5b",
+   "id": "9c02d5a1",
    "lang": "en",
-   "text": "To Entrance:"
-  },
-  {
-   "id": "9c360010",
-   "lang": "en",
-   "text": "To Cashier:"
+   "text": "Off to Entrance!"
   },
   {
    "id": "9cd9d80a",
    "lang": "en",
    "text": "Still to do: Check-up tests See the doctor Cashier Results, Health Room"
-  },
-  {
-   "id": "9d425865",
-   "lang": "en",
-   "text": "All tests done, great job!"
   },
   {
    "id": "9de24e6d",
@@ -511,9 +517,9 @@
    "text": "Walk straight about 45 meters"
   },
   {
-   "id": "a197e87b",
+   "id": "9f4e6733",
    "lang": "en",
-   "text": "Hi, I'm your hospital guide"
+   "text": "Let's keep going!"
   },
   {
    "id": "a2865d2c",
@@ -521,24 +527,14 @@
    "text": "Any order is fine"
   },
   {
+   "id": "a332fb5c",
+   "lang": "en",
+   "text": "Nice work"
+  },
+  {
    "id": "a3d9ae0c",
    "lang": "en",
    "text": "Fill in the health check-up reimbursement form at the cashier"
-  },
-  {
-   "id": "a47a789d",
-   "lang": "en",
-   "text": "To Blood test:"
-  },
-  {
-   "id": "a67fe8c2",
-   "lang": "en",
-   "text": "To Pharmacy:"
-  },
-  {
-   "id": "a7190e5b",
-   "lang": "en",
-   "text": "You've arrived at Entrance"
   },
   {
    "id": "a78fca44",
@@ -561,6 +557,11 @@
    "text": "Still to do: Register Health Room Check-up tests See the doctor Cashier Results, Health Room"
   },
   {
+   "id": "a9e5666b",
+   "lang": "en",
+   "text": "and there's Pharmacy!"
+  },
+  {
    "id": "aa8951b2",
    "lang": "en",
    "text": "then turn right and go about 15 meters"
@@ -576,14 +577,14 @@
    "text": "then turn left and go about 35 meters"
   },
   {
-   "id": "b1335c52",
+   "id": "b11e112c",
    "lang": "en",
-   "text": "and you'll reach Dental"
+   "text": "After your visit, let me know if you got any medicine"
   },
   {
-   "id": "b2989354",
+   "id": "b1a7068a",
    "lang": "en",
-   "text": "You've arrived at Pharmacy"
+   "text": "Thanks for coming in, and have a safe trip home!"
   },
   {
    "id": "b2ea8045",
@@ -626,49 +627,29 @@
    "text": "Next: Register"
   },
   {
-   "id": "c2548aeb",
-   "lang": "en",
-   "text": "To Main hall:"
-  },
-  {
-   "id": "c6a73f67",
-   "lang": "en",
-   "text": "Almost done!"
-  },
-  {
-   "id": "c6f3be8b",
-   "lang": "en",
-   "text": "and you'll reach X-ray"
-  },
-  {
    "id": "c7992e96",
    "lang": "en",
    "text": "then turn right and go about 20 meters"
   },
   {
-   "id": "c83d49fe",
+   "id": "ccbd4a51",
    "lang": "en",
-   "text": "and you'll reach Main hall"
+   "text": "Time for your tests!"
   },
   {
-   "id": "cdf31820",
+   "id": "ce7e729c",
    "lang": "en",
-   "text": "You've arrived at Toilet"
+   "text": "Off to X-ray!"
   },
   {
-   "id": "ceff89f2",
+   "id": "ced9c12f",
    "lang": "en",
-   "text": "You've arrived at Cashier"
+   "text": "Any order works, so I'll take you to the closest one first"
   },
   {
-   "id": "d494e335",
+   "id": "d520cefb",
    "lang": "en",
-   "text": "Let's go back to the Health Room for your results"
-  },
-  {
-   "id": "d4b3bb25",
-   "lang": "en",
-   "text": "You've arrived at Dental"
+   "text": "We made it to Cashier!"
   },
   {
    "id": "d53a467e",
@@ -676,9 +657,14 @@
    "text": "Dental is in the top row of the building, next to the toilets"
   },
   {
-   "id": "d5ffbac1",
+   "id": "d6af364c",
    "lang": "en",
-   "text": "Now for your tests"
+   "text": "Here's the doctor's room!"
+  },
+  {
+   "id": "d6f3da67",
+   "lang": "en",
+   "text": "We made it to Doctor's Exam Room!"
   },
   {
    "id": "d839b33c",
@@ -686,14 +672,9 @@
    "text": "All tests done"
   },
   {
-   "id": "da16e7b5",
+   "id": "d93ca6e0",
    "lang": "en",
-   "text": "Here we are at Blood test"
-  },
-  {
-   "id": "da5579f3",
-   "lang": "en",
-   "text": "Here we are at Main hall"
+   "text": "We made it to Entrance!"
   },
   {
    "id": "db6f237d",
@@ -706,9 +687,9 @@
    "text": "Afterwards, did the doctor prescribe medicine?"
   },
   {
-   "id": "deb93335",
+   "id": "e24e9e33",
    "lang": "en",
-   "text": "To Dental:"
+   "text": "We made it to Health Room!"
   },
   {
    "id": "e30ab9fe",
@@ -716,9 +697,19 @@
    "text": "Next: Results, Health Room"
   },
   {
+   "id": "e63045e8",
+   "lang": "en",
+   "text": "and there's Dental!"
+  },
+  {
    "id": "e7a9e0fd",
    "lang": "en",
    "text": "then turn right and go just a few steps"
+  },
+  {
+   "id": "eba6350b",
+   "lang": "en",
+   "text": "We made it to X-ray!"
   },
   {
    "id": "ec9abdc2",
@@ -726,14 +717,9 @@
    "text": "Start at Medical Records"
   },
   {
-   "id": "ee8bd2e3",
+   "id": "ef2faa9c",
    "lang": "en",
-   "text": "and you'll reach Toilet"
-  },
-  {
-   "id": "f31eb82e",
-   "lang": "en",
-   "text": "After you see the doctor, let me know if you got any medicine"
+   "text": "Woohoo, every quest complete!"
   },
   {
    "id": "f466c5f5",
@@ -741,9 +727,24 @@
    "text": "Ask me about directions or your check-up steps"
   },
   {
+   "id": "f4f3edcf",
+   "lang": "en",
+   "text": "and there's Toilet!"
+  },
+  {
    "id": "f5d6943a",
    "lang": "en",
    "text": "You still have: X-ray"
+  },
+  {
+   "id": "f66b1122",
+   "lang": "en",
+   "text": "Hi there!"
+  },
+  {
+   "id": "f849d690",
+   "lang": "en",
+   "text": "and there's Blood test!"
   },
   {
    "id": "f9d09bd1",
@@ -761,14 +762,9 @@
    "text": "You're welcome"
   },
   {
-   "id": "fbad9fa1",
+   "id": "fd4b2d90",
    "lang": "en",
-   "text": "Nice work, X-ray is done"
-  },
-  {
-   "id": "fc43adcc",
-   "lang": "en",
-   "text": "Here we are at Pharmacy"
+   "text": "Off to Medical Records!"
   },
   {
    "id": "fe981b9a",
@@ -781,24 +777,9 @@
    "text": "Not yet"
   },
   {
-   "id": "ff6fcebf",
-   "lang": "en",
-   "text": "Now let's go and see the doctor"
-  },
-  {
-   "id": "ff7c0798",
-   "lang": "en",
-   "text": "Here we are at Toilet"
-  },
-  {
-   "id": "02e55754",
+   "id": "0362bf7b",
    "lang": "th",
-   "text": "ต่อไปไปห้องสุขภาพกันครับ"
-  },
-  {
-   "id": "03830e7a",
-   "lang": "th",
-   "text": "️ ถ้ามีอาการรุนแรง เช่น เจ็บหน้าอก หายใจไม่ออก หมดสติ กรุณาแจ้งเจ้าหน้าที่ที่อยู่ใกล้ที่สุดทันที ไม่ต้องรอคิวครับ"
+   "text": "ถึงทันตกรรมแล้วค่ะ!"
   },
   {
    "id": "04264edc",
@@ -806,9 +787,34 @@
    "text": "แล้วเลี้ยวซ้าย เดินต่อประมาณ 50 เมตร"
   },
   {
+   "id": "083ff284",
+   "lang": "th",
+   "text": "ยื่นบัตรประชาชนที่เวชระเบียน แจ้งว่ามาตรวจสุขภาพ แล้วไปห้องสุขภาพค่ะ"
+  },
+  {
+   "id": "08a63497",
+   "lang": "th",
+   "text": "แจ้งชื่อ-นามสกุลและวันเกิดที่เวชระเบียน เจ้าหน้าที่ค้นประวัติให้ได้ ผู้ป่วยต่างชาติใช้พาสปอร์ตค่ะ"
+  },
+  {
+   "id": "0af7e9b7",
+   "lang": "th",
+   "text": "ก็ถึงเวชระเบียนแล้วค่ะ!"
+  },
+  {
    "id": "0af7ec70",
    "lang": "th",
    "text": "ยังเหลือ: ห้องสุขภาพ ตรวจตามรายการ พบแพทย์ การเงิน สรุปผล ห้องสุขภาพ"
+  },
+  {
+   "id": "0b368ba2",
+   "lang": "th",
+   "text": "ก็ถึงห้องน้ำแล้วค่ะ!"
+  },
+  {
+   "id": "0b64a840",
+   "lang": "th",
+   "text": "ห้องเอกซเรย์อยู่มุมขวาสุดของตึกค่ะ"
   },
   {
    "id": "0ccdd3cb",
@@ -816,19 +822,9 @@
    "text": "แล้วเลี้ยวขวา เดินต่อประมาณ 30 เมตร"
   },
   {
-   "id": "0d05dc50",
+   "id": "0ef29fe7",
    "lang": "th",
-   "text": "วันนี้จะพาไปตรวจสุขภาพให้ครบทุกห้องนะครับ"
-  },
-  {
-   "id": "0d6e3a4b",
-   "lang": "th",
-   "text": "เอกซเรย์เสร็จแล้ว"
-  },
-  {
-   "id": "0e7606ae",
-   "lang": "th",
-   "text": "ต่อไปไปรับยาที่ห้องยากันครับ"
+   "text": "ไปการเงินกันค่ะ"
   },
   {
    "id": "0f086258",
@@ -841,39 +837,24 @@
    "text": "แล้วเลี้ยวขวา เดินต่อประมาณ 25 เมตร"
   },
   {
-   "id": "106b957d",
+   "id": "153b0a54",
    "lang": "th",
-   "text": "ต่อไปไปพบแพทย์กันนะครับ"
+   "text": "ไปรับยาที่ห้องยาค่ะ"
   },
   {
-   "id": "11907983",
+   "id": "15e906d3",
    "lang": "th",
-   "text": "น้องพาไปห้องที่ใกล้ที่สุดก่อน"
+   "text": "ก็ถึงการเงินแล้วค่ะ!"
   },
   {
-   "id": "12946d2c",
+   "id": "16e858c5",
    "lang": "th",
-   "text": "กลับบ้านปลอดภัยครับ"
-  },
-  {
-   "id": "1597266e",
-   "lang": "th",
-   "text": "ยังเหลือตรวจอีก เจาะเลือด, เอกซเรย์ ครับ"
-  },
-  {
-   "id": "16de4403",
-   "lang": "th",
-   "text": "ไปเวชระเบียนนะครับ"
+   "text": "ยังเหลือตรวจอีก ตรวจฟัน, เอกซเรย์ ค่ะ"
   },
   {
    "id": "16fdb376",
    "lang": "th",
    "text": "เดินตรงไปประมาณ 10 เมตร"
-  },
-  {
-   "id": "1727c966",
-   "lang": "th",
-   "text": "ถึงทันตกรรมแล้วครับ"
   },
   {
    "id": "1763a075",
@@ -886,11 +867,6 @@
    "text": "แล้วเลี้ยวขวา เดินต่อประมาณ 45 เมตร"
   },
   {
-   "id": "19578622",
-   "lang": "th",
-   "text": "เริ่มที่เวชระเบียนนะครับ"
-  },
-  {
    "id": "1b357af7",
    "lang": "th",
    "text": "ตรวจลำดับไหนก่อนก็ได้ แผนที่จะพาไปจุดที่ใกล้ที่สุดที่ยังไม่ได้ตรวจ"
@@ -901,34 +877,29 @@
    "text": "ขั้นต่อไปคือ ยื่นบัตร"
   },
   {
+   "id": "1c094432",
+   "lang": "th",
+   "text": "เสร็จครบทุกขั้นตอนแล้ว ขอบคุณที่มาตรวจสุขภาพ กลับบ้านปลอดภัยนะคะ"
+  },
+  {
    "id": "1d14e41c",
    "lang": "th",
    "text": "เดินตรงไปประมาณ 30 เมตร"
   },
   {
-   "id": "1fe64d75",
+   "id": "20314021",
    "lang": "th",
-   "text": "ไปห้องสุขภาพนะครับ"
+   "text": "ขอใบรับรองแพทย์ได้ตอนพบแพทย์ แล้วนำไปประทับตราที่เวชระเบียนค่ะ"
   },
   {
-   "id": "235b9a56",
+   "id": "2133175a",
    "lang": "th",
-   "text": "ไม่เป็นไรครับ"
+   "text": "ใกล้ถึงเส้นชัยแล้วค่ะ!"
   },
   {
-   "id": "24f07525",
+   "id": "25f25489",
    "lang": "th",
-   "text": "ก็จะถึงห้องน้ำครับ"
-  },
-  {
-   "id": "2608d1bd",
-   "lang": "th",
-   "text": "ตรวจครบแล้ว ไปพบแพทย์ที่ห้องตรวจแพทย์ เมื่อพบแพทย์เสร็จ แพทย์สั่งยาไหมครับ?"
-  },
-  {
-   "id": "261c5e3a",
-   "lang": "th",
-   "text": "ก็จะถึงห้องสุขภาพครับ"
+   "text": "ถึงเอกซเรย์แล้วค่ะ!"
   },
   {
    "id": "267962d5",
@@ -936,19 +907,14 @@
    "text": "ยังเหลือ: ยื่นบัตร ห้องสุขภาพ ตรวจตามรายการ พบแพทย์ การเงิน สรุปผล ห้องสุขภาพ"
   },
   {
-   "id": "2900257d",
+   "id": "26a042c9",
    "lang": "th",
-   "text": "ขอใบรับรองแพทย์ได้ตอนพบแพทย์ แล้วนำไปประทับตราที่เวชระเบียนครับ"
+   "text": "กลับไปห้องสุขภาพ ฟังสรุปผลกันนะคะ"
   },
   {
-   "id": "2950a4d2",
+   "id": "2963787a",
    "lang": "th",
-   "text": "สวัสดีครับ"
-  },
-  {
-   "id": "2e00c755",
-   "lang": "th",
-   "text": "ขั้นต่อไปคือการเงินครับ"
+   "text": "ยังเหลือตรวจอีก เจาะเลือด, ตรวจฟัน ค่ะ"
   },
   {
    "id": "2eb2b342",
@@ -956,24 +922,64 @@
    "text": "แล้วเลี้ยวซ้าย เดินต่ออีกนิดเดียว"
   },
   {
-   "id": "335b8607",
+   "id": "2ef805c6",
    "lang": "th",
-   "text": "แจ้งชื่อ-นามสกุลและวันเกิดที่เวชระเบียน เจ้าหน้าที่ค้นประวัติให้ได้ ผู้ป่วยต่างชาติใช้พาสปอร์ตครับ"
+   "text": "ครบทุกภารกิจแล้วค่ะ"
   },
   {
-   "id": "342e08c8",
+   "id": "30d07925",
    "lang": "th",
-   "text": "ถึงห้องยาแล้วครับ"
+   "text": "เอกซเรย์เสร็จแล้ว เก่งมากค่ะ"
   },
   {
-   "id": "34372f3c",
+   "id": "318aface",
    "lang": "th",
-   "text": "เสร็จครบทุกขั้นตอนแล้วครับ"
+   "text": "ขั้นสุดท้ายคือกลับไปห้องสุขภาพค่ะ"
   },
   {
-   "id": "393896ea",
+   "id": "325a87ff",
    "lang": "th",
-   "text": "ก็จะถึงเอกซเรย์ครับ"
+   "text": "ไปรับยากันค่ะ"
+  },
+  {
+   "id": "33a39463",
+   "lang": "th",
+   "text": "วันนี้จะพาไปตรวจสุขภาพให้ครบทุกห้องเลยนะคะ"
+  },
+  {
+   "id": "34d38243",
+   "lang": "th",
+   "text": "ถึงทางเข้า โรงพยาบาลแล้วค่ะ!"
+  },
+  {
+   "id": "34ead502",
+   "lang": "th",
+   "text": "ไปเจาะเลือดกันค่ะ"
+  },
+  {
+   "id": "35d8b874",
+   "lang": "th",
+   "text": "เขียนใบเบิกค่าตรวจสุขภาพที่ห้องการเงินค่ะ"
+  },
+  {
+   "id": "364bc33e",
+   "lang": "th",
+   "text": "ขอให้สุขภาพแข็งแรงนะคะ"
+  },
+  {
+   "id": "373a5a02",
+   "lang": "th",
+   "text": "ลงทะเบียนตรวจสุขภาพและรับรายการตรวจ แล้วไปตรวจตามรายการค่ะ"
+  },
+  {
+   "id": "378e0ce7",
+   "lang": "th",
+   "text": "ตรวจครบแล้ว ไปพบแพทย์ที่ห้องตรวจแพทย์ เมื่อพบแพทย์เสร็จ แพทย์สั่งยาไหมคะ?"
+  },
+  {
+   "id": "38a97ee2",
+   "lang": "th",
+   "text": "ตรวจครบแล้ว เก่งมากเลยค่ะ"
   },
   {
    "id": "3b066fbf",
@@ -986,9 +992,9 @@
    "text": "ครบทุกภารกิจ!"
   },
   {
-   "id": "40b8a518",
+   "id": "3ecb5cd7",
    "lang": "th",
-   "text": "กลับไปห้องสุขภาพเพื่อฟังสรุปผลนะครับ"
+   "text": "ห้องทันตกรรมอยู่แถวบนของตึก ข้างห้องน้ำค่ะ"
   },
   {
    "id": "40cd59d1",
@@ -996,19 +1002,14 @@
    "text": "แล้วเลี้ยวซ้าย เดินต่อประมาณ 20 เมตร"
   },
   {
-   "id": "41290895",
+   "id": "42825bf9",
    "lang": "th",
-   "text": "พบแพทย์เสร็จแล้ว บอกน้องด้วยนะครับว่าแพทย์สั่งยาไหม"
+   "text": "ห้องเจาะเลือดอยู่ฝั่งซ้ายสุดของตึกค่ะ"
   },
   {
-   "id": "433aa0ce",
+   "id": "435c3158",
    "lang": "th",
-   "text": "ถึงทางเข้า โรงพยาบาลแล้วครับ"
-  },
-  {
-   "id": "44b0bc69",
-   "lang": "th",
-   "text": "ยินดีครับ"
+   "text": "ห้องการเงินอยู่ตรงกลางตึก ติดกับห้องยาค่ะ"
   },
   {
    "id": "467d6334",
@@ -1016,19 +1017,9 @@
    "text": "ขั้นต่อไปคือ กลับบ้าน"
   },
   {
-   "id": "46a60460",
-   "lang": "th",
-   "text": "เจาะเลือดเสร็จแล้ว"
-  },
-  {
    "id": "4811d8ea",
    "lang": "th",
    "text": "แล้วเลี้ยวขวา เดินต่อประมาณ 35 เมตร"
-  },
-  {
-   "id": "4ae6b047",
-   "lang": "th",
-   "text": "ห้องทันตกรรมอยู่แถวบนของตึก ข้างห้องน้ำครับ"
   },
   {
    "id": "4d0e7252",
@@ -1036,34 +1027,14 @@
    "text": "ยังเหลือ: พบแพทย์ การเงิน สรุปผล ห้องสุขภาพ"
   },
   {
-   "id": "4f4ede91",
-   "lang": "th",
-   "text": "ก็จะถึงห้องตรวจแพทย์ครับ"
-  },
-  {
-   "id": "4f9cbdbf",
-   "lang": "th",
-   "text": "ต้องตรวจตามรายการให้ครบก่อนพบแพทย์นะครับ"
-  },
-  {
    "id": "5004a5c9",
    "lang": "th",
    "text": "ยังเหลือ:"
   },
   {
-   "id": "5004af62",
-   "lang": "th",
-   "text": "ต่อไปไปตรวจตามรายการกันครับ"
-  },
-  {
    "id": "5269aa8c",
    "lang": "th",
    "text": "ยังเหลือ: การเงิน สรุปผล ห้องสุขภาพ"
-  },
-  {
-   "id": "5289857e",
-   "lang": "th",
-   "text": "ห้องยาอยู่ติดกับการเงิน ตรงกลางตึกครับ"
   },
   {
    "id": "52d68cca",
@@ -1076,24 +1047,14 @@
    "text": "ยังเหลือ: ตรวจตามรายการ พบแพทย์ การเงิน สรุปผล ห้องสุขภาพ"
   },
   {
-   "id": "556802de",
-   "lang": "th",
-   "text": "ห้องเอกซเรย์อยู่มุมขวาสุดของตึกครับ"
-  },
-  {
-   "id": "5775bf39",
-   "lang": "th",
-   "text": "ยังเหลือตรวจอีก ตรวจฟัน, เอกซเรย์ ครับ"
-  },
-  {
-   "id": "5775ff88",
-   "lang": "th",
-   "text": "ถึงโถงกลางแล้วครับ"
-  },
-  {
    "id": "5828ebca",
    "lang": "th",
    "text": "เดินตรงไปประมาณ 50 เมตร"
+  },
+  {
+   "id": "5a0834c1",
+   "lang": "th",
+   "text": "ก็ถึงห้องสุขภาพแล้วค่ะ!"
   },
   {
    "id": "5a37f200",
@@ -1101,19 +1062,24 @@
    "text": "แล้วเลี้ยวซ้าย เดินต่อประมาณ 10 เมตร"
   },
   {
-   "id": "5e584dfb",
+   "id": "5a81ba4d",
    "lang": "th",
-   "text": "รอเรียกชื่อ รับยาและฟังคำแนะนำจากเภสัชกร แล้วไปการเงินต่อครับ"
+   "text": "ไปห้องยากันค่ะ"
   },
   {
-   "id": "5fb51e40",
+   "id": "5ac8cb46",
    "lang": "th",
-   "text": "เสร็จครบทุกขั้นตอนแล้ว ขอบคุณที่มาตรวจสุขภาพ กลับบ้านปลอดภัยนะครับ"
+   "text": "ไปห้องตรวจแพทย์กันค่ะ"
   },
   {
-   "id": "626afcaa",
+   "id": "650ac201",
    "lang": "th",
-   "text": "แจ้งเจ้าหน้าที่ที่เวชระเบียนเพื่อขอรถเข็นได้เลยครับ"
+   "text": "น้องนำทางยังไม่เข้าใจคำถามนี้ ลองเลือกหัวข้อด้านล่าง หรือสอบถามเจ้าหน้าที่ที่เคาน์เตอร์เวชระเบียนได้เลยค่ะ"
+  },
+  {
+   "id": "6784f1eb",
+   "lang": "th",
+   "text": "ไปทันตกรรมกันค่ะ"
   },
   {
    "id": "680eebc8",
@@ -1121,19 +1087,19 @@
    "text": "ขั้นต่อไปคือ สรุปผล ห้องสุขภาพ"
   },
   {
-   "id": "6bd89e21",
+   "id": "6b4f2fb2",
    "lang": "th",
-   "text": "ขั้นต่อไปคือห้องสุขภาพครับ"
+   "text": "อีกนิดเดียวค่ะ!"
   },
   {
-   "id": "6d81e366",
+   "id": "6e0f4ecf",
    "lang": "th",
-   "text": "ไปห้องน้ำนะครับ"
+   "text": "เย้!"
   },
   {
-   "id": "70885e08",
+   "id": "6e231ce0",
    "lang": "th",
-   "text": "แพทย์สั่งยาไหมครับ?"
+   "text": "ห้องยาอยู่ติดกับการเงิน ตรงกลางตึกค่ะ"
   },
   {
    "id": "7139fd18",
@@ -1151,19 +1117,14 @@
    "text": "ขั้นต่อไปคือ ห้องสุขภาพ"
   },
   {
-   "id": "75f55150",
-   "lang": "th",
-   "text": "ก็จะถึงทางเข้า โรงพยาบาลครับ"
-  },
-  {
-   "id": "761df09b",
-   "lang": "th",
-   "text": "ถึงห้องตรวจแพทย์แล้วครับ"
-  },
-  {
    "id": "77969eeb",
    "lang": "th",
    "text": "แล้วเลี้ยวซ้าย เดินต่อประมาณ 35 เมตร"
+  },
+  {
+   "id": "7946a8cc",
+   "lang": "th",
+   "text": "ขอโทษค่ะ"
   },
   {
    "id": "79b6456d",
@@ -1171,49 +1132,94 @@
    "text": "แล้วเลี้ยวขวา เดินต่อประมาณ 10 เมตร"
   },
   {
-   "id": "79fc1bd8",
+   "id": "7a843755",
    "lang": "th",
-   "text": "ทำเสร็จเมื่อไหร่ กดปุ่มสีทองได้เลยนะครับ"
+   "text": "น้องนำทางเองค่ะ"
   },
   {
-   "id": "7cfffe9a",
+   "id": "7aff01c1",
    "lang": "th",
-   "text": "เขียนใบเบิกค่าตรวจสุขภาพที่ห้องการเงินครับ"
+   "text": "ไปห้องสุขภาพกันค่ะ"
   },
   {
-   "id": "80211d91",
+   "id": "7b77a4e7",
    "lang": "th",
-   "text": "ก็จะถึงเจาะเลือดครับ"
+   "text": "สวัสดีค่ะ!"
   },
   {
-   "id": "81fe45c1",
+   "id": "7eb6cebe",
    "lang": "th",
-   "text": "ตรวจครบแล้ว เก่งมากครับ"
+   "text": "แพทย์สั่งยาไหมคะ?"
   },
   {
-   "id": "86d5578e",
+   "id": "7ebfffaf",
    "lang": "th",
-   "text": "ไปเจาะเลือดนะครับ"
+   "text": "ห้องยาอยู่ไม่ไกลเลย"
   },
   {
-   "id": "870a3f02",
+   "id": "7f88335e",
    "lang": "th",
-   "text": "ยังเหลือตรวจอีก เจาะเลือด ครับ"
+   "text": "ก็ถึงเจาะเลือดแล้วค่ะ!"
   },
   {
-   "id": "896b583b",
+   "id": "81f6e31b",
    "lang": "th",
-   "text": "ถึงเจาะเลือดแล้วครับ"
+   "text": "ถึงการเงินแล้วค่ะ!"
   },
   {
-   "id": "8dec8c3e",
+   "id": "8449b5d4",
    "lang": "th",
-   "text": "เยี่ยมเลยครับ"
+   "text": "️ ถ้ามีอาการรุนแรง เช่น เจ็บหน้าอก หายใจไม่ออก หมดสติ กรุณาแจ้งเจ้าหน้าที่ที่อยู่ใกล้ที่สุดทันที ไม่ต้องรอคิวค่ะ"
   },
   {
-   "id": "91daf2aa",
+   "id": "871c885d",
    "lang": "th",
-   "text": "ยื่นบัตรประชาชนที่เวชระเบียน แจ้งว่ามาตรวจสุขภาพ แล้วไปห้องสุขภาพครับ"
+   "text": "ก็ถึงโถงกลางแล้วค่ะ!"
+  },
+  {
+   "id": "89066474",
+   "lang": "th",
+   "text": "เจาะเลือดเสร็จแล้ว เก่งมากค่ะ"
+  },
+  {
+   "id": "898fc449",
+   "lang": "th",
+   "text": "ขั้นต่อไปคือการเงินค่ะ"
+  },
+  {
+   "id": "8a463342",
+   "lang": "th",
+   "text": "ห้องสุขภาพอยู่แถวเดียวกับเวชระเบียน ติดกับห้องเอกซเรย์ค่ะ"
+  },
+  {
+   "id": "8b9af1db",
+   "lang": "th",
+   "text": "วันนี้น้องนำทางจะพาไปตรวจสุขภาพเองค่ะ"
+  },
+  {
+   "id": "8e00813b",
+   "lang": "th",
+   "text": "ลุยกันเลยค่ะ!"
+  },
+  {
+   "id": "8f07420e",
+   "lang": "th",
+   "text": "คุยกับคุณหมอเสร็จแล้ว บอกน้องด้วยนะคะว่าได้ยาไหม"
+  },
+  {
+   "id": "90ed4993",
+   "lang": "th",
+   "text": "รอเรียกชื่อ รับยาและฟังคำแนะนำจากเภสัชกร แล้วไปการเงินต่อค่ะ"
+  },
+  {
+   "id": "9134c0dd",
+   "lang": "th",
+   "text": "ขั้นต่อไปคือห้องสุขภาพค่ะ"
+  },
+  {
+   "id": "91cf29a2",
+   "lang": "th",
+   "text": "กลับไปห้องสุขภาพเพื่อฟังสรุปผลการตรวจค่ะ"
   },
   {
    "id": "92aaefb1",
@@ -1221,84 +1227,74 @@
    "text": "แล้วเลี้ยวขวา เดินต่อประมาณ 50 เมตร"
   },
   {
-   "id": "9399ed05",
+   "id": "931d1d4d",
    "lang": "th",
-   "text": "จะตรวจห้องไหนก่อนก็ได้นะครับ"
+   "text": "ไปโถงกลางกันค่ะ"
   },
   {
-   "id": "93b17674",
+   "id": "9444b39b",
    "lang": "th",
-   "text": "ยังเหลือตรวจอีก เจาะเลือด, ตรวจฟัน, เอกซเรย์ ครับ"
+   "text": "ก็ถึงทางเข้า โรงพยาบาลแล้วค่ะ!"
   },
   {
-   "id": "9622a7e3",
+   "id": "9762da99",
    "lang": "th",
-   "text": "ใกล้เสร็จแล้วครับ"
+   "text": "ยังเหลือตรวจอีก เอกซเรย์ ค่ะ"
   },
   {
-   "id": "9664d2c1",
+   "id": "97c2942c",
    "lang": "th",
-   "text": "เขียนใบเบิกค่าตรวจสุขภาพนะครับ"
+   "text": "น้องนำทางตอบได้เฉพาะเรื่องทางเดินและขั้นตอน เรื่องอาการ ผลตรวจ หรือการใช้ยา รบกวนสอบถามแพทย์ พยาบาลห้องสุขภาพ หรือเภสัชกรนะคะ"
   },
   {
-   "id": "9bb00518",
+   "id": "97dddd08",
    "lang": "th",
-   "text": "ก็จะถึงการเงินครับ"
+   "text": "ไม่เป็นไรค่ะ"
   },
   {
-   "id": "9d888189",
+   "id": "9d91aaf6",
    "lang": "th",
-   "text": "น้องนำทางเองครับ"
+   "text": "ถึงเจาะเลือดแล้วค่ะ!"
   },
   {
-   "id": "9eff6291",
+   "id": "9e206cb5",
    "lang": "th",
-   "text": "ไปโถงกลางนะครับ"
+   "text": "ยินดีค่ะ"
   },
   {
-   "id": "9fef30c3",
+   "id": "a01f9d43",
    "lang": "th",
-   "text": "ไปทางเข้า โรงพยาบาลนะครับ"
+   "text": "ก็ถึงทันตกรรมแล้วค่ะ!"
   },
   {
-   "id": "a09d623c",
+   "id": "a10d742f",
    "lang": "th",
-   "text": "ถามทางหรือขั้นตอนตรวจสุขภาพได้เลยนะครับ"
+   "text": "ไปเวชระเบียนกันค่ะ"
   },
   {
-   "id": "a38205dd",
+   "id": "a395485e",
    "lang": "th",
-   "text": "น้องนำทางยังไม่เข้าใจคำถามนี้ ลองเลือกหัวข้อด้านล่าง หรือสอบถามเจ้าหน้าที่ที่เคาน์เตอร์เวชระเบียนได้เลยครับ"
+   "text": "ก็ถึงห้องตรวจแพทย์แล้วค่ะ!"
   },
   {
-   "id": "a711faca",
+   "id": "aa1e0484",
    "lang": "th",
-   "text": "ยื่นบัตรประชาชน แล้วบอกเจ้าหน้าที่ว่ามาตรวจสุขภาพครับ"
+   "text": "แจ้งเจ้าหน้าที่ที่เวชระเบียนเพื่อขอรถเข็นได้เลยค่ะ"
   },
   {
-   "id": "a877cc4b",
+   "id": "aa526ada",
    "lang": "th",
-   "text": "ตรวจฟันเสร็จแล้ว"
+   "text": "ทำเสร็จเมื่อไหร่ กดปุ่มสีทองได้เลยนะคะ"
   },
   {
-   "id": "aa864bc6",
+   "id": "ac419c6f",
    "lang": "th",
-   "text": "ก็จะถึงโถงกลางครับ"
+   "text": "ไปทางเข้า โรงพยาบาลกันค่ะ"
   },
   {
-   "id": "aa88c368",
+   "id": "ad6e1790",
    "lang": "th",
-   "text": "ขอบคุณที่มาตรวจสุขภาพนะครับ"
-  },
-  {
-   "id": "ab2a4e9c",
-   "lang": "th",
-   "text": "ห้องสุขภาพอยู่แถวเดียวกับเวชระเบียน ติดกับห้องเอกซเรย์ครับ"
-  },
-  {
-   "id": "af582ffa",
-   "lang": "th",
-   "text": "ไปรับยาที่ห้องยาครับ"
+   "text": "เริ่มที่เวชระเบียนเลย ยื่นบัตรประชาชน แล้วบอกว่ามาตรวจสุขภาพนะคะ"
   },
   {
    "id": "b0073acc",
@@ -1306,24 +1302,9 @@
    "text": "แล้วเลี้ยวขวา เดินต่อประมาณ 15 เมตร"
   },
   {
-   "id": "b1c0a482",
+   "id": "b312138d",
    "lang": "th",
-   "text": "น้องนำทางตอบได้เฉพาะเรื่องทางเดินและขั้นตอน เรื่องอาการ ผลตรวจ หรือการใช้ยา รบกวนสอบถามแพทย์ พยาบาลห้องสุขภาพ หรือเภสัชกรนะครับ"
-  },
-  {
-   "id": "b2699265",
-   "lang": "th",
-   "text": "ยังเหลือตรวจอีก เอกซเรย์ ครับ"
-  },
-  {
-   "id": "b3501f82",
-   "lang": "th",
-   "text": "ไปห้องตรวจแพทย์นะครับ"
-  },
-  {
-   "id": "b37c9b91",
-   "lang": "th",
-   "text": "ไปห้องยานะครับ"
+   "text": "ยังเหลือตรวจอีก ตรวจฟัน ค่ะ"
   },
   {
    "id": "b508278a",
@@ -1331,49 +1312,54 @@
    "text": "แล้วเลี้ยวซ้าย เดินต่อประมาณ 45 เมตร"
   },
   {
-   "id": "ba13c9a8",
+   "id": "b5a89b13",
    "lang": "th",
-   "text": "ก็จะถึงทันตกรรมครับ"
+   "text": "ต่อไปไปพบคุณหมอกันนะคะ"
   },
   {
-   "id": "bbba77ce",
+   "id": "b5b1a43b",
    "lang": "th",
-   "text": "พบแพทย์เสร็จแล้ว แพทย์สั่งยาไหมครับ?"
+   "text": "ห้องน้ำอยู่มุมซ้ายบนของตึก ถัดจากทันตกรรมค่ะ"
   },
   {
-   "id": "bf34e3e2",
+   "id": "ba8d7f3a",
    "lang": "th",
-   "text": "ขอโทษครับ"
+   "text": "ไปห้องน้ำกันค่ะ"
   },
   {
-   "id": "bfce351d",
+   "id": "bba81f25",
    "lang": "th",
-   "text": "ยังกลับไม่ได้นะครับ"
+   "text": "ตรวจฟันเสร็จแล้ว เก่งมากค่ะ"
   },
   {
-   "id": "c0728efa",
+   "id": "bfc92b35",
    "lang": "th",
-   "text": "ถึงเวชระเบียนแล้วครับ"
+   "text": "ไปเอกซเรย์กันค่ะ"
   },
   {
-   "id": "c0e02886",
+   "id": "c0f3b7cc",
    "lang": "th",
-   "text": "ถึงการเงินแล้วครับ"
+   "text": "ไปห้องสุขภาพ ลงทะเบียนแล้วรับรายการตรวจนะคะ"
   },
   {
-   "id": "c249296f",
+   "id": "c2ef97ce",
    "lang": "th",
-   "text": "ไปทันตกรรมนะครับ"
+   "text": "ถามทางหรือขั้นตอนตรวจสุขภาพได้เลยนะคะ"
   },
   {
-   "id": "c48b106f",
+   "id": "c2f497d5",
    "lang": "th",
-   "text": "ลงทะเบียนแล้วรับรายการตรวจนะครับ"
+   "text": "ถึงโถงกลางแล้วค่ะ!"
   },
   {
-   "id": "c53275c5",
+   "id": "c4ac4851",
    "lang": "th",
-   "text": "ห้องเจาะเลือดอยู่ฝั่งซ้ายสุดของตึกครับ"
+   "text": "ก็ถึงเอกซเรย์แล้วค่ะ!"
+  },
+  {
+   "id": "c53d8ad6",
+   "lang": "th",
+   "text": "ถึงห้องตรวจแพทย์แล้วค่ะ!"
   },
   {
    "id": "c7fc9a41",
@@ -1381,9 +1367,9 @@
    "text": "แล้วเลี้ยวขวา เดินต่ออีกนิดเดียว"
   },
   {
-   "id": "c8a01386",
+   "id": "c8056bec",
    "lang": "th",
-   "text": "ก็จะถึงห้องยาครับ"
+   "text": "พบแพทย์เสร็จแล้ว แพทย์สั่งยาไหมคะ?"
   },
   {
    "id": "c9705d68",
@@ -1396,14 +1382,14 @@
    "text": "แล้วเลี้ยวซ้าย เดินต่อประมาณ 30 เมตร"
   },
   {
-   "id": "cccd892f",
+   "id": "ca64d6ec",
    "lang": "th",
-   "text": "เริ่มที่เวชระเบียนครับ"
+   "text": "ยังเหลือตรวจอีก เจาะเลือด ค่ะ"
   },
   {
-   "id": "d0b93c7c",
+   "id": "cd944e4a",
    "lang": "th",
-   "text": "กลับไปห้องสุขภาพเพื่อฟังสรุปผลการตรวจครับ"
+   "text": "ถึงห้องน้ำแล้วค่ะ!"
   },
   {
    "id": "d7948bbd",
@@ -1411,59 +1397,54 @@
    "text": "เดินตรงไปประมาณ 35 เมตร"
   },
   {
-   "id": "db55f10c",
+   "id": "d8db1e0a",
    "lang": "th",
-   "text": "ขอให้สุขภาพแข็งแรงนะครับ"
+   "text": "ยังเหลือตรวจอีก เจาะเลือด, ตรวจฟัน, เอกซเรย์ ค่ะ"
   },
   {
-   "id": "e20c76bb",
+   "id": "d90233fc",
    "lang": "th",
-   "text": "ไปการเงินนะครับ"
+   "text": "สวัสดีค่ะ"
   },
   {
-   "id": "e50ae3d1",
+   "id": "e32b475d",
    "lang": "th",
-   "text": "ยังเหลือตรวจอีก ตรวจฟัน ครับ"
+   "text": "เก่งที่สุดเลย ขอบคุณที่มาตรวจสุขภาพนะคะ"
   },
   {
-   "id": "e6212766",
+   "id": "e3593d1d",
    "lang": "th",
-   "text": "ห้องการเงินอยู่ตรงกลางตึก ติดกับห้องยาครับ"
+   "text": "ต้องตรวจตามรายการให้ครบก่อนพบแพทย์นะคะ"
   },
   {
-   "id": "e73b45dc",
+   "id": "e478a2e5",
    "lang": "th",
-   "text": "ก็จะถึงเวชระเบียนครับ"
+   "text": "ตรวจห้องไหนก่อนก็ได้ น้องพาไปห้องที่ใกล้ที่สุดก่อนนะคะ"
   },
   {
-   "id": "e7bfa0b3",
+   "id": "e8efc9d0",
    "lang": "th",
-   "text": "ห้องน้ำอยู่มุมซ้ายบนของตึก ถัดจากทันตกรรมครับ"
+   "text": "ยังเหลือตรวจอีก เจาะเลือด, เอกซเรย์ ค่ะ"
   },
   {
-   "id": "e9f04d73",
+   "id": "eb729a95",
    "lang": "th",
-   "text": "ไม่มียา ไปห้องการเงินได้เลยครับ"
+   "text": "ถึงห้องยาแล้วค่ะ!"
   },
   {
-   "id": "efc16a64",
+   "id": "ec8c386f",
    "lang": "th",
-   "text": "ยังเหลือตรวจอีก เจาะเลือด, ตรวจฟัน ครับ"
+   "text": "เริ่มที่เวชระเบียนค่ะ"
   },
   {
-   "id": "f1530c5c",
+   "id": "efba0b9d",
    "lang": "th",
-   "text": "ลงทะเบียนตรวจสุขภาพและรับรายการตรวจ แล้วไปตรวจตามรายการครับ"
+   "text": "ก็ถึงห้องยาแล้วค่ะ!"
   },
   {
-   "id": "f2dc8670",
+   "id": "f1b02263",
    "lang": "th",
-   "text": "ขั้นสุดท้ายคือกลับไปห้องสุขภาพครับ"
-  },
-  {
-   "id": "f5888caf",
-   "lang": "th",
-   "text": "ถึงห้องน้ำแล้วครับ"
+   "text": "ไปห้องการเงิน เขียนใบเบิกค่าตรวจสุขภาพกันนะคะ"
   },
   {
    "id": "f5e3c2f9",
@@ -1471,19 +1452,14 @@
    "text": "แล้วเลี้ยวซ้าย เดินต่อประมาณ 15 เมตร"
   },
   {
-   "id": "f6e29ed4",
+   "id": "f89fb439",
    "lang": "th",
-   "text": "ต่อไปไปห้องการเงินกันครับ"
+   "text": "ไปต่อกันเลยค่ะ!"
   },
   {
-   "id": "f7f9fe4c",
+   "id": "f94bbc29",
    "lang": "th",
-   "text": "ถึงห้องสุขภาพแล้วครับ"
-  },
-  {
-   "id": "f81faaac",
-   "lang": "th",
-   "text": "ถึงเอกซเรย์แล้วครับ"
+   "text": "ถึงห้องสุขภาพแล้วค่ะ!"
   },
   {
    "id": "fa21822b",
@@ -1491,14 +1467,29 @@
    "text": "เดินตรงไปประมาณ 20 เมตร"
   },
   {
+   "id": "fab631a3",
+   "lang": "th",
+   "text": "ยังกลับไม่ได้นะคะ"
+  },
+  {
+   "id": "fab6e7fb",
+   "lang": "th",
+   "text": "ไม่มียา ไปห้องการเงินได้เลยค่ะ"
+  },
+  {
+   "id": "fafd4f09",
+   "lang": "th",
+   "text": "กลับบ้านปลอดภัยค่ะ!"
+  },
+  {
+   "id": "fbe8e12f",
+   "lang": "th",
+   "text": "ถึงเวชระเบียนแล้วค่ะ!"
+  },
+  {
    "id": "fc4777bc",
    "lang": "th",
    "text": "แล้วเลี้ยวขวา เดินต่อประมาณ 20 เมตร"
-  },
-  {
-   "id": "fd2ce2b9",
-   "lang": "th",
-   "text": "ไปเอกซเรย์นะครับ"
   }
  ]
 }
