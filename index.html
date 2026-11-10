@@ -537,13 +537,25 @@ function voiceFor(L){const vs=langVoices(L);if(!vs.length)return null;
   return vs.slice().sort((a,b)=>voiceScore(b)-voiceScore(a))[0]}
 function cleanSpeech(t){return t.replace(/(\d+)\s*ม\./g,"$1 เมตร").replace(/(\d+)\s*m\b/g,"$1 meters").replace(/รพ\./g,"โรงพยาบาล").replace(/\(.*?\)/g,"")
   .replace(/[\u{1F000}-\u{1FFFF}←-⇿⌀-⏿☀-➿⬀-⯿⚑✓✕☰⤢◎⇧⇩↰↱↑“”"]/gu,"").replace(/\s+/g," ").trim()}
-function chunks(t){return cleanSpeech(t).split(/(?<=[.!?。]|ค่ะ|คะ|นะคะ)\s+/).map(x=>x.replace(/\.$/,"").trim()).filter(Boolean)}
+function chunks(t){return cleanSpeech(t).split(/\s*§\s*/).flatMap(x=>x.split(/(?<=[.!?。]|ค่ะ|คะ|นะคะ)\s+/)).map(x=>x.replace(/\.$/,"").trim()).filter(Boolean)}
+/* ไฟล์เสียงคนแบบธรรมชาติ (สร้างไว้ล่วงหน้าในโฟลเดอร์ voice/) ถ้าไม่มีไฟล์ จะใช้เสียงในมือถือแทน */
+let clipSet=null;
+try{fetch("voice/manifest.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.files){clipSet=new Set(j.files);fillVoices()}}).catch(()=>{})}catch(e){}
+const clipId=(L,c)=>{let h=0x811c9dc5;for(const ch of L+"|"+c){h^=ch.codePointAt(0);h=Math.imul(h,0x01000193)>>>0}return h.toString(16).padStart(8,"0")};
+const player=typeof Audio!=="undefined"?new Audio():null;let sayTok=0;
+function stopSpeech(){sayTok++;try{player&&player.pause()}catch(e){}try{canSpeak&&speechSynthesis.cancel()}catch(e){}}
+function ttsChunk(c,L,next){if(!canSpeak){next();return}
+  try{const v=voiceFor(L);if(!v&&!warnedVoice&&!clipSet&&allVoices().length){warnedVoice=true;toast("🔇",UI[L].noVoice)}
+    const u=new SpeechSynthesisUtterance(c);u.lang=L==="th"?"th-TH":"en-US";if(v)u.voice=v;u.rate=L==="th"?.93:.95;u.pitch=1.05;
+    u.onend=next;u.onerror=next;speechSynthesis.speak(u)}catch(e){next()}}
 function say(text,force){
-  lastSpeech=text;if(!canSpeak||(!voiceOn&&!force)||!text)return;
-  try{speechSynthesis.cancel();const L=/[฀-๿]/.test(text)?"th":"en";const v=voiceFor(L);
-    if(!v&&!warnedVoice&&allVoices().length){warnedVoice=true;toast("🔇",UI[L].noVoice)}
-    chunks(text).forEach(c=>{const u=new SpeechSynthesisUtterance(c);u.lang=L==="th"?"th-TH":"en-US";if(v)u.voice=v;
-      u.rate=L==="th"?.93:.95;u.pitch=1.05;speechSynthesis.speak(u)})}catch(e){}
+  lastSpeech=text;if((!voiceOn&&!force)||!text)return;
+  stopSpeech();const tok=sayTok,L=/[฀-๿]/.test(text)?"th":"en",parts=chunks(text);
+  const go=i=>{if(tok!==sayTok||i>=parts.length)return;const c=parts[i],id=clipId(L,c),nx=()=>go(i+1);
+    if(player&&clipSet&&clipSet.has(id)){let fell=false;const fb=()=>{if(fell||tok!==sayTok)return;fell=true;ttsChunk(c,L,nx)};
+      player.onended=()=>{if(!fell)nx()};player.onerror=fb;player.src=`voice/${id}.mp3`;const pr=player.play();if(pr&&pr.catch)pr.catch(fb)}
+    else ttsChunk(c,L,nx)};
+  go(0);
 }
 function chime(big){if(!voiceOn)return;try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const t=actx.currentTime;
   (big?[523,659,784,1047]:[659,988]).forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain();o.type="triangle";o.frequency.value=f;
@@ -571,24 +583,24 @@ function spokenRoute(withLead=true){if(here===dest)return"";const p=shortest(her
   });
   const end=th?`ก็จะถึง${nm(dest,lang)}ค่ะ`:`and you'll reach ${nm(dest,lang)}.`;
   const lead=th?`ไป${nm(dest,lang)}นะคะ`:`To ${nm(dest,lang)}:`;
-  return`${withLead?lead+" ":""}${out.join(". ")} ${end}`}
+  return`${withLead?lead+" § ":""}${out.join(" § ")} § ${end}`}
 const routeSpeech=spokenRoute;
-function sayQuest(){say(`${SPOKEN[stage][lang]} ${spokenRoute(stage==="tests")}`)}
+function sayQuest(){say(`${SPOKEN[stage][lang]} § ${spokenRoute(stage==="tests")}`)}
 function sayRoute(){const r=spokenRoute();if(r)say(r)}
 function sayArrive(){const th=lang==="th",n=nm(here,lang),target=stage==="tests"?(dest in done&&!done[dest]):dest===stageNode(stage);
   if(stage==="doc"&&here==="doc")return say(th?"ถึงห้องตรวจแพทย์แล้วค่ะ พบแพทย์เสร็จแล้ว บอกน้องด้วยนะคะว่าแพทย์สั่งยาไหม":"You've reached the doctor's room. After you see the doctor, let me know if you got any medicine.");
   if(target)return say(th?`ถึง${n}แล้วค่ะ ทำเสร็จเมื่อไหร่ กดปุ่มสีทองได้เลยนะคะ`:`Here we are at ${n}. When you're finished, tap the gold button.`);
   say(th?`ถึง${n}แล้วค่ะ`:`You've arrived at ${n}.`)}
-function sayTestDone(n){const th=lang==="th";say(`${th?`เยี่ยมเลยค่ะ ${n}เสร็จแล้ว`:`Nice work, ${n} is done.`} ${spokenRoute()}`)}
+function sayTestDone(n){const th=lang==="th";say(`${th?`เยี่ยมเลยค่ะ ${n}เสร็จแล้ว`:`Nice work, ${n} is done.`} § ${spokenRoute()}`)}
 function sayAllDone(){say(SPOKEN.home[lang])}
 function voiceUI(){const t=UI[lang];$("voiceBtn").textContent=voiceOn?"🔊":"🔇";$("voiceBtn").setAttribute("aria-label",voiceOn?t.voiceOff:t.voiceOn);
-  $("sayBtn").textContent=t.replay;$("sayBtn").hidden=!canSpeak;$("voiceBtn").hidden=!canSpeak;fillVoices()}
+  $("sayBtn").textContent=t.replay;fillVoices()}
 function fillVoices(){const sel=$("voiceSel");if(!sel)return;const vs=langVoices(lang),cur=voiceFor(lang);
-  $("voiceBox").hidden=!canSpeak||!vs.length;$("voiceLbl").textContent=UI[lang].voicePick;$("voiceTest").textContent=UI[lang].voiceTest;
+  $("voiceBox").hidden=!canSpeak||!vs.length||!!clipSet;$("voiceLbl").textContent=UI[lang].voicePick;$("voiceTest").textContent=UI[lang].voiceTest;
   sel.innerHTML=vs.slice().sort((a,b)=>voiceScore(b)-voiceScore(a)).map(v=>`<option value="${esc(v.voiceURI)}"${cur&&v.voiceURI===cur.voiceURI?" selected":""}>${esc(v.name)}</option>`).join("")}
 $("voiceBtn").onclick=()=>{voiceOn=!voiceOn;try{localStorage.setItem("nongnamtang-voice",voiceOn?"1":"0")}catch(e){}voiceUI();
-  if(voiceOn)sayQuest();else try{speechSynthesis.cancel()}catch(e){}};
-$("sayBtn").onclick=()=>say(lastSpeech||`${SPOKEN[stage][lang]} ${spokenRoute()}`,true);
+  if(voiceOn)sayQuest();else stopSpeech()};
+$("sayBtn").onclick=()=>say(lastSpeech||`${SPOKEN[stage][lang]} § ${spokenRoute()}`,true);
 $("voiceSel").onchange=e=>{voicePick=e.target.value;try{localStorage.setItem("nongnamtang-voice-name",voicePick)}catch(x){}};
 $("voiceTest").onclick=()=>say(lang==="th"?"สวัสดีค่ะ น้องนำทางเองค่ะ วันนี้จะพาไปตรวจสุขภาพให้ครบทุกห้องนะคะ":"Hi, I'm your hospital guide. I'll take you through every step of your check-up today.",true);
 try{speechSynthesis.onvoiceschanged=()=>fillVoices()}catch(e){}
@@ -712,7 +724,7 @@ function addBot(res){
   const d=document.createElement("div");d.className="msg bot"+(res.urgent?" urgent":"");d.textContent=res.text;msgs.appendChild(d);
   const c=document.createElement("div");c.className="chips";
   if(res.stage){goToStage(res.stage,res.from)}else if(res.dest){setDest(res.dest)}
-  say(res.text.replace(/ ดูเส้นทางบนแผนที่ได้เลยค่ะ| See the route on the map\./,"")+(res.dest||res.stage?" "+spokenRoute():""));
+  say(res.text.replace(/ ดูเส้นทางบนแผนที่ได้เลยค่ะ| See the route on the map\./,"")+(res.dest||res.stage?" § "+spokenRoute():""));
   if(res.stage||res.dest){const b=document.createElement("button");b.type="button";b.className="chip go";b.textContent=UI[L].showMap;b.onclick=closeSheets;c.appendChild(b)}
   (res.chips||[]).forEach(t=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=t;b.onclick=()=>send(t);c.appendChild(b)});
   if(c.children.length)msgs.appendChild(c);
@@ -727,7 +739,7 @@ $("form").addEventListener("submit",e=>{e.preventDefault();const q=$("q");send(q
 
 render();
 addBot({text:"สวัสดีค่ะ น้องนำทางพร้อมช่วยค่ะ ถามทางหรือขั้นตอนตรวจสุขภาพได้เลย เช่น “รับบัตรแล้วไปไหนต่อ” (You can ask in English too)",chips:quickChips("th")});
-lastSpeech="";try{speechSynthesis.cancel()}catch(e){}
+lastSpeech="";stopSpeech();
 </script>
 
 <script>
