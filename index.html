@@ -83,6 +83,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .obj.ok .on{color:var(--muted);text-decoration:line-through}
 .obj .dist{font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums}
 .obj.cur .dist{color:var(--accent);font-weight:700}
+.ft{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.ft .fields{display:flex;flex-direction:column;gap:6px;min-width:0}
+.ft label{display:grid;grid-template-columns:62px minmax(0,1fr);align-items:center;gap:8px;font:600 .85rem var(--f-body);color:var(--muted)}
+.ft select{min-width:0;font:600 1rem var(--f-body);padding:9px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.ft .swap{width:44px;height:84px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--accent);font-size:1.3rem;cursor:pointer}
+.actions.solo{grid-template-columns:1fr}
 .choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .btn{font:600 1rem var(--f-body);padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
@@ -304,7 +310,7 @@ const STAGES={
 const ONE_FLOOR=new Set(Object.values(NODES).map(n=>n.f)).size===1;
 const ICONS={reg:"🪪",health:"🩺",tests:"🧪",doc:"👨‍⚕️",rx:"💊",pay:"🧾",summary:"📋",home:"🏠"};
 const UI={
-  th:{quest:(a,b)=>`ภารกิจ ${a}/${b}`,log:"☰ ภารกิจ",logH:"สมุดภารกิจ",lang:"EN",go:"ไปที่",
+  th:{navTag:"🧭 นำทาง",navTitle:"จะไปห้องไหนคะ?",navDesc:"เลือกจุดเริ่มกับปลายทาง หรือแตะห้องบนแผนที่เพื่อเลือกปลายทาง",from:"เริ่มที่",to:"ไปที่",pickTo:"— เลือกห้อง —",swap:"สลับ",menu:"☰ เมนู",menuH:"เมนู",pickHint:"เลือกห้องที่จะไปด้านบน หรือแตะห้องบนแผนที่",navHint:"แตะห้องบนแผนที่เพื่อนำทางไปห้องนั้น เดินถึงแล้วกด \"ถึงแล้ว\" ตำแหน่งของคุณจะย้ายไปห้องนั้น แล้วเลือกห้องถัดไปได้เลย",quest:(a,b)=>`ภารกิจ ${a}/${b}`,log:"☰ ภารกิจ",logH:"สมุดภารกิจ",lang:"EN",go:"ไปที่",
       meds:"💊 แพทย์สั่งยา",noMeds:"ไม่มียา",ifMeds:"ถ้ามียา",tick:"ติ๊กเมื่อตรวจเสร็จ หรือถ้าไม่มีในรายการของคุณ",
       arrived:"🚶 ถึงแล้ว",atHere:"คุณอยู่ที่นี่",finish:{reg:"ยื่นบัตรแล้ว ✓",health:"ลงทะเบียนแล้ว ✓",tests:"ตรวจเสร็จแล้ว ✓",rx:"รับยาแล้ว ✓",pay:"เขียนใบเบิกแล้ว ✓",summary:"ฟังผลแล้ว ✓"},reset:"↺ เริ่มใหม่ (ผู้ป่วยคนใหม่)",replay:"🔊 ฟังอีกครั้ง",voicePick:"เสียงพูด (เลือกเสียงที่ฟังเป็นธรรมชาติที่สุดในมือถือเครื่องนี้)",voiceTest:"▶ ทดลองฟัง",voiceOn:"เปิดเสียงพูด",voiceOff:"ปิดเสียงพูด",noVoice:"มือถือเครื่องนี้ไม่มีเสียงภาษาไทย ลองตั้งค่าเสียงอ่านข้อความในมือถือ",go2:"ไปที่",arriveAt:n=>`ถึง${n}แล้ว`,pressGold:"ทำเสร็จแล้วกดปุ่มสีทองนะคะ",missionSay:"ภารกิจต่อไป",resetSure:"แตะอีกครั้งเพื่อยืนยันเริ่มใหม่",already:"คุณอยู่ที่นี่แล้ว",youHere:"คุณอยู่ที่นี่",entrance:"ทางเข้า",
       stats:(m,min)=>`${m} ม. · ${min} นาที`,camAll:"⤢ ทั้งตึก",camRoute:"◎ เส้นทาง",chat:"💬 ถาม",chatH:"ถามน้องนำทาง",
@@ -312,7 +318,7 @@ const UI={
       done:"ภารกิจสำเร็จ",allDone:"ครบทุกภารกิจ!",locked:"🔒",
       hint:"เดินถึงห้องแล้วกด \"ถึงแล้ว\" ทำเสร็จแล้วกดปุ่มสีทองเพื่อไปภารกิจต่อไป แอปจำความคืบหน้าไว้ ปิดเว็บแล้วเปิดใหม่ก็ไม่หาย แตะห้องบนแผนที่เพื่อนำทางไปห้องนั้นได้",
       note:"ต้นแบบ · แผนผังจากผังอาคารจริง ระยะทางโดยประมาณ · น้องนำทางตอบเฉพาะเรื่องทางเดินและขั้นตอนบริการ ไม่ให้คำแนะนำทางการแพทย์"},
-  en:{quest:(a,b)=>`Quest ${a}/${b}`,log:"☰ Quests",logH:"Quest log",lang:"ไทย",go:"Go to",
+  en:{navTag:"🧭 Directions",navTitle:"Where would you like to go?",navDesc:"Choose where you are and where to go, or tap a room on the map.",from:"From",to:"To",pickTo:"— choose a room —",swap:"Swap",menu:"☰ Menu",menuH:"Menu",pickHint:"Choose a room above, or tap one on the map",navHint:"Tap a room on the map for directions. When you get there, tap \"I'm here\" and your location moves to that room, ready for the next trip.",quest:(a,b)=>`Quest ${a}/${b}`,log:"☰ Quests",logH:"Quest log",lang:"ไทย",go:"Go to",
       meds:"💊 Medicine prescribed",noMeds:"No medicine",ifMeds:"if prescribed",tick:"Tick when done, or if it is not on your list",
       arrived:"🚶 I'm here",atHere:"You are here",finish:{reg:"Registered ✓",health:"Signed in ✓",tests:"Test done ✓",rx:"Got my medicine ✓",pay:"Form done ✓",summary:"Got my results ✓"},reset:"↺ Start over (new patient)",replay:"🔊 Repeat",voicePick:"Voice (pick the most natural one on this phone)",voiceTest:"▶ Try it",voiceOn:"Voice on",voiceOff:"Voice off",noVoice:"This phone has no voice for this language. Check your phone's text-to-speech settings.",go2:"Go to",arriveAt:n=>`You have arrived at ${n}.`,pressGold:"When you are done, tap the gold button.",missionSay:"Next quest",resetSure:"Tap again to confirm",already:"You are already here",youHere:"You are here",entrance:"Entrance",
       stats:(m,min)=>`${m} m · ${min} min`,camAll:"⤢ Whole floor",camRoute:"◎ Route",chat:"💬 Ask",chatH:"Ask the guide",
@@ -322,6 +328,8 @@ const UI={
       note:"Prototype · based on the real floor plan, distances are approximate · The guide answers directions and service steps only, not medical advice."}
 };
 
+/* โหมดใช้งาน: false = เลือกเริ่ม/ปลายทางเอง (ตอนนี้), true = ภารกิจตรวจสุขภาพตามลำดับ (เปิดเมื่อได้ลำดับจริง) */
+const QUEST_MODE=false;
 /* ================= สถานะ ================= */
 let lang="th", stage="reg", hasMeds=null, here="reg", dest="reg", viewFloor=1, camMode="route";
 const done={lab:false,den:false,xray:false};
@@ -404,7 +412,7 @@ function renderMap(){
   let s=`<defs><pattern id="grid" width="4" height="4" patternUnits="userSpaceOnUse"><path class="gl" d="M4 0H0V4"/></pattern></defs>`;
   s+=`<rect x="-300" y="-300" width="700" height="700" fill="url(#grid)"/>`;
   const fl=RR({x:2,y:2,w:100,h:40.5});s+=`<rect class="floorr" x="${fl.x}" y="${fl.y}" width="${fl.w}" height="${fl.h}"/>`;
-  const questRooms=stage==="tests"?TESTS.map(x=>x.id):[];
+  const questRooms=QUEST_MODE&&stage==="tests"?TESTS.map(x=>x.id):[];
   ROOMS.forEach(rm=>{
     const q=RR(rm),hit=rm.node&&rm.node===dest&&here!==dest,qr=questRooms.includes(rm.node);
     s+=`<rect class="room${hit?" hit":qr&&!done[rm.node]?" quest":""}" x="${q.x}" y="${q.y}" width="${q.w}" height="${q.h}"${rm.node?` data-node="${rm.node}"`:""}/>`;
@@ -422,7 +430,7 @@ function renderMap(){
   questRooms.forEach(id=>{const n=NODES[id],ok=done[id];if(id===dest&&here!==dest)return;
     s+=at(n.x,n.y,`<circle class="badge ${ok?"ok":"todo"}" r="10" cy="-2"/><text class="bt ${ok?"ok":"todo"}" y="2.5">${ok?"✓":"!"}</text>`)});
   // destination pin
-  if(here!==dest)s+=at(D.x,D.y,`<path class="pin" d="M0 0 C-4 -7 -11 -11 -11 -18 A11 11 0 1 1 11 -18 C11 -11 4 -7 0 0Z"/><text y="-13.5" text-anchor="middle" font-size="12">${ICONS[stage]&&dest===stageNode(stage)?ICONS[stage]:"🚩"}</text>`);
+  if(here!==dest)s+=at(D.x,D.y,`<path class="pin" d="M0 0 C-4 -7 -11 -11 -11 -18 A11 11 0 1 1 11 -18 C11 -11 4 -7 0 0Z"/><text y="-13.5" text-anchor="middle" font-size="12">${QUEST_MODE&&ICONS[stage]&&dest===stageNode(stage)?ICONS[stage]:"🚩"}</text>`);
   // you are here
   s+=at(H.x,H.y,`<circle class="pulse" r="9"/><circle class="here" r="8"/><text class="ml" y="-15" text-anchor="middle" fill="var(--here)">${t.youHere}</text>`);
   svg.innerHTML=s;
@@ -435,15 +443,15 @@ function renderMap(){
 function target(p){
   const r=svg.getBoundingClientRect(),W=r.width||400,Hh=r.height||700;
   let pts;
-  if(camMode==="all")pts=[P(2,2),P(102,42.5)];
+  if(camMode==="all"||(!QUEST_MODE&&p.length<2))pts=[P(2,2),P(102,42.5)];
   else pts=p.map(k=>P(NODES[k].x,NODES[k].y));
   let x0=Math.min(...pts.map(q=>q[0])),x1=Math.max(...pts.map(q=>q[0])),y0=Math.min(...pts.map(q=>q[1])),y1=Math.max(...pts.map(q=>q[1]));
-  const pad=camMode==="all"?3:7,min=camMode==="all"?0:24;
+  const wide=camMode==="all"||(!QUEST_MODE&&p.length<2),pad=wide?3:7,min=wide?0:24;
   x0-=pad;x1+=pad;y0-=pad;y1+=pad;
   if(x1-x0<min){const c=(x0+x1)/2;x0=c-min/2;x1=c+min/2}
   if(y1-y0<min){const c=(y0+y1)/2;y0=c-min/2;y1=c+min/2}
   const top=$("quest").getBoundingClientRect().bottom-r.top+10;
-  const bot=r.bottom-$("navp").getBoundingClientRect().top+10+44;
+  const nv=$("navp").hidden,bot=r.bottom-(nv?document.querySelector(".fabrow"):$("navp")).getBoundingClientRect().top+10+(nv?0:44);
   const Hv=Math.max(140,Hh-top-bot);
   const sc=Math.min(W/(x1-x0),Hv/(y1-y0),20);
   const vw=W/sc,vh=Hh/sc,cx=(x0+x1)/2,cy=(y0+y1)/2;
@@ -480,16 +488,34 @@ svg.addEventListener("pointermove",e=>{const pr=ptrs.get(e.pointerId);if(!pr||!c
 const endPtr=e=>{ptrs.delete(e.pointerId);if(ptrs.size<2)pinch0=null;if(!ptrs.size)svg.classList.remove("drag")};
 svg.addEventListener("pointerup",endPtr);svg.addEventListener("pointercancel",endPtr);
 svg.addEventListener("wheel",e=>{e.preventDefault();goFree();zoomAt(Math.exp(e.deltaY*.0015),e.clientX,e.clientY)},{passive:false});
-svg.addEventListener("click",e=>{if(moved)return;const r=e.target.closest("[data-node]");if(r&&r.dataset.node!==here){dest=r.dataset.node;camMode="route";renderMap();sayRoute()}});
+svg.addEventListener("click",e=>{if(moved)return;const r=e.target.closest("[data-node]");if(r&&r.dataset.node!==here){dest=r.dataset.node;camMode="route";if(QUEST_MODE)renderMap();else render();sayRoute()}});
 $("camBtn").onclick=()=>{camMode=camMode==="all"?"route":"all";renderMap()};
 $("hereSel").onchange=e=>{here=e.target.value;if(stage==="tests"&&dest in done)dest=nextTest()||dest;render();sayRoute()};
 addEventListener("hashchange",()=>{if(readHash()){if(stage==="tests")dest=nextTest()||dest;render()}});
-function setDest(id){dest=id;camMode="route";renderMap()}
+function setDest(id){dest=id;camMode="route";if(QUEST_MODE)renderMap();else render()}
 
 /* ================= ภารกิจ ================= */
 let toastT=0;
 function toast(top,msg){const el=$("toast");el.innerHTML=`<small>${esc(top)}</small>${esc(msg)}`;el.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("show"),1700)}
+const PLACES=["reg","health","lab","den","xray","doc","rx","pay","wc","lobby","ent"];
+function renderNav(){
+  const t=UI[lang];document.documentElement.lang=lang;
+  $("langBtn").textContent=t.lang;$("logBtn").textContent=t.menu;$("logH").textContent=t.menuH;$("chatH").textContent=t.chatH;
+  $("chatBtn").textContent=t.chat;$("q").placeholder=t.ph;$("sendBtn").textContent=t.send;
+  $("hint").textContent=t.navHint;$("note").textContent=t.note;$("qlog").hidden=true;
+  $("qtag").textContent=t.navTag;$("qbar").hidden=true;$("qico").textContent="🚩";$("qtitle").textContent=t.navTitle;
+  $("qdesc").textContent=t.navDesc;$("qdesc").hidden=true;
+  const opt=(sel,none)=>(none?`<option value=""${sel?"":" selected"}>${t.pickTo}</option>`:"")+PLACES.map(k=>`<option value="${k}"${k===sel?" selected":""}>${esc(NODES[k][lang])}</option>`).join("");
+  $("qextra").hidden=false;
+  $("qextra").innerHTML=`<div class="ft"><div class="fields"><label for="fromSel">📍 ${t.from}<select id="fromSel">${opt(here)}</select></label><label for="toSel">🚩 ${t.to}<select id="toSel">${opt(here===dest?"":dest,true)}</select></label></div><button type="button" class="swap" data-swap aria-label="${t.swap}">⇅</button></div>`;
+  document.querySelector(".herechip").hidden=true;document.querySelector(".actions").classList.add("solo");
+  $("navp").hidden=here===dest;
+  const ab=$("arrivedBtn");
+  if(here!==dest){ab.textContent=t.arrived;ab.disabled=false;ab.className="btn primary"}else{ab.textContent=t.pickHint;ab.disabled=true;ab.className="btn"}
+  $("resetBtn").hidden=true;voiceUI();renderMap();save();
+}
 function render(){
+  if(!QUEST_MODE)return renderNav();
   const t=UI[lang];document.documentElement.lang=lang;
   $("langBtn").textContent=t.lang;$("logBtn").textContent=t.log;$("logH").textContent=t.logH;$("chatH").textContent=t.chatH;
   $("chatBtn").textContent=t.chat;$("q").placeholder=t.ph;$("sendBtn").textContent=t.send;
@@ -618,7 +644,8 @@ function goToStage(id,from){
 }
 function advance(){const F=FLOW(),i=F.indexOf(stage);if(i<F.length-1)goToStage(F[i+1])}
 $("arrivedBtn").onclick=()=>{
-  if(here!==dest){here=dest;render();sayArrive();return}
+  if(here!==dest){here=dest;render();if(QUEST_MODE)sayArrive();else say(ARRIVE.plain[lang](nm(here,lang)));return}
+  if(!QUEST_MODE)return;
   if(stage==="tests"&&dest in done){done[dest]=true;const nm2=TESTS.find(o=>o.id===dest)[lang];
     if(!left().length){goToStage("doc");return}toast(UI[lang].done,nm2);chime();dest=nextTest();render();sayTestDone(nm2);return}
   if(dest===stageNode(stage)&&stage!=="doc"&&stage!=="home"){advance();return}
@@ -626,9 +653,12 @@ $("arrivedBtn").onclick=()=>{
 };
 $("quest").addEventListener("click",e=>{
   const g=e.target.closest("[data-go]");if(g){if(!done[g.dataset.go]){dest=g.dataset.go;render();sayRoute()}return}
+  if(e.target.closest("[data-swap]")){if(here!==dest){[here,dest]=[dest,here];camMode="route";render();sayRoute()}return}
   const m=e.target.closest("[data-meds]");if(m){hasMeds=m.dataset.meds==="1";goToStage(hasMeds?"rx":"pay","doc")}
 });
-$("quest").addEventListener("change",e=>{const c=e.target.closest("[data-t]");if(!c)return;done[c.dataset.t]=c.checked;
+$("quest").addEventListener("change",e=>{
+  if(e.target.id==="fromSel"){here=e.target.value;camMode="route";render();sayRoute();return}
+  if(e.target.id==="toSel"){dest=e.target.value||here;camMode="route";render();sayRoute();return}const c=e.target.closest("[data-t]");if(!c)return;done[c.dataset.t]=c.checked;
   if(!left().length){goToStage("doc");return}if(done[dest]||!(dest in done))dest=nextTest();render()});
 $("langBtn").onclick=()=>{lang=lang==="th"?"en":"th";render()};
 let resetArm=0;
@@ -652,7 +682,7 @@ const norm=s=>s.toLowerCase().replace(/[\s\-.,?!'"“”]/g,"");
 const SEE={th:" ดูเส้นทางบนแผนที่ได้เลยค่ะ",en:" See the route on the map."};
 const place=(L,th,en,node)=>({text:T(L,th,en)+SEE[L],dest:node});
 const goStage=(id,L,lead,from)=>({text:`${lead} ${stageDir(id,L)}`.trim(),stage:id,from});
-const quickChips=L=>L==="th"?["รับบัตรแล้วไปไหนต่อ","ตรวจครบแล้วไปไหน","ห้องน้ำอยู่ไหน","กลับบ้านได้หรือยัง"]:["I registered, what next?","All tests done, where next?","Where is the toilet?","Can I go home?"];
+const quickChips=L=>!QUEST_MODE?(L==="th"?["ห้องน้ำอยู่ไหน","เจาะเลือดที่ไหน","เอกซเรย์อยู่ไหน","การเงินอยู่ไหน"]:["Where is the toilet?","Where is the lab?","Where is X-ray?","Where do I pay?"]):L==="th"?["รับบัตรแล้วไปไหนต่อ","ตรวจครบแล้วไปไหน","ห้องน้ำอยู่ไหน","กลับบ้านได้หรือยัง"]:["I registered, what next?","All tests done, where next?","Where is the toilet?","Can I go home?"];
 const testsLeftText=L=>{const l=left();return T(L,`ยังเหลือตรวจอีก ${l.map(x=>x.th).join(", ")} ค่ะ`,`You still have: ${l.map(x=>x.en).join(", ")}.`)};
 const INTENTS=[
   {urgent:true,kw:["เจ็บหน้าอก","แน่นหน้าอก","หายใจไม่ออก","หายใจลำบาก","หมดสติ","เป็นลม","ชัก","เลือดออกมาก","ฉุกเฉิน","chestpain","cantbreathe","unconscious","fainted","emergency","bleeding"],
@@ -729,6 +759,7 @@ function addBot(res){
   const L=/[฀-๿]/.test(res.text)?"th":"en";
   const d=document.createElement("div");d.className="msg bot"+(res.urgent?" urgent":"");d.textContent=res.text;msgs.appendChild(d);
   const c=document.createElement("div");c.className="chips";
+  if(res.stage&&!QUEST_MODE){res.dest=stageNode(res.stage);res.stage=null}
   if(res.stage){goToStage(res.stage,res.from)}else if(res.dest){setDest(res.dest)}
   say(res.text.replace(/ ดูเส้นทางบนแผนที่ได้เลยค่ะ| See the route on the map\./,"")+(res.dest||res.stage?" § "+spokenRoute():""));
   if(res.stage||res.dest){const b=document.createElement("button");b.type="button";b.className="chip go";b.textContent=UI[L].showMap;b.onclick=closeSheets;c.appendChild(b)}
@@ -744,7 +775,7 @@ function send(text){
 $("form").addEventListener("submit",e=>{e.preventDefault();const q=$("q");send(q.value);q.value=""});
 
 render();
-addBot({text:"สวัสดีค่ะ น้องนำทางพร้อมช่วยค่ะ ถามทางหรือขั้นตอนตรวจสุขภาพได้เลย เช่น “รับบัตรแล้วไปไหนต่อ” (You can ask in English too)",chips:quickChips("th")});
+addBot({text:"สวัสดีค่ะ น้องนำทางพร้อมช่วยค่ะ ถามทางได้เลยนะคะ เช่น “ห้องน้ำอยู่ไหน” (You can ask in English too)",chips:quickChips("th")});
 lastSpeech="";stopSpeech();
 </script>
 
