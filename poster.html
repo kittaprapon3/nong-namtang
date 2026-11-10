@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ป้าย QR น้องนำทาง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Bai+Jamjuree:wght@600;700&display=swap">
+<style>
+:root{--accent:#0a6b61;--ink:#132522;--muted:#566b67;--gold:#d29a06;--bg:#eef3f2;--line:#d5e0de}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:#cfd8d6;font-family:"Anuphan","Noto Sans Thai",system-ui,sans-serif;color:var(--ink)}
+.tools{max-width:210mm;margin:16px auto;padding:0 16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tools input{flex:1;min-width:0;font:inherit;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line)}
+.tools button{font:600 1rem inherit;font-family:inherit;padding:10px 16px;border-radius:10px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+.tools p{flex-basis:100%;margin:0;font-size:.85rem;color:var(--muted)}
+.sheet{width:210mm;height:297mm;margin:0 auto 24px;background:#fff;padding:16mm 16mm 12mm;display:flex;flex-direction:column;align-items:center;text-align:center;gap:7mm;box-shadow:0 6px 30px rgb(0 0 0 / .15)}
+.tag{font:700 13pt "Bai Jamjuree",sans-serif;letter-spacing:.08em;background:var(--gold);color:#2b1d00;border-radius:999px;padding:2mm 6mm}
+h1{font:700 34pt/1.15 "Bai Jamjuree","Anuphan",sans-serif;margin:0;color:var(--accent)}
+.sub{font-size:16pt;margin:0;color:var(--muted)}
+.qr{width:120mm;height:120mm;padding:6mm;border:2.5mm solid var(--accent);border-radius:8mm;display:grid;place-items:center}
+.qr svg{width:100%;height:100%}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm;width:100%;text-align:left}
+.steps div{background:var(--bg);border-radius:5mm;padding:4mm 5mm;font-size:13pt;line-height:1.35}
+.steps b{display:block;font:700 22pt "Bai Jamjuree",sans-serif;color:var(--accent)}
+.en{font-size:13pt;color:var(--muted);margin:0}
+.url{font-size:10pt;color:var(--muted);word-break:break-all;margin-top:auto}
+@media screen and (max-width:820px){.sheet{transform-origin:top left;transform:scale(calc((100vw - 16px)/210mm));margin-left:8px;margin-bottom:calc(-297mm + 297mm*((100vw - 16px)/210mm))}}
+@page{size:A4;margin:0}
+@media print{body{background:#fff}.tools{display:none}.sheet{margin:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="tools">
+  <input id="url" type="url" aria-label="ลิงก์ของแอป">
+  <button id="make" type="button">สร้าง QR ใหม่</button>
+  <button id="print" type="button">พิมพ์ป้าย</button>
+  <p id="warn" hidden style="color:#9b1c12;font-weight:700;font-size:1rem">⚠️ ยังสร้าง QR ไม่ได้ เพราะเปิดไฟล์นี้จากในคอมพิวเตอร์ (ลิงก์ขึ้นต้นด้วย file:///) มือถือจะเปิดไม่ได้ ให้เอาโฟลเดอร์ขึ้น Netlify ก่อน แล้วเปิด poster.html จากลิงก์ https:// ของ Netlify หรือวางลิงก์ https:// ของแอปลงในช่องด้านบนแล้วกด "สร้าง QR ใหม่"</p>
+  <p>ลิงก์ด้านบนสร้างให้อัตโนมัติจากเว็บที่เปิดอยู่ ถ้าใช้ลิงก์อื่นให้แก้แล้วกด "สร้าง QR ใหม่" · พิมพ์ขนาด A4 ไม่ต้องย่อ</p>
+</div>
+<div class="sheet">
+  <span class="tag">ตรวจสุขภาพ · HEALTH CHECK-UP</span>
+  <h1>สแกนเพื่อให้น้องนำทาง<br>พาไปทุกห้องตรวจ</h1>
+  <p class="sub">ไม่ต้องลงแอป ไม่ต้องล็อกอิน เปิดกล้องมือถือแล้วสแกนได้เลย</p>
+  <div class="qr" id="qr"></div>
+  <div class="steps">
+    <div><b>1</b>สแกน QR ด้วยกล้องมือถือ</div>
+    <div><b>2</b>ทำภารกิจทีละขั้น ตามเส้นทางบนแผนที่</div>
+    <div><b>3</b>ถึงห้องแล้วกด "ถึงแล้ว" เสร็จแล้วกดปุ่มสีทอง</div>
+  </div>
+  <p class="en">Scan with your phone camera for step-by-step directions to every check-up room.</p>
+  <div class="url" id="urlText"></div>
+</div>
+<script>
+const base=(()=>{const u=new URL(location.href);u.hash="";u.search="";u.pathname=u.pathname.replace(/poster\.html$/,"");return u.toString()+"#qr-reg"})();
+const inp=document.getElementById("url");inp.value=base;
+function draw(){
+  const url=inp.value.trim();document.getElementById("urlText").textContent=url;
+  const warn=document.getElementById("warn");
+  if(!/^https:\/\//.test(url)){warn.hidden=false;document.getElementById("qr").innerHTML="";return}
+  warn.hidden=true;
+  if(typeof qrcode!=="function"){document.getElementById("qr").textContent="กำลังโหลดตัวสร้าง QR… ต้องต่ออินเทอร์เน็ต";return}
+  const q=qrcode(0,"M");q.addData(url,"Byte");q.make();
+  document.getElementById("qr").innerHTML=q.createSvgTag({cellSize:8,margin:0,scalable:true});
+}
+document.getElementById("make").onclick=draw;
+document.getElementById("print").onclick=()=>window.print();
+function load(srcs){if(!srcs.length){draw();return}const s=document.createElement("script");s.src=srcs[0];s.onload=draw;s.onerror=()=>load(srcs.slice(1));document.head.appendChild(s)}
+load(["https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js","https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js","https://unpkg.com/qrcode-generator@1.4.4/qrcode.js"]);
+</script>
+</body>
+</html>

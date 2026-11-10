@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>น้องนำทาง OPD</title>
+<meta name="theme-color" content="#0a6b61">
+<meta name="description" content="นำทางผู้ป่วยตรวจสุขภาพ บอกขั้นตอนและเส้นทางในโรงพยาบาล">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="น้องนำทาง">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Bai+Jamjuree:wght@600;700&display=swap">
+<style>
+/* Layout: full-screen floor-plan map like a game world; a quest tracker floats on top, the turn-by-turn panel on the bottom, quest log and chat open as sheets. */
+:root{
+  --bg:#eef3f2; --surface:#ffffff; --ink:#132522; --muted:#566b67; --line:#d5e0de;
+  --accent:#0a6b61; --accent-ink:#ffffff; --bot:#e5f0ed; --me:#0a6b61; --me-ink:#ffffff;
+  --warn-bg:#fdecea; --warn-ink:#9b1c12;
+  --gold:#d29a06; --gold-ink:#2b1d00; --gold-soft:#fbefc8;
+  --map-bg:#e7efed; --grid:#d8e3e0; --floor:#f8fbfa; --room:#e3ebe9; --wall:#93a9a4; --here:#2a6ff0;
+  --shadow:0 8px 28px rgb(10 40 36 / .16);
+  --f-display:"Bai Jamjuree","Anuphan",system-ui,sans-serif;
+  --f-body:"Anuphan","Noto Sans Thai",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1716; --surface:#16211f; --ink:#e2ecea; --muted:#94a8a4; --line:#2a3a37;
+  --accent:#4fc0b1; --accent-ink:#06201c; --bot:#1d2b29; --me:#2f8f84; --me-ink:#ffffff;
+  --warn-bg:#3a1714; --warn-ink:#ffb4ab;
+  --gold:#f2c14e; --gold-ink:#2b1d00; --gold-soft:#3a2f12;
+  --map-bg:#0a1311; --grid:#14211e; --floor:#111c1a; --room:#1c2a27; --wall:#4d625d; --here:#5b95ff;
+  --shadow:0 8px 28px rgb(0 0 0 / .45); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1716; --surface:#16211f; --ink:#e2ecea; --muted:#94a8a4; --line:#2a3a37;
+  --accent:#4fc0b1; --accent-ink:#06201c; --bot:#1d2b29; --me:#2f8f84; --me-ink:#ffffff;
+  --warn-bg:#3a1714; --warn-ink:#ffb4ab;
+  --gold:#f2c14e; --gold-ink:#2b1d00; --gold-soft:#3a2f12;
+  --map-bg:#0a1311; --grid:#14211e; --floor:#111c1a; --room:#1c2a27; --wall:#4d625d; --here:#5b95ff;
+  --shadow:0 8px 28px rgb(0 0 0 / .45); color-scheme:dark}
+[hidden]{display:none!important}
+html{height:100%;box-sizing:border-box}
+body{height:100%;margin:0;background:var(--map-bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;overflow:hidden}
+button,select,input{font-family:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+#app{position:relative;height:100%;overflow:hidden}
+#map{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+
+/* ---------- HUD ---------- */
+.hud{position:absolute;left:0;right:0;z-index:5;display:flex;flex-direction:column;gap:8px;pointer-events:none;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.hud.top{top:0;padding-block:12px 0}
+.hud.bottom{bottom:0;padding-block:0 12px}
+.hud>*{pointer-events:auto}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);width:100%;max-width:560px;margin:0 auto;box-sizing:border-box}
+
+.quest{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px}
+.qhead{display:flex;align-items:center;gap:8px}
+.qtag{font:700 .78rem var(--f-display);letter-spacing:.06em;text-transform:uppercase;background:var(--gold);color:var(--gold-ink);border-radius:999px;padding:3px 10px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.qbar{flex:1;display:flex;gap:3px;min-width:0}
+.qbar i{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.qbar i.ok{background:var(--gold)}
+.qbar i.now{background:var(--accent)}
+.iconbtn{font:700 .85rem var(--f-body);min-width:38px;height:34px;padding:0 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.qtitle{display:flex;align-items:center;gap:10px;margin:0}
+.qtitle .ico{font-size:1.5rem;line-height:1}
+.qtitle h1{font:700 1.3rem/1.2 var(--f-display);margin:0;text-wrap:balance}
+.qdesc{margin:0;color:var(--muted);font-size:.92rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.objs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.obj{display:grid;grid-template-columns:20px minmax(0,1fr);grid-template-rows:auto auto;column-gap:6px;align-items:center;padding:7px 8px;border-radius:12px;background:var(--bg);border:1.5px solid transparent;min-width:0}
+.obj .dist{grid-column:2}
+.obj.cur{border-color:var(--accent)}
+.obj input{width:20px;height:20px;margin:0;accent-color:var(--accent)}
+.obj .on{font:600 .92rem var(--f-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;background:none;border:0;padding:0;color:var(--ink);text-align:left;cursor:pointer}
+.obj.ok .on{color:var(--muted);text-decoration:line-through}
+.obj .dist{font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.obj.cur .dist{color:var(--accent);font-weight:700}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{font:600 1rem var(--f-body);padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.btn:disabled{opacity:.45;cursor:default}
+
+.fabrow{display:flex;justify-content:flex-end;gap:8px;width:100%;max-width:560px;margin:0 auto;pointer-events:none}
+.fab{pointer-events:auto;font:600 .92rem var(--f-body);height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);box-shadow:var(--shadow);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.fab.chat{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.navp{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.route{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.route b{font:700 1.08rem var(--f-display);min-width:0}
+.route span{font-size:.85rem;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.turns{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;max-height:50px;overflow-y:auto}
+.turns li{display:grid;grid-template-columns:24px 1fr;gap:8px;align-items:start;font-size:.95rem}
+.turns li:first-child{font-weight:600}
+.turns .ic{color:var(--accent);font-weight:700;text-align:center}
+.actions{display:grid;grid-template-columns:1fr auto;gap:8px}
+.herechip{display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:12px;padding:0 10px;background:var(--bg);min-width:0}
+.herechip select{border:0;background:transparent;color:var(--ink);font:500 .95rem var(--f-body);padding:11px 0;width:100%;min-width:0}
+
+/* ---------- map ---------- */
+.gl{stroke:var(--grid);stroke-width:.25;fill:none}
+.floorr{fill:var(--floor)}
+.room{fill:var(--room);stroke:var(--wall);stroke-width:1.2px;vector-effect:non-scaling-stroke;cursor:pointer}
+.room.hit{fill:color-mix(in srgb,var(--accent) 28%,var(--room));stroke:var(--accent);stroke-width:2.2px}
+.room.quest{fill:color-mix(in srgb,var(--gold) 18%,var(--room))}
+.wall,.outline{stroke:var(--wall);stroke-width:2px;vector-effect:non-scaling-stroke;fill:none}
+.rl{font:500 11.5px var(--f-body);fill:var(--ink);pointer-events:none}
+.rl.hit{font-weight:700}
+#map.far .rl:not(.hit){display:none}
+#map.mid .rl{font-size:9.5px}
+#map.drag{cursor:grabbing}
+.ml{font:700 12px var(--f-body);paint-order:stroke;stroke:var(--floor);stroke-width:4px;stroke-linejoin:round;pointer-events:none}
+.r-under{fill:none;stroke:var(--accent);stroke-width:12px;stroke-linecap:round;stroke-linejoin:round;opacity:.22;vector-effect:non-scaling-stroke}
+.r-line{fill:none;stroke:var(--accent);stroke-width:5px;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:10 8;vector-effect:non-scaling-stroke;animation:march .8s linear infinite}
+@keyframes march{to{stroke-dashoffset:-18}}
+.here{fill:var(--here);stroke:#ffffff;stroke-width:3}
+.pulse{fill:var(--here);opacity:.5;transform-box:fill-box;transform-origin:center;animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{from{transform:scale(.6);opacity:.6}to{transform:scale(2.6);opacity:0}}
+.walker{fill:#ffffff;stroke:var(--accent);stroke-width:3}
+.pin{fill:var(--accent);stroke:#ffffff;stroke-width:2}
+.badge{stroke:#ffffff;stroke-width:2}
+.badge.todo{fill:var(--gold)}.badge.ok{fill:var(--accent)}
+.bt{font:800 12px var(--f-display);text-anchor:middle;pointer-events:none}
+.bt.todo{fill:var(--gold-ink)}.bt.ok{fill:var(--accent-ink)}
+
+/* ---------- sheets ---------- */
+.scrim{position:absolute;inset:0;background:rgb(0 0 0 / .35);z-index:15}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:20;max-height:82%;display:flex;flex-direction:column;background:var(--surface);border-radius:22px 22px 0 0;box-shadow:var(--shadow);
+  padding-block:14px max(14px,env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));box-sizing:border-box}
+.sheet>.in{width:100%;max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:12px;min-height:0;flex:1}
+.shead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.shead h2{font:700 1.2rem var(--f-display);margin:0}
+.sbody{overflow-y:auto;min-height:0;display:flex;flex-direction:column;gap:12px}
+@media (prefers-reduced-motion: no-preference){.sheet:not([hidden]){animation:up .22s ease-out}@keyframes up{from{transform:translateY(30px);opacity:.5}}}
+
+.qlog{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.qlog>li>button{width:100%;display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;text-align:left;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:600 1rem var(--f-body);cursor:pointer}
+.qlog .st{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:.9rem;background:var(--bg);font-variant-numeric:tabular-nums}
+.qlog .ok .st{background:var(--gold);color:var(--gold-ink)}
+.qlog .ok .nm{color:var(--muted);text-decoration:line-through}
+.qlog .now>button{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--surface))}
+.qlog .now .st{background:var(--accent);color:var(--accent-ink)}
+.qlog .lock{opacity:.7}
+.qlog .tagr{font-size:.8rem;color:var(--muted);font-weight:500}
+.qlog .subs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0 44px}
+.qlog .sub{font-size:.85rem;padding:3px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
+.qlog .sub.ok{background:var(--gold-soft);text-decoration:line-through;color:var(--muted)}
+.note{margin:0;color:var(--muted);font-size:.82rem}
+
+.msgs{display:flex;flex-direction:column;gap:10px;overflow-y:auto;min-height:180px;flex:1}
+.msg{max-width:88%;padding:10px 14px;border-radius:16px;min-width:0;overflow-wrap:anywhere}
+.msg.bot{background:var(--bot);border-bottom-left-radius:4px;align-self:flex-start}
+.msg.me{background:var(--me);color:var(--me-ink);border-bottom-right-radius:4px;align-self:flex-end}
+.msg.urgent{background:var(--warn-bg);color:var(--warn-ink);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 .92rem var(--f-body);padding:7px 12px;border-radius:999px;border:1.5px solid var(--accent);color:var(--accent);background:transparent;cursor:pointer}
+.chip.go{background:var(--accent);color:var(--accent-ink)}
+.typing{color:var(--muted);font-size:.9rem;align-self:flex-start}
+form{display:flex;gap:8px}
+form input{flex:1;min-width:0;font:400 1rem var(--f-body);padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+
+.toast{position:absolute;left:50%;top:40%;z-index:30;transform:translate(-50%,-50%) scale(.9);opacity:0;pointer-events:none;background:var(--gold);color:var(--gold-ink);font:700 1.05rem var(--f-display);padding:12px 20px;border-radius:16px;box-shadow:var(--shadow);text-align:center;max-width:80%;transition:opacity .2s,transform .2s}
+.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.toast small{display:block;font:600 .8rem var(--f-body);letter-spacing:.08em;text-transform:uppercase;opacity:.8}
+@media (prefers-reduced-motion: reduce){.r-line,.pulse{animation:none}.walker{display:none}.toast{transition:none}}
+</style>
+
+<div id="app">
+  <svg id="map" role="img" aria-label="แผนที่นำทาง"></svg>
+
+  <div class="hud top">
+    <section class="panel quest" id="quest" aria-live="polite">
+      <div class="qhead">
+        <span class="qtag" id="qtag"></span>
+        <div class="qbar" id="qbar" aria-hidden="true"></div>
+        <button class="iconbtn" id="langBtn" type="button"></button>
+        <button class="iconbtn" id="logBtn" type="button"></button>
+      </div>
+      <div class="qtitle"><span class="ico" id="qico" aria-hidden="true"></span><h1 id="qtitle"></h1></div>
+      <p class="qdesc" id="qdesc"></p>
+      <div id="qextra"></div>
+    </section>
+  </div>
+
+  <div class="hud bottom">
+    <div class="fabrow">
+      <button class="fab" id="camBtn" type="button"></button>
+      <button class="fab chat" id="chatBtn" type="button"></button>
+    </div>
+    <section class="panel navp" id="navp">
+      <div class="route" id="sum"></div>
+      <ol class="turns" id="turns"></ol>
+      <div class="actions">
+        <label class="herechip" for="hereSel"><span aria-hidden="true">📍</span><select id="hereSel"></select></label>
+        <button class="btn primary" id="arrivedBtn" type="button"></button>
+      </div>
+    </section>
+  </div>
+
+  <div class="scrim" id="scrim" hidden></div>
+
+  <section class="sheet" id="logSheet" hidden aria-labelledby="logH">
+    <div class="in">
+      <div class="shead"><h2 id="logH"></h2><button class="iconbtn" type="button" data-close>✕</button></div>
+      <div class="sbody">
+        <ol class="qlog" id="qlog"></ol>
+        <p class="note" id="hint"></p>
+        <button class="btn" id="resetBtn" type="button"></button>
+        <p class="note" id="note"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sheet" id="chatSheet" hidden aria-labelledby="chatH">
+    <div class="in">
+      <div class="shead"><h2 id="chatH"></h2><button class="iconbtn" type="button" data-close>✕</button></div>
+      <div class="msgs" id="msgs" aria-live="polite"></div>
+      <form id="form">
+        <input id="q" type="text" autocomplete="off" aria-labelledby="chatH">
+        <button class="btn primary" id="sendBtn" type="submit"></button>
+      </form>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status"></div>
+</div>
+
+<script>
+/* ================= ข้อมูลโรงพยาบาล (แก้ตรงนี้ให้เป็นของจริง) ================= */
+const NODES={
+  ent:{f:1,x:40,y:42.5,th:"ทางเข้า รพ.",en:"Entrance",qr:1},
+  lobby:{f:1,x:40,y:30.6,th:"โถงกลาง",en:"Main hall",qr:1},
+  ltop:{f:1,x:40,y:15},
+  jreg:{f:1,x:55.5,y:30.6},
+  reg:{f:1,x:55.5,y:32.9,th:"เวชระเบียน",en:"Medical Records",qr:1},
+  rx:{f:1,x:55.5,y:28.5,th:"ห้องยา",en:"Pharmacy"},
+  jpay:{f:1,x:65.4,y:30.6},
+  pay:{f:1,x:65.4,y:28.5,th:"การเงิน",en:"Cashier",qr:1},
+  jhl:{f:1,x:85.1,y:30.6},
+  health:{f:1,x:85.1,y:32.9,th:"ห้องสุขภาพ",en:"Health Room"},
+  xray:{f:1,x:90,y:30.6,th:"เอกซเรย์",en:"X-ray",qr:1},
+  jdoc:{f:1,x:53.8,y:15},
+  doc:{f:1,x:53.8,y:11.8,th:"ห้องตรวจแพทย์",en:"Doctor's Exam Room",qr:1},
+  jden:{f:1,x:25.7,y:15},
+  den:{f:1,x:25.7,y:11.8,th:"ทันตกรรม",en:"Dental"},
+  jwc:{f:1,x:9.8,y:15},
+  wc:{f:1,x:9.8,y:11.8,th:"ห้องน้ำ",en:"Toilet"},
+  jlab:{f:1,x:6.9,y:15},
+  lab:{f:1,x:6.9,y:18.5,th:"เจาะเลือด",en:"Blood test"}
+};
+const EDGES=[
+  ["ent","lobby"],["lobby","jreg"],["jreg","reg"],["jreg","rx"],["jreg","jpay"],["jpay","pay"],["jpay","jhl"],["jhl","health"],["jhl","xray"],
+  ["lobby","ltop"],["ltop","jdoc"],["jdoc","doc"],["ltop","jden"],["jden","den"],["jden","jwc"],["jwc","wc"],["jwc","jlab"],["jlab","lab"]
+];
+/* ห้องตามแผนผัง (หน่วย ≈ เมตร) — ห้องที่ไม่มีชื่อคือห้องที่ยังไม่ได้ระบุในผัง */
+const ROOMS=[
+  {x:2,y:2,w:15.7,h:9.8,th:"ห้องน้ำ",en:"Toilet",node:"wc"},
+  {x:17.7,y:2,w:16,h:9.8,th:"ทันตกรรม",en:"Dental",node:"den"},
+  {x:33.7,y:2,w:13.4,h:9.8},
+  {x:47.1,y:2,w:13.4,h:9.8,th:"ห้องตรวจ\nแพทย์",en:"Doctor's\nExam Room",node:"doc"},
+  {x:2,y:18.5,w:9.8,h:10,th:"เจาะ\nเลือด",en:"Blood\ntest",node:"lab"},
+  {x:11.8,y:18.5,w:15,h:10},
+  {x:2,y:28.5,w:24.8,h:14},
+  {x:47.1,y:21,w:2.3,h:7.5},
+  {x:50.6,y:18.5,w:9.9,h:10,th:"ห้องยา",en:"Pharmacy",node:"rx"},
+  {x:60.5,y:18.5,w:9.8,h:10,th:"การเงิน",en:"Cashier",node:"pay"},
+  {x:50.6,y:32.9,w:9.9,h:9.6,th:"เวช\nระเบียน",en:"Medical\nRecords",node:"reg"},
+  {x:60.5,y:32.9,w:9.8,h:9.6},
+  {x:70.3,y:32.9,w:9.9,h:9.6},
+  {x:80.2,y:32.9,w:9.8,h:9.6,th:"ห้อง\nสุขภาพ",en:"Health\nRoom",node:"health"},
+  {x:90,y:25.7,w:12,h:16.8,th:"X-RAY",en:"X-RAY",node:"xray"}
+];
+const WALLS=[[70.3,27.7,90,27.7]];
+const OUTLINE="M36.5 42.5 H2 V2 H102 V42.5 H43.5";
+const LINES={};
+const TESTS=[
+  {id:"lab",th:"เจาะเลือด",en:"Blood test"},
+  {id:"den",th:"ตรวจฟัน",en:"Dental check"},
+  {id:"xray",th:"เอกซเรย์",en:"X-ray"}
+];
+const STAGES={
+  reg:{th:"ยื่นบัตร",en:"Register",dTh:"ยื่นบัตรประชาชนที่เวชระเบียน แจ้งว่ามาตรวจสุขภาพ แล้วไปห้องสุขภาพค่ะ",dEn:"Show your ID card at Medical Records and say you are here for a health check-up. Then go to the Health Room."},
+  health:{th:"ห้องสุขภาพ",en:"Health Room",dTh:"ลงทะเบียนตรวจสุขภาพและรับรายการตรวจ แล้วไปตรวจตามรายการค่ะ",dEn:"Register for your check-up and get your list of tests."},
+  tests:{th:"ตรวจตามรายการ",en:"Check-up tests",dTh:"ตรวจลำดับไหนก่อนก็ได้ แผนที่จะพาไปจุดที่ใกล้ที่สุดที่ยังไม่ได้ตรวจ",dEn:"Any order is fine. The map takes you to the nearest test you have not done yet."},
+  doc:{th:"พบแพทย์",en:"See the doctor",dTh:"ตรวจครบแล้ว ไปพบแพทย์ที่ห้องตรวจแพทย์ เมื่อพบแพทย์เสร็จ แพทย์สั่งยาไหมคะ?",dEn:"All tests done. See the doctor in the exam room. Afterwards, did the doctor prescribe medicine?"},
+  rx:{th:"รับยา",en:"Pharmacy",dTh:"รอเรียกชื่อ รับยาและฟังคำแนะนำจากเภสัชกร แล้วไปการเงินต่อค่ะ",dEn:"Wait to be called, collect your medicine and listen to the pharmacist. Then go to the cashier."},
+  pay:{th:"การเงิน",en:"Cashier",dTh:"เขียนใบเบิกค่าตรวจสุขภาพที่ห้องการเงินค่ะ",dEn:"Fill in the health check-up reimbursement form at the cashier."},
+  summary:{th:"สรุปผล ห้องสุขภาพ",en:"Results, Health Room",dTh:"กลับไปห้องสุขภาพเพื่อฟังสรุปผลการตรวจค่ะ",dEn:"Go back to the Health Room for your results summary."},
+  home:{th:"กลับบ้าน",en:"Go home",dTh:"เสร็จครบทุกขั้นตอนแล้ว ขอบคุณที่มาตรวจสุขภาพ กลับบ้านปลอดภัยนะคะ 🎉",dEn:"All done. Thank you for your check-up, have a safe trip home! 🎉"}
+};
+const ONE_FLOOR=new Set(Object.values(NODES).map(n=>n.f)).size===1;
+const ICONS={reg:"🪪",health:"🩺",tests:"🧪",doc:"👨‍⚕️",rx:"💊",pay:"🧾",summary:"📋",home:"🏠"};
+const UI={
+  th:{quest:(a,b)=>`ภารกิจ ${a}/${b}`,log:"☰ ภารกิจ",logH:"สมุดภารกิจ",lang:"EN",go:"ไปที่",
+      meds:"💊 แพทย์สั่งยา",noMeds:"ไม่มียา",ifMeds:"ถ้ามียา",tick:"ติ๊กเมื่อตรวจเสร็จ หรือถ้าไม่มีในรายการของคุณ",
+      arrived:"🚶 ถึงแล้ว",atHere:"คุณอยู่ที่นี่",finish:{reg:"ยื่นบัตรแล้ว ✓",health:"ลงทะเบียนแล้ว ✓",tests:"ตรวจเสร็จแล้ว ✓",rx:"รับยาแล้ว ✓",pay:"เขียนใบเบิกแล้ว ✓",summary:"ฟังผลแล้ว ✓"},reset:"↺ เริ่มใหม่ (ผู้ป่วยคนใหม่)",resetSure:"แตะอีกครั้งเพื่อยืนยันเริ่มใหม่",already:"คุณอยู่ที่นี่แล้ว",youHere:"คุณอยู่ที่นี่",entrance:"ทางเข้า",
+      stats:(m,min)=>`${m} ม. · ${min} นาที`,camAll:"⤢ ทั้งตึก",camRoute:"◎ เส้นทาง",chat:"💬 ถาม",chatH:"ถามน้องนำทาง",
+      ph:"พิมพ์คำถาม เช่น ห้องน้ำอยู่ไหน",send:"ส่ง",showMap:"🗺️ ดูบนแผนที่",
+      done:"ภารกิจสำเร็จ",allDone:"ครบทุกภารกิจ!",locked:"🔒",
+      hint:"เดินถึงห้องแล้วกด \"ถึงแล้ว\" ทำเสร็จแล้วกดปุ่มสีทองเพื่อไปภารกิจต่อไป แอปจำความคืบหน้าไว้ ปิดเว็บแล้วเปิดใหม่ก็ไม่หาย แตะห้องบนแผนที่เพื่อนำทางไปห้องนั้นได้",
+      note:"ต้นแบบ · แผนผังจากผังอาคารจริง ระยะทางโดยประมาณ · น้องนำทางตอบเฉพาะเรื่องทางเดินและขั้นตอนบริการ ไม่ให้คำแนะนำทางการแพทย์"},
+  en:{quest:(a,b)=>`Quest ${a}/${b}`,log:"☰ Quests",logH:"Quest log",lang:"ไทย",go:"Go to",
+      meds:"💊 Medicine prescribed",noMeds:"No medicine",ifMeds:"if prescribed",tick:"Tick when done, or if it is not on your list",
+      arrived:"🚶 I'm here",atHere:"You are here",finish:{reg:"Registered ✓",health:"Signed in ✓",tests:"Test done ✓",rx:"Got my medicine ✓",pay:"Form done ✓",summary:"Got my results ✓"},reset:"↺ Start over (new patient)",resetSure:"Tap again to confirm",already:"You are already here",youHere:"You are here",entrance:"Entrance",
+      stats:(m,min)=>`${m} m · ${min} min`,camAll:"⤢ Whole floor",camRoute:"◎ Route",chat:"💬 Ask",chatH:"Ask the guide",
+      ph:"Type a question, e.g. where is the toilet",send:"Send",showMap:"🗺️ Show on map",
+      done:"Quest complete",allDone:"All quests complete!",locked:"🔒",
+      hint:"Tap \"I'm here\" when you reach a room, then the gold button when you are done. Your progress is saved even if you close the page. Tap any room on the map for directions.",
+      note:"Prototype · based on the real floor plan, distances are approximate · The guide answers directions and service steps only, not medical advice."}
+};
+
+/* ================= สถานะ ================= */
+let lang="th", stage="reg", hasMeds=null, here="reg", dest="reg", viewFloor=1, camMode="route";
+const done={lab:false,den:false,xray:false};
+const $=id=>document.getElementById(id);
+const T=(L,th,en)=>L==="th"?th:en;
+const FLOW=()=>["reg","health","tests","doc"].concat(hasMeds===false?[]:["rx"],["pay","summary","home"]);
+const left=()=>TESTS.filter(x=>!done[x.id]);
+function nextTest(){const l=left();if(!l.length)return null;let best=l[0].id,bd=Infinity;
+  l.forEach(x=>{const d=walkMeters(shortest(here,x.id));if(d<bd){bd=d;best=x.id}});return best}
+function stageNode(id){return{reg:"reg",health:"health",tests:nextTest()||"doc",doc:"doc",rx:"rx",pay:"pay",summary:"health",home:"ent"}[id]}
+const nm=(id,L)=>NODES[id][L]||"";
+const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const stageDir=(id,L)=>{const s=STAGES[id];return L==="th"?s.dTh:s.dEn};
+function readHash(){try{const h=decodeURIComponent(location.hash.slice(1));if(h.startsWith("qr-")&&NODES[h.slice(3)]&&NODES[h.slice(3)].qr){here=h.slice(3);return true}}catch(e){}return false}
+const SAVE_KEY="nongnamtang-v1",KEEP_MS=12*3600e3;
+function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({stage,hasMeds,here,dest,done,lang,t:Date.now()}))}catch(e){}}
+function restore(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY)||"null");if(!s||Date.now()-s.t>KEEP_MS||!STAGES[s.stage]||!NODES[s.here]||!NODES[s.dest])return;
+  stage=s.stage;hasMeds=s.hasMeds;here=s.here;dest=s.dest;lang=s.lang==="en"?"en":"th";Object.keys(done).forEach(k=>done[k]=!!(s.done&&s.done[k]))}catch(e){}}
+restore();
+readHash();
+/* ================= หาเส้นทางสั้นที่สุด ================= */
+const ADJ={};
+Object.keys(NODES).forEach(k=>ADJ[k]=[]);
+EDGES.forEach(([a,b])=>{const A=NODES[a],B=NODES[b];const w=A.f!==B.f?15:Math.hypot(A.x-B.x,A.y-B.y);ADJ[a].push([b,w]);ADJ[b].push([a,w])});
+function shortest(s,t){
+  const dist={},prev={},done=new Set();Object.keys(NODES).forEach(k=>dist[k]=Infinity);dist[s]=0;
+  while(true){let u=null;for(const k in dist)if(!done.has(k)&&(u===null||dist[k]<dist[u]))u=k;
+    if(u===null||dist[u]===Infinity||u===t)break;done.add(u);
+    for(const[v,w]of ADJ[u])if(dist[u]+w<dist[v]){dist[v]=dist[u]+w;prev[v]=u}}
+  const p=[t];while(p[0]!==s){if(!prev[p[0]])return[s];p.unshift(prev[p[0]])}return p;
+}
+function walkMeters(p){let m=0;for(let i=1;i<p.length;i++){const a=NODES[p[i-1]],b=NODES[p[i]];if(a.f===b.f)m+=Math.hypot(a.x-b.x,a.y-b.y)}return m}
+function directions(p,L){
+  const out=[];if(p.length<2)return out;
+  const runs=[];let cur=[p[0]];
+  for(let i=1;i<p.length;i++){if(NODES[p[i]].f!==NODES[p[i-1]].f){runs.push(cur);cur=[p[i]]}else cur.push(p[i])}
+  runs.push(cur);
+  runs.forEach((run,ri)=>{
+    if(ri>0){const f=NODES[run[0]].f;let pf=NODES[runs[ri-1][runs[ri-1].length-1]].f;
+      const last=out[out.length-1];if(last&&last.lift){out.pop();pf=last.f}
+      out.push({lift:1,ic:f>pf?"⇧":"⇩",f:pf,text:T(L,`${f>pf?"ขึ้น":"ลง"}ลิฟต์ไปชั้น ${f}`,`Take the elevator ${f>pf?"up":"down"} to floor ${f}`)});
+      if(run.length<2&&ri<runs.length-1)return}
+    const segs=[];
+    for(let i=1;i<run.length;i++){const a=NODES[run[i-1]],b=NODES[run[i]];const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy);const d={x:dx/len,y:dy/len};
+      const last=segs[segs.length-1];if(last&&last.d.x*d.x+last.d.y*d.y>.985)last.len+=len;else segs.push({d,len})}
+    const f=NODES[run[0]].f;
+    segs.forEach((s,si)=>{
+      const m=Math.max(5,Math.round(s.len/5)*5);
+      if(si===0){out.push({ic:"↑",f,text:ri>0?T(L,`ออกจากลิฟต์ เดินตรงไป ${m} ม.`,`Exit the elevator and walk ${m} m`):T(L,`เดินตรงไป ${m} ม.`,`Walk straight ${m} m`)})}
+      else{const q=segs[si-1].d;const right=q.x*s.d.y-q.y*s.d.x>0;
+        out.push({ic:right?"↱":"↰",f,text:T(L,`เลี้ยว${right?"ขวา":"ซ้าย"} เดิน ${m} ม.`,`Turn ${right?"right":"left"}, walk ${m} m`)})}
+    });
+  });
+  const d=NODES[p[p.length-1]];
+  out.push({ic:"⚑",f:d.f,text:T(L,`ถึง${d.th}${d.line?` (ตามเส้น${LINES[d.line].th})`:""}`,`Arrive at ${d.en}${d.line?` (${LINES[d.line].en} line)`:""}`)});
+  return out;
+}
+
+/* ================= แผนที่เต็มจอ ================= */
+const BH=48;let ROT=false;
+const P=(x,y)=>ROT?[BH-y,x]:[x,y];
+const RR=r=>ROT?{x:BH-(r.y+r.h),y:r.x,w:r.h,h:r.w}:r;
+const OUTPTS=[[36.5,42.5],[2,42.5],[2,2],[102,2],[102,42.5],[43.5,42.5]];
+const svg=$("map");
+let cam=null,camRaf=0;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const at=(x,y,inner)=>{const[a,b]=P(x,y);return`<g transform="translate(${a} ${b})"><g class="sc">${inner}</g></g>`};
+const dist=(a,b)=>Math.max(5,Math.round(walkMeters(shortest(a,b))/5)*5);
+
+function renderMap(){
+  const t=UI[lang],p=here===dest?[here]:shortest(here,dest),D=NODES[dest],H=NODES[here];
+  const r=svg.getBoundingClientRect();ROT=r.height>r.width*1.05;
+  const meters=Math.max(5,Math.round(walkMeters(p)/5)*5);
+  $("sum").innerHTML=here===dest
+    ?`<b>${t.already}: ${esc(nm(here,lang))}</b>`
+    :`<b>→ ${esc(nm(dest,lang))}</b><span>${t.stats(meters,Math.max(1,Math.ceil(meters/45)))}</span>`;
+  const dirs=directions(p,lang);
+  $("turns").innerHTML=dirs.map(d=>`<li><span class="ic">${d.ic}</span><span>${esc(d.text)}</span></li>`).join("");
+  $("turns").hidden=!dirs.length;
+  let s=`<defs><pattern id="grid" width="4" height="4" patternUnits="userSpaceOnUse"><path class="gl" d="M4 0H0V4"/></pattern></defs>`;
+  s+=`<rect x="-300" y="-300" width="700" height="700" fill="url(#grid)"/>`;
+  const fl=RR({x:2,y:2,w:100,h:40.5});s+=`<rect class="floorr" x="${fl.x}" y="${fl.y}" width="${fl.w}" height="${fl.h}"/>`;
+  const questRooms=stage==="tests"?TESTS.map(x=>x.id):[];
+  ROOMS.forEach(rm=>{
+    const q=RR(rm),hit=rm.node&&rm.node===dest&&here!==dest,qr=questRooms.includes(rm.node);
+    s+=`<rect class="room${hit?" hit":qr&&!done[rm.node]?" quest":""}" x="${q.x}" y="${q.y}" width="${q.w}" height="${q.h}"${rm.node?` data-node="${rm.node}"`:""}/>`;
+  });
+  WALLS.forEach(([a,b,c,d])=>{const[x1,y1]=P(a,b),[x2,y2]=P(c,d);s+=`<line class="wall" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`});
+  s+=`<polyline class="outline" points="${OUTPTS.map(([x,y])=>P(x,y).join(",")).join(" ")}"/>`;
+  ROOMS.forEach(rm=>{if(!rm.th)return;const ls=rm[lang].split("\n"),hit=rm.node===dest&&here!==dest;
+    s+=at(rm.x+rm.w/2,rm.y+rm.h/2,`<text class="rl${hit?" hit":""}" text-anchor="middle">${ls.map((l,i)=>`<tspan x="0" dy="${i?1.2:(.35-(ls.length-1)*.6)}em">${esc(l)}</tspan>`).join("")}</text>`)});
+  const E=NODES.ent;s+=at(E.x,E.y,ROT?`<text class="ml" x="-10" y="4" text-anchor="end" fill="var(--muted)">${t.entrance} ⇨</text>`:`<text class="ml" y="20" text-anchor="middle" fill="var(--muted)">⇧ ${t.entrance}</text>`);
+  // route
+  if(p.length>1){const pts=p.map(k=>P(NODES[k].x,NODES[k].y));
+    s+=`<polyline class="r-under" points="${pts.map(q=>q.join(",")).join(" ")}"/><polyline class="r-line" points="${pts.map(q=>q.join(",")).join(" ")}"/>`;
+    if(!reduced){const len=walkMeters(p);s+=`<g><animateMotion dur="${Math.max(2,len/14).toFixed(1)}s" repeatCount="indefinite" path="M${pts.map(q=>q.join(" ")).join(" L")}"/><g class="sc"><circle class="walker" r="5"/></g></g>`}}
+  // quest badges
+  questRooms.forEach(id=>{const n=NODES[id],ok=done[id];if(id===dest&&here!==dest)return;
+    s+=at(n.x,n.y,`<circle class="badge ${ok?"ok":"todo"}" r="10" cy="-2"/><text class="bt ${ok?"ok":"todo"}" y="2.5">${ok?"✓":"!"}</text>`)});
+  // destination pin
+  if(here!==dest)s+=at(D.x,D.y,`<path class="pin" d="M0 0 C-4 -7 -11 -11 -11 -18 A11 11 0 1 1 11 -18 C11 -11 4 -7 0 0Z"/><text y="-13.5" text-anchor="middle" font-size="12">${ICONS[stage]&&dest===stageNode(stage)?ICONS[stage]:"🚩"}</text>`);
+  // you are here
+  s+=at(H.x,H.y,`<circle class="pulse" r="9"/><circle class="here" r="8"/><text class="ml" y="-15" text-anchor="middle" fill="var(--here)">${t.youHere}</text>`);
+  svg.innerHTML=s;
+  if(cam)applyCam(cam);
+  if(camMode!=="free")moveCam(target(p));
+  const f=n=>esc(n[lang]);
+  $("hereSel").innerHTML=Object.entries(NODES).filter(([,n])=>n.qr).map(([k,n])=>`<option value="${k}"${k===here?" selected":""}>${f(n)}</option>`).join("")+(H.qr?"":`<option value="${here}" selected>${f(H)}</option>`);
+  $("camBtn").textContent=camMode==="all"?t.camRoute:t.camAll;
+}
+function target(p){
+  const r=svg.getBoundingClientRect(),W=r.width||400,Hh=r.height||700;
+  let pts;
+  if(camMode==="all")pts=[P(2,2),P(102,42.5)];
+  else pts=p.map(k=>P(NODES[k].x,NODES[k].y));
+  let x0=Math.min(...pts.map(q=>q[0])),x1=Math.max(...pts.map(q=>q[0])),y0=Math.min(...pts.map(q=>q[1])),y1=Math.max(...pts.map(q=>q[1]));
+  const pad=camMode==="all"?3:7,min=camMode==="all"?0:24;
+  x0-=pad;x1+=pad;y0-=pad;y1+=pad;
+  if(x1-x0<min){const c=(x0+x1)/2;x0=c-min/2;x1=c+min/2}
+  if(y1-y0<min){const c=(y0+y1)/2;y0=c-min/2;y1=c+min/2}
+  const top=$("quest").getBoundingClientRect().bottom-r.top+10;
+  const bot=r.bottom-$("navp").getBoundingClientRect().top+10+44;
+  const Hv=Math.max(140,Hh-top-bot);
+  const sc=Math.min(W/(x1-x0),Hv/(y1-y0),20);
+  const vw=W/sc,vh=Hh/sc,cx=(x0+x1)/2,cy=(y0+y1)/2;
+  return{x:cx-vw/2,y:cy-(top+Hv/2)/sc,w:vw,h:vh,W};
+}
+function applyCam(v){
+  svg.setAttribute("viewBox",`${v.x} ${v.y} ${v.w} ${v.h}`);
+  const u=v.w/(v.W||400);svg.classList.toggle("far",1/u<3.6);svg.classList.toggle("mid",1/u<7);svg.querySelectorAll(".sc").forEach(g=>g.setAttribute("transform",`scale(${u})`));
+}
+function moveCam(to){
+  cancelAnimationFrame(camRaf);
+  if(!cam||reduced){cam=to;applyCam(cam);return}
+  const from={...cam},t0=performance.now();
+  const step=now=>{let k=Math.min(1,(now-t0)/500);k=1-Math.pow(1-k,3);
+    cam={x:from.x+(to.x-from.x)*k,y:from.y+(to.y-from.y)*k,w:from.w+(to.w-from.w)*k,h:from.h+(to.h-from.h)*k,W:to.W};
+    applyCam(cam);if(k<1)camRaf=requestAnimationFrame(step)};
+  camRaf=requestAnimationFrame(step);
+}
+let rz=0;addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(()=>{cam=null;if(camMode==="free")camMode="route";renderMap()},120)});
+/* ลากเพื่อเลื่อน · ถ่างสองนิ้วหรือหมุนล้อเพื่อซูม */
+const ptrs=new Map();let moved=false,pinch0=null;
+function zoomAt(f,cx,cy){if(!cam)return;const r=svg.getBoundingClientRect(),u=cam.w/r.width;
+  const nu=Math.min(1/3,Math.max(1/32,u*f)),k=nu/u;const px=cam.x+(cx-r.left)*u,py=cam.y+(cy-r.top)*u;
+  cam={x:px-(px-cam.x)*k,y:py-(py-cam.y)*k,w:cam.w*k,h:cam.h*k,W:r.width};applyCam(cam)}
+function goFree(){if(camMode!=="free"){camMode="free";cancelAnimationFrame(camRaf);$("camBtn").textContent=UI[lang].camRoute}}
+svg.addEventListener("pointerdown",e=>{svg.setPointerCapture?.(e.pointerId);ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=false;
+  if(ptrs.size===2){const[a,b]=[...ptrs.values()];pinch0=Math.hypot(a.x-b.x,a.y-b.y)}});
+svg.addEventListener("pointermove",e=>{const pr=ptrs.get(e.pointerId);if(!pr||!cam)return;
+  const dx=e.clientX-pr.x,dy=e.clientY-pr.y;
+  if(ptrs.size===1){if(!moved&&Math.hypot(dx,dy)<5)return;moved=true;goFree();svg.classList.add("drag");
+    const u=cam.w/svg.getBoundingClientRect().width;cam={...cam,x:cam.x-dx*u,y:cam.y-dy*u};applyCam(cam);pr.x=e.clientX;pr.y=e.clientY}
+  else if(ptrs.size===2){pr.x=e.clientX;pr.y=e.clientY;const[a,b]=[...ptrs.values()];const d=Math.hypot(a.x-b.x,a.y-b.y);
+    if(pinch0){moved=true;goFree();zoomAt(pinch0/d,(a.x+b.x)/2,(a.y+b.y)/2)}pinch0=d}});
+const endPtr=e=>{ptrs.delete(e.pointerId);if(ptrs.size<2)pinch0=null;if(!ptrs.size)svg.classList.remove("drag")};
+svg.addEventListener("pointerup",endPtr);svg.addEventListener("pointercancel",endPtr);
+svg.addEventListener("wheel",e=>{e.preventDefault();goFree();zoomAt(Math.exp(e.deltaY*.0015),e.clientX,e.clientY)},{passive:false});
+svg.addEventListener("click",e=>{if(moved)return;const r=e.target.closest("[data-node]");if(r&&r.dataset.node!==here){dest=r.dataset.node;camMode="route";renderMap()}});
+$("camBtn").onclick=()=>{camMode=camMode==="all"?"route":"all";renderMap()};
+$("hereSel").onchange=e=>{here=e.target.value;if(stage==="tests"&&dest in done)dest=nextTest()||dest;render()};
+addEventListener("hashchange",()=>{if(readHash()){if(stage==="tests")dest=nextTest()||dest;render()}});
+function setDest(id){dest=id;camMode="route";renderMap()}
+
+/* ================= ภารกิจ ================= */
+let toastT=0;
+function toast(top,msg){const el=$("toast");el.innerHTML=`<small>${esc(top)}</small>${esc(msg)}`;el.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("show"),1700)}
+function render(){
+  const t=UI[lang];document.documentElement.lang=lang;
+  $("langBtn").textContent=t.lang;$("logBtn").textContent=t.log;$("logH").textContent=t.logH;$("chatH").textContent=t.chatH;
+  $("chatBtn").textContent=t.chat;$("q").placeholder=t.ph;$("sendBtn").textContent=t.send;
+  $("hint").textContent=t.hint;$("note").textContent=t.note;
+  const F=FLOW(),i=F.indexOf(stage);
+  $("qtag").textContent=t.quest(i+1,F.length);
+  $("qbar").innerHTML=F.map((_,k)=>`<i class="${k<i?"ok":k===i?"now":""}"></i>`).join("");
+  $("qico").textContent=ICONS[stage];$("qtitle").textContent=STAGES[stage][lang];
+  $("qdesc").textContent=stageDir(stage,lang);$("qdesc").hidden=stage==="tests";
+  let x="";
+  if(stage==="tests"){
+    x=`<div class="objs">${TESTS.map(o=>`<div class="obj${done[o.id]?" ok":""}${o.id===dest&&!done[o.id]?" cur":""}"><input type="checkbox" id="t-${o.id}" data-t="${o.id}"${done[o.id]?" checked":""} aria-label="${esc(o[lang])}"><button type="button" class="on" data-go="${o.id}">${esc(o[lang])}</button><span class="dist">${done[o.id]?"✓":dist(here,o.id)+" ม."}</span></div>`).join("")}</div>`;
+    if(lang==="en")x=x.replace(/ ม\./g," m");
+  }
+  if(stage==="doc"&&here==="doc")x=`<div class="choice"><button type="button" class="btn primary" data-meds="1">${t.meds}</button><button type="button" class="btn" data-meds="0">${t.noMeds}</button></div>`;
+  $("qextra").innerHTML=x;$("qextra").hidden=!x;
+  $("qlog").innerHTML=F.map((id,k)=>{
+    const st=k<i?"ok":k===i?"now":"lock";
+    let h=`<li class="${st}"><button type="button" data-s="${id}"><span class="st">${k<i?"✓":k===i?ICONS[id]:k+1}</span><span class="nm">${esc(STAGES[id][lang])}</span><span class="tagr">${id==="rx"&&hasMeds===null?t.ifMeds:st==="lock"?t.locked:""}</span></button>`;
+    if(id==="tests")h+=`<div class="subs">${TESTS.map(o=>`<span class="sub${done[o.id]?" ok":""}">${esc(o[lang])}</span>`).join("")}</div>`;
+    return h+`</li>`}).join("");
+  $("navp").hidden=stage==="home"&&here==="ent";
+  const ab=$("arrivedBtn"),target=stage==="tests"?(dest in done&&!done[dest]):dest===stageNode(stage);
+  ab.hidden=here===dest&&(stage==="doc"||stage==="home")&&target;
+  if(here!==dest){ab.textContent=t.arrived;ab.disabled=false;ab.className="btn primary"}
+  else if(target){ab.textContent=t.finish[stage];ab.disabled=false;ab.className="btn gold"}
+  else{ab.textContent=t.atHere;ab.disabled=true;ab.className="btn"}
+  $("resetBtn").textContent=t.reset;
+  renderMap();save();
+}
+function goToStage(id,from){
+  const F=FLOW(),a=F.indexOf(stage);if(from)here=from;if(id==="rx")hasMeds=true;
+  const b=FLOW().indexOf(id);if(b>a&&a>=0)toast(UI[lang].done,STAGES[stage][lang]);
+  stage=id;dest=stageNode(id);camMode="route";render();
+  if(id==="home"&&b>a)setTimeout(()=>toast("🎉",UI[lang].allDone),1800);
+}
+function advance(){const F=FLOW(),i=F.indexOf(stage);if(i<F.length-1)goToStage(F[i+1])}
+$("arrivedBtn").onclick=()=>{
+  if(here!==dest){here=dest;render();return}
+  if(stage==="tests"&&dest in done){done[dest]=true;const nm2=TESTS.find(o=>o.id===dest)[lang];
+    if(!left().length){goToStage("doc");return}toast(UI[lang].done,nm2);dest=nextTest();render();return}
+  if(dest===stageNode(stage)&&stage!=="doc"&&stage!=="home"){advance();return}
+  render();
+};
+$("quest").addEventListener("click",e=>{
+  const g=e.target.closest("[data-go]");if(g){if(!done[g.dataset.go]){dest=g.dataset.go;render()}return}
+  const m=e.target.closest("[data-meds]");if(m){hasMeds=m.dataset.meds==="1";goToStage(hasMeds?"rx":"pay","doc")}
+});
+$("quest").addEventListener("change",e=>{const c=e.target.closest("[data-t]");if(!c)return;done[c.dataset.t]=c.checked;
+  if(!left().length){goToStage("doc");return}if(done[dest]||!(dest in done))dest=nextTest();render()});
+$("langBtn").onclick=()=>{lang=lang==="th"?"en":"th";render()};
+let resetArm=0;
+$("resetBtn").onclick=()=>{const b=$("resetBtn");
+  if(!resetArm){b.textContent=UI[lang].resetSure;b.classList.add("gold");resetArm=setTimeout(()=>{resetArm=0;b.classList.remove("gold");b.textContent=UI[lang].reset},3000);return}
+  clearTimeout(resetArm);resetArm=0;b.classList.remove("gold");
+  stage="reg";hasMeds=null;here="reg";dest="reg";Object.keys(done).forEach(k=>done[k]=false);camMode="route";closeSheets();render()};
+
+/* sheets */
+function openSheet(id){$("scrim").hidden=false;$(id).hidden=false;if(id==="chatSheet")setTimeout(()=>{$("msgs").scrollTop=$("msgs").scrollHeight},0)}
+function closeSheets(){$("scrim").hidden=true;$("logSheet").hidden=true;$("chatSheet").hidden=true}
+$("logBtn").onclick=()=>openSheet("logSheet");
+$("chatBtn").onclick=()=>openSheet("chatSheet");
+$("scrim").onclick=closeSheets;
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeSheets);
+addEventListener("keydown",e=>{if(e.key==="Escape")closeSheets()});
+$("qlog").addEventListener("click",e=>{const b=e.target.closest("[data-s]");if(b){closeSheets();goToStage(b.dataset.s)}});
+
+/* ================= บอทจับคำสำคัญ (ฟรี ไม่ใช้ AI) ================= */
+const norm=s=>s.toLowerCase().replace(/[\s\-.,?!'"“”]/g,"");
+const SEE={th:" ดูเส้นทางบนแผนที่ได้เลยค่ะ",en:" See the route on the map."};
+const place=(L,th,en,node)=>({text:T(L,th,en)+SEE[L],dest:node});
+const goStage=(id,L,lead,from)=>({text:`${lead} ${stageDir(id,L)}`.trim(),stage:id,from});
+const quickChips=L=>L==="th"?["รับบัตรแล้วไปไหนต่อ","ตรวจครบแล้วไปไหน","ห้องน้ำอยู่ไหน","กลับบ้านได้หรือยัง"]:["I registered, what next?","All tests done, where next?","Where is the toilet?","Can I go home?"];
+const testsLeftText=L=>{const l=left();return T(L,`ยังเหลือตรวจอีก ${l.map(x=>x.th).join(", ")} ค่ะ`,`You still have: ${l.map(x=>x.en).join(", ")}.`)};
+const INTENTS=[
+  {urgent:true,kw:["เจ็บหน้าอก","แน่นหน้าอก","หายใจไม่ออก","หายใจลำบาก","หมดสติ","เป็นลม","ชัก","เลือดออกมาก","ฉุกเฉิน","chestpain","cantbreathe","unconscious","fainted","emergency","bleeding"],
+   r:L=>({urgent:true,text:T(L,"⚠️ ถ้ามีอาการรุนแรง เช่น เจ็บหน้าอก หายใจไม่ออก หมดสติ กรุณาแจ้งเจ้าหน้าที่ที่อยู่ใกล้ที่สุดทันที ไม่ต้องรอคิวค่ะ","⚠️ For severe symptoms such as chest pain, trouble breathing or fainting, tell the nearest staff member right away. Do not wait in the queue.")})},
+  {kw:["กินยา","ยานี้","ยาตัวนี้","ผลข้างเคียง","อาการ","เป็นโรค","เป็นอะไร","ปวด","มีไข้","ค่าผิดปกติ","ผลเลือด","dose","dosage","symptom","sideeffect","diagnos","whatdoihave"],
+   r:L=>({text:T(L,"ขอโทษค่ะ น้องนำทางตอบได้เฉพาะเรื่องทางเดินและขั้นตอน เรื่องอาการ ผลตรวจ หรือการใช้ยา รบกวนสอบถามแพทย์ พยาบาลห้องสุขภาพ หรือเภสัชกรนะคะ","Sorry, I can only help with directions and steps. For symptoms, results or medicines, please ask the doctor, Health Room nurse or pharmacist.")})},
+  {kw:["รับบัตรแล้ว","ยื่นบัตรแล้ว","ได้บัตรแล้ว","ได้บัตรคิว","ทำบัตรแล้ว","บัตรแล้ว","registered","gotmycard"],
+   r:L=>goStage("health",L,T(L,"ขั้นต่อไปคือห้องสุขภาพค่ะ","Next: the Health Room."),"reg")},
+  {kw:["ยื่นบัตร","ทำบัตร","เวชระเบียน","ลงทะเบียน","register","registration","checkin"],
+   r:L=>goStage("reg",L,T(L,"เริ่มที่เวชระเบียนค่ะ","Start at Medical Records."))},
+  {kw:["ห้องสุขภาพ","ตรวจสุขภาพ","สุขภาพ","healthroom","checkup","healthcheck"],
+   r:L=>place(L,"ห้องสุขภาพอยู่แถวเดียวกับเวชระเบียน ติดกับห้องเอกซเรย์ค่ะ","The Health Room is in the same row as Medical Records, next to X-ray.","health")},
+  {kw:["ตรวจครบ","ครบแล้ว","ตรวจหมดแล้ว","ตรวจเสร็จหมด","ไปไหนต่อ","ทำอะไรต่อ","alltestsdone","finishedtests","wherenext","whatnext"],
+   r:L=>{const F=FLOW();
+     if(["reg","health"].includes(stage))return goStage(F[F.indexOf(stage)+1],L,T(L,"ขั้นต่อไปคือ","Next:")+" "+STAGES[F[F.indexOf(stage)+1]][L]+".");
+     if(stage==="tests"){const l=left();if(l.length)return{text:testsLeftText(L)+SEE[L],dest:nextTest()};return goStage("doc",L,"")}
+     if(stage==="doc")return{text:T(L,"พบแพทย์เสร็จแล้ว แพทย์สั่งยาไหมคะ?","Did the doctor prescribe medicine?"),chips:L==="th"?["มียา","ไม่มียา"]:["Medicine prescribed","No medicine"]};
+     const nx=F[F.indexOf(stage)+1];return nx?goStage(nx,L,T(L,"ขั้นต่อไปคือ","Next:")+" "+STAGES[nx][L]+"."):goStage("home",L,"")}},
+  {kw:["พบหมอแล้ว","หมอตรวจแล้ว","ออกจากห้องตรวจ","พบแพทย์แล้ว","seenthedoctor","afterdoctor"],
+   r:L=>({text:T(L,"แพทย์สั่งยาไหมคะ?","Did the doctor prescribe medicine?"),chips:L==="th"?["มียา","ไม่มียา"]:["Medicine prescribed","No medicine"]})},
+  {kw:["พบหมอ","หาหมอ","พบแพทย์","ห้องตรวจแพทย์","ห้องหมอ","doctor","seedoctor","examroom"],
+   r:L=>left().length?{text:T(L,"ต้องตรวจตามรายการให้ครบก่อนพบแพทย์นะคะ ","Please finish your tests before seeing the doctor. ")+testsLeftText(L),dest:nextTest()}:goStage("doc",L,"")},
+  {kw:["มียา","หมอสั่งยา","แพทย์สั่งยา","ได้ยา","medicineprescribed","prescribed"],
+   r:L=>{hasMeds=true;return goStage("rx",L,T(L,"ไปรับยาที่ห้องยาค่ะ","Go to the pharmacy."),"doc")}},
+  {kw:["ไม่มียา","ไม่ได้ยา","ไม่สั่งยา","nomedicine","noprescription"],
+   r:L=>{hasMeds=false;return goStage("pay",L,T(L,"ไม่มียา ไปห้องการเงินได้เลยค่ะ","No medicine, go straight to the cashier."),"doc")}},
+  {kw:["รับยาแล้ว","ได้ยาแล้ว","gotmymedicine"],
+   r:L=>goStage("pay",L,T(L,"ขั้นต่อไปคือการเงินค่ะ","Next: the cashier."),"rx")},
+  {kw:["ห้องยา","รับยา","เภสัช","pharmacy"],
+   r:L=>place(L,"ห้องยาอยู่ติดกับการเงิน ตรงกลางตึกค่ะ","The pharmacy is next to the cashier in the middle of the building.","rx")},
+  {kw:["ใบเบิก","เขียนใบเบิก","เบิก","จ่ายเงิน","ชำระเงิน","การเงิน","pay","cashier","reimburse","claimform"],
+   r:L=>goStage("pay",L,T(L,"ห้องการเงินอยู่ตรงกลางตึก ติดกับห้องยาค่ะ","The cashier is in the middle of the building, next to the pharmacy."))},
+  {kw:["เบิกแล้ว","เขียนเสร็จ","เขียนใบเบิกแล้ว","จ่ายแล้ว","จ่ายเงินแล้ว","paid","formdone"],
+   r:L=>goStage("summary",L,T(L,"ขั้นสุดท้ายคือกลับไปห้องสุขภาพค่ะ","Last step: back to the Health Room."),"pay")},
+  {kw:["สรุปผล","ฟังผล","รับผล","ผลตรวจ","results"],
+   r:L=>goStage("summary",L,"")},
+  {kw:["กลับบ้าน","กลับได้","ได้กลับ","gohome","canileave","canigohome"],
+   r:L=>{const F=FLOW(),i=F.indexOf(stage);if(stage==="home"||stage==="summary")return goStage("home",L,"");
+     const rest=F.slice(i,F.length-1).map(id=>STAGES[id][L]).join(" → ");
+     return{text:T(L,`ยังกลับไม่ได้นะคะ ยังเหลือ: ${rest}`,`Not yet. Still to do: ${rest}`)}}},
+  {kw:["เจาะเลือด","ตรวจเลือด","แล็บ","แลป","ห้องแลบ","ตรวจปัสสาวะ","lab","bloodtest","urine"],
+   r:L=>place(L,"ห้องเจาะเลือดอยู่ฝั่งซ้ายสุดของตึกค่ะ","The blood test room is at the far left of the building.","lab")},
+  {kw:["ตรวจฟัน","ทันต","หมอฟัน","ฟัน","dental","dentist","teeth"],
+   r:L=>place(L,"ห้องทันตกรรมอยู่แถวบนของตึก ข้างห้องน้ำค่ะ","Dental is in the top row of the building, next to the toilets.","den")},
+  {kw:["เอกซเรย์","เอ็กซเรย์","เอ็กซ์เรย์","xray","x-ray","radiology"],
+   r:L=>place(L,"ห้องเอกซเรย์อยู่มุมขวาสุดของตึกค่ะ","X-ray is in the far right corner of the building.","xray")},
+  {kw:["ห้องน้ำ","สุขา","ปวดฉี่","เข้าห้องน้ำ","toilet","restroom","bathroom","wc"],
+   r:L=>place(L,"ห้องน้ำอยู่มุมซ้ายบนของตึก ถัดจากทันตกรรมค่ะ","The toilets are in the top-left corner, next to Dental.","wc")},
+  {kw:["รถเข็น","วีลแชร์","เดินไม่ไหว","wheelchair"],
+   r:L=>({text:T(L,"แจ้งเจ้าหน้าที่ที่เวชระเบียนเพื่อขอรถเข็นได้เลยค่ะ","Ask staff at Medical Records for a wheelchair."),dest:"reg"})},
+  {kw:["ใบรับรองแพทย์","ใบรับรอง","medicalcertificate","certificate"],
+   r:L=>({text:T(L,"ขอใบรับรองแพทย์ได้ตอนพบแพทย์ แล้วนำไปประทับตราที่เวชระเบียนค่ะ","Ask the doctor for a medical certificate, then get it stamped at Medical Records."),dest:"reg"})},
+  {kw:["ลืมบัตร","ไม่มีบัตร","บัตรหาย","ไม่ได้เอาบัตร","passport","lostcard","forgotmyid","noid"],
+   r:L=>({text:T(L,"ไม่เป็นไรค่ะ แจ้งชื่อ-นามสกุลและวันเกิดที่เวชระเบียน เจ้าหน้าที่ค้นประวัติให้ได้ ผู้ป่วยต่างชาติใช้พาสปอร์ตค่ะ","No problem. Give your full name and date of birth at Medical Records. International patients please show your passport."),dest:"reg"})},
+  {kw:["สวัสดี","หวัดดี","hello","hi","hey"],
+   r:L=>({text:T(L,"สวัสดีค่ะ ถามทางหรือขั้นตอนตรวจสุขภาพได้เลยนะคะ","Hello! Ask me about directions or your check-up steps."),chips:quickChips(L)})},
+  {kw:["ขอบคุณ","thank","thanks"],
+   r:L=>({text:T(L,"ยินดีค่ะ ขอให้สุขภาพแข็งแรงนะคะ 🙏","You're welcome. Stay healthy! 🙏")})}
+];
+INTENTS.forEach(it=>it.nkw=it.kw.map(norm));
+function answer(q){
+  const L=/[฀-๿]/.test(q)?"th":"en",n=norm(q);
+  let best=null,score=0;
+  for(const it of INTENTS){const s=it.nkw.reduce((a,k)=>n.includes(k)?a+k.length:a,0);
+    if(s>0&&it.urgent)return it.r(L);if(s>score){score=s;best=it}}
+  if(best)return best.r(L);
+  return{text:T(L,"ขอโทษค่ะ น้องนำทางยังไม่เข้าใจคำถามนี้ ลองเลือกหัวข้อด้านล่าง หรือสอบถามเจ้าหน้าที่ที่เคาน์เตอร์เวชระเบียนได้เลยค่ะ","Sorry, I didn't understand that. Try a topic below or ask staff at the Medical Records counter."),chips:quickChips(L)};
+}
+
+/* ================= แชต ================= */
+const msgs=$("msgs");
+function addMe(text){const d=document.createElement("div");d.className="msg me";d.textContent=text;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}
+function addBot(res){
+  const L=/[฀-๿]/.test(res.text)?"th":"en";
+  const d=document.createElement("div");d.className="msg bot"+(res.urgent?" urgent":"");d.textContent=res.text;msgs.appendChild(d);
+  const c=document.createElement("div");c.className="chips";
+  if(res.stage){goToStage(res.stage,res.from)}else if(res.dest){setDest(res.dest)}
+  if(res.stage||res.dest){const b=document.createElement("button");b.type="button";b.className="chip go";b.textContent=UI[L].showMap;b.onclick=closeSheets;c.appendChild(b)}
+  (res.chips||[]).forEach(t=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=t;b.onclick=()=>send(t);c.appendChild(b)});
+  if(c.children.length)msgs.appendChild(c);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function send(text){
+  text=text.trim();if(!text)return;addMe(text);
+  const t=document.createElement("div");t.className="typing";t.textContent="…";msgs.appendChild(t);msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{t.remove();addBot(answer(text))},350);
+}
+$("form").addEventListener("submit",e=>{e.preventDefault();const q=$("q");send(q.value);q.value=""});
+
+render();
+addBot({text:"สวัสดีค่ะ น้องนำทางพร้อมช่วยค่ะ ถามทางหรือขั้นตอนตรวจสุขภาพได้เลย เช่น “รับบัตรแล้วไปไหนต่อ” (You can ask in English too)",chips:quickChips("th")});
+</script>
+
+<script>
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
+</script>
+</body>
+</html>
