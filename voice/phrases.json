@@ -87,11 +87,6 @@
    "text": "Now head back to the Health Room and wait for your blood results before seeing the doctor"
   },
   {
-   "id": "18dcc2d9",
-   "lang": "en",
-   "text": "I'll take you to the closest one first"
-  },
-  {
    "id": "1d89ada6",
    "lang": "en",
    "text": "Get your medicine first, then pay there"
@@ -235,6 +230,11 @@
    "id": "46fc6a83",
    "lang": "en",
    "text": "I'm your hospital guide, and I'll take you through every step of your check-up today!"
+  },
+  {
+   "id": "480bf6dc",
+   "lang": "en",
+   "text": "Tap the room you want on the screen"
   },
   {
    "id": "4bb99007",
@@ -1197,6 +1197,11 @@
    "text": "ไปทางเข้า โรงพยาบาลกันค่ะ"
   },
   {
+   "id": "acf096df",
+   "lang": "th",
+   "text": "ไปห้องไหนก่อนก็ได้ ตามที่เจ้าหน้าที่บอก แตะเลือกห้องบนจอได้เลยนะคะ"
+  },
+  {
    "id": "ad6e1790",
    "lang": "th",
    "text": "เริ่มที่เวชระเบียนเลย ยื่นบัตรประชาชน แล้วบอกว่ามาตรวจสุขภาพนะคะ"
@@ -1345,11 +1350,6 @@
    "id": "efba0b9d",
    "lang": "th",
    "text": "ก็ถึงห้องยาแล้วค่ะ!"
-  },
-  {
-   "id": "f1938845",
-   "lang": "th",
-   "text": "ตรวจห้องไหนก่อนก็ได้ ตามที่เจ้าหน้าที่แนะนำ น้องพาไปห้องที่ใกล้ที่สุดก่อนนะคะ"
   },
   {
    "id": "f1b02263",
