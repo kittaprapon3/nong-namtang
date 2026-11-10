@@ -17,6 +17,11 @@
    "text": "You did great"
   },
   {
+   "id": "0556a873",
+   "lang": "en",
+   "text": "Wait for blood results is done, nice work!"
+  },
+  {
    "id": "059eefb7",
    "lang": "en",
    "text": "X-ray is in the far right corner of the building"
@@ -77,6 +82,11 @@
    "text": "We made it to Toilet!"
   },
   {
+   "id": "16017486",
+   "lang": "en",
+   "text": "Now head back to the Health Room and wait for your blood results before seeing the doctor"
+  },
+  {
    "id": "18dcc2d9",
    "lang": "en",
    "text": "I'll take you to the closest one first"
@@ -112,14 +122,14 @@
    "text": "International patients please show your passport"
   },
   {
+   "id": "24417b23",
+   "lang": "en",
+   "text": "If you're 35 or older, after your tests wait for your blood results in the Health Room, then see the doctor"
+  },
+  {
    "id": "25cdf670",
    "lang": "en",
    "text": "then turn left and go about 45 meters"
-  },
-  {
-   "id": "29c681c8",
-   "lang": "en",
-   "text": "The doctor's room is in the top row of the building"
   },
   {
    "id": "2b96e891",
@@ -155,11 +165,6 @@
    "id": "31578a0e",
    "lang": "en",
    "text": "then turn left and go about 10 meters"
-  },
-  {
-   "id": "33113b10",
-   "lang": "en",
-   "text": "Now let's go see the doctor"
   },
   {
    "id": "347c4f53",
@@ -205,6 +210,11 @@
    "id": "3b520e63",
    "lang": "en",
    "text": "Off to Blood test!"
+  },
+  {
+   "id": "3fde526e",
+   "lang": "en",
+   "text": "Wait for your blood results in the Health Room"
   },
   {
    "id": "43602016",
@@ -407,11 +417,6 @@
    "text": "Off to Main hall!"
   },
   {
-   "id": "83f33d5e",
-   "lang": "en",
-   "text": "If you're 35 or older, see the doctor after your tests"
-  },
-  {
    "id": "867a890a",
    "lang": "en",
    "text": "Walk straight about 20 meters"
@@ -440,6 +445,11 @@
    "id": "96bbc21e",
    "lang": "en",
    "text": "Health Room is done, nice work!"
+  },
+  {
+   "id": "97258da4",
+   "lang": "en",
+   "text": "Let's go see the doctor"
   },
   {
    "id": "97cafe15",
@@ -572,6 +582,11 @@
    "text": "Pay for medicine is done, nice work!"
   },
   {
+   "id": "c4f56f26",
+   "lang": "en",
+   "text": "Your results are ready"
+  },
+  {
    "id": "c7992e96",
    "lang": "en",
    "text": "then turn right and go about 20 meters"
@@ -642,6 +657,11 @@
    "text": "No medicine, no problem"
   },
   {
+   "id": "f0cbab94",
+   "lang": "en",
+   "text": "The nurse will tell you when to see the doctor"
+  },
+  {
    "id": "f4f3edcf",
    "lang": "en",
    "text": "and there's Toilet!"
@@ -705,6 +725,11 @@
    "id": "04df5200",
    "lang": "th",
    "text": "ยื่นบัตรที่เวชระเบียนค่ะ"
+  },
+  {
+   "id": "071b35f7",
+   "lang": "th",
+   "text": "รอผลเลือดเสร็จแล้ว เก่งมากค่ะ"
   },
   {
    "id": "08a63497",
@@ -807,6 +832,11 @@
    "text": "กลับไปห้องสุขภาพ ฟังสรุปผลกันนะคะ"
   },
   {
+   "id": "28881be7",
+   "lang": "th",
+   "text": "อายุ 35 ปีขึ้นไป ตรวจครบแล้วกลับไปรอผลเลือดที่ห้องสุขภาพก่อน แล้วค่อยพบแพทย์ค่ะ"
+  },
+  {
    "id": "2eb2b342",
    "lang": "th",
    "text": "แล้วเลี้ยวซ้าย เดินต่ออีกนิดเดียว"
@@ -847,6 +877,11 @@
    "text": "ขอให้สุขภาพแข็งแรงนะคะ"
   },
   {
+   "id": "38264fb5",
+   "lang": "th",
+   "text": "ผลออกแล้วพยาบาลจะบอกให้ไปพบแพทย์นะคะ"
+  },
+  {
    "id": "38a97ee2",
    "lang": "th",
    "text": "ตรวจครบแล้ว เก่งมากเลยค่ะ"
@@ -855,6 +890,11 @@
    "id": "3b066fbf",
    "lang": "th",
    "text": "เดินตรงไปประมาณ 15 เมตร"
+  },
+  {
+   "id": "3dd7fbf3",
+   "lang": "th",
+   "text": "ผลเลือดออกแล้ว ไปพบคุณหมอกันนะคะ"
   },
   {
    "id": "3ecb5cd7",
@@ -877,14 +917,14 @@
    "text": "แล้วเลี้ยวขวา เดินต่อประมาณ 35 เมตร"
   },
   {
-   "id": "4e190427",
-   "lang": "th",
-   "text": "อายุ 35 ปีขึ้นไป พบแพทย์หลังตรวจครบค่ะ"
-  },
-  {
    "id": "5122d04f",
    "lang": "th",
    "text": "ยังกลับบ้านไม่ได้นะคะ"
+  },
+  {
+   "id": "512af523",
+   "lang": "th",
+   "text": "ต่อไปกลับไปห้องสุขภาพ รอผลเลือดออกก่อน แล้วค่อยไปพบคุณหมอนะคะ"
   },
   {
    "id": "52d68cca",
@@ -1082,11 +1122,6 @@
    "text": "รับยาแล้ว ไปชำระค่ายาที่โต๊ะหน้าห้องยากันค่ะ"
   },
   {
-   "id": "9590795b",
-   "lang": "th",
-   "text": "ห้องตรวจแพทย์อยู่แถวบนของตึกค่ะ"
-  },
-  {
    "id": "95972927",
    "lang": "th",
    "text": "อายุต่ำกว่า 35 ปี ไม่ต้องพบแพทย์ค่ะ"
@@ -1175,11 +1210,6 @@
    "id": "b508278a",
    "lang": "th",
    "text": "แล้วเลี้ยวซ้าย เดินต่อประมาณ 45 เมตร"
-  },
-  {
-   "id": "b5a89b13",
-   "lang": "th",
-   "text": "ต่อไปไปพบคุณหมอกันนะคะ"
   },
   {
    "id": "b5b1a43b",
@@ -1330,6 +1360,11 @@
    "id": "f5e3c2f9",
    "lang": "th",
    "text": "แล้วเลี้ยวซ้าย เดินต่อประมาณ 15 เมตร"
+  },
+  {
+   "id": "f85ab419",
+   "lang": "th",
+   "text": "รอผลเลือดที่ห้องสุขภาพค่ะ"
   },
   {
    "id": "f94bbc29",

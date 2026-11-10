@@ -341,7 +341,7 @@ const WALLS=[[70.3,27.7,90,27.7]];
 const OUTLINE="M36.5 42.5 H2 V2 H102 V42.5 H43.5";
 const LINES={};
 /* ================= ขั้นตอนตรวจสุขภาพ (แก้ตรงนี้ถ้าขั้นตอนเปลี่ยน) =================
-   grp: start = เริ่ม, check = ตรวจได้ทุกลำดับ, doc = พบแพทย์ (อายุ 35 ขึ้นไป หรือพยาบาลให้พบ),
+   grp: start = เริ่ม, check = ตรวจได้ทุกลำดับ, docprep = รอผลเลือดก่อนพบแพทย์, doc = พบแพทย์ (อายุ 35 ขึ้นไป หรือพยาบาลให้พบ),
         meds = เฉพาะคนได้ยา, end = ทุกคน
    AGE_DOCTOR = อายุตั้งแต่เท่านี้ต้องพบแพทย์ */
 const AGE_DOCTOR=35;
@@ -351,6 +351,7 @@ const ITEMS=[
   {id:"lab",node:"lab",ico:"🩸",grp:"check",th:"เจาะเลือด",en:"Blood test",dTh:"ยื่นใบสั่งตรวจ แล้วรอเรียกชื่อค่ะ",dEn:"Hand in your test form and wait to be called."},
   {id:"den",node:"den",ico:"🦷",grp:"check",th:"ตรวจฟัน",en:"Dental check",dTh:"ยื่นบัตรคิวที่หน้าห้องทันตกรรมค่ะ",dEn:"Hand your queue card in at the Dental room."},
   {id:"xray",node:"xray",ico:"🩻",grp:"check",th:"เอกซเรย์",en:"X-ray",dTh:"ยื่นใบสั่งตรวจที่หน้าห้องเอกซเรย์ค่ะ",dEn:"Hand in your form at the X-ray room."},
+  {id:"waitlab",node:"health",ico:"⏳",grp:"docprep",th:"รอผลเลือด",en:"Wait for blood results",fin:{th:"ผลเลือดออกแล้ว ✓",en:"Results are ready ✓"},dTh:"กลับไปห้องสุขภาพ รอผลเลือดออกก่อน พยาบาลจะบอกเมื่อพร้อมพบแพทย์ค่ะ",dEn:"Go back to the Health Room and wait for your blood results. The nurse will tell you when it's time to see the doctor."},
   {id:"doc",node:"doc",ico:"👨‍⚕️",grp:"doc",th:"พบแพทย์",en:"See the doctor",dTh:"นั่งรอหน้าห้องตรวจแพทย์จนกว่าจะเรียกชื่อค่ะ",dEn:"Wait outside the doctor's room until your name is called."},
   {id:"rx",node:"rx",ico:"💊",grp:"meds",th:"รับยา",en:"Get medicine",dTh:"รอเรียกชื่อ รับยาและฟังคำแนะนำจากเภสัชกรค่ะ",dEn:"Wait to be called, collect your medicine and listen to the pharmacist."},
   {id:"mpay",node:"mpay",ico:"💳",grp:"meds",th:"ชำระค่ายา",en:"Pay for medicine",dTh:"ชำระค่ายาที่โต๊ะหน้าห้องยาค่ะ",dEn:"Pay for your medicine at the desk in front of the pharmacy."},
@@ -418,7 +419,7 @@ const QUEST_MODE_ON=()=>mode==="check";
 
 /* กฎขั้นตอน */
 function need(id){const g=ITEM[id].grp;
-  if(g==="doc")return age==="old"||docForced;
+  if(g==="doc"||g==="docprep")return age==="old"||docForced;
   if(g==="meds")return meds===true;
   return true}
 const checksLeft=()=>ITEMS.filter(i=>i.grp==="check"&&!ck[i.id]);
@@ -429,6 +430,7 @@ function phase(){
   if(age===null)return"age";
   if(checksLeft().length)return"check";
   if(age==="young"&&!docForced&&!youngOk)return"young";
+  if(need("waitlab")&&!ck.waitlab)return"waitlab";
   if(need("doc")&&!ck.doc)return"doc";
   if(ck.doc&&meds===null)return"meds";
   if(need("rx")&&!ck.rx)return"rx";
@@ -449,7 +451,7 @@ function phaseNode(){const it=curItem();if(it)return ITEM[it].node;return phase(
 function itemAtHere(){
   if(pick&&ITEM[pick]&&!ck[pick]&&ITEM[pick].node===here)return pick;
   const c=curItem();if(c&&ITEM[c].node===here)return c;
-  const o=ITEMS.find(i=>i.node===here&&!ck[i.id]&&need(i.id)&&(i.id!=="summary"||ck.health));
+  const o=ITEMS.find(i=>i.node===here&&!ck[i.id]&&need(i.id)&&(i.id!=="summary"||ck.health)&&(i.id!=="waitlab"||!checksLeft().length));
   return o?o.id:null;
 }
 const doneCount=()=>ITEMS.filter(i=>need(i.id)&&ck[i.id]).length;
@@ -658,12 +660,12 @@ function render(){
   // รายการทั้งหมด
   $("qlog").innerHTML=ITEMS.map(i=>{
     const n=need(i.id),st=ck[i.id]?"ok":i.id===cur?"now":n?"":"na";
-    let tag=ck[i.id]?t.st.done:i.id===cur?t.st.now:n?t.st.todo:i.grp==="doc"?(age==="young"?t.st.skipAge:t.st.ifDoc):(meds===false?t.st.noMeds:t.st.ifMeds);
+    let tag=ck[i.id]?t.st.done:i.id===cur?t.st.now:n?t.st.todo:(i.grp==="doc"||i.grp==="docprep")?(age==="young"?t.st.skipAge:t.st.ifDoc):(meds===false?t.st.noMeds:t.st.ifMeds);
     return`<li class="row ${st}"><button type="button" data-go="${i.id}"><span class="st">${ck[i.id]?"✓":i.ico}</span><span class="nm">${esc(i[lang])}</span><span class="tagr">${tag}</span></button><button type="button" class="tg" data-toggle="${i.id}" aria-label="${t.st.done}">${ck[i.id]?"↺":"✓"}</button></li>`}).join("");
   // ปุ่มด้านล่าง
   const ab=$("arrivedBtn"),at_=itemAtHere();ab.hidden=false;
   if(here!==dest){ab.textContent=t.arrived;ab.disabled=false;ab.className="btn primary"}
-  else if(at_&&!(ph==="meds"||ph==="age"||ph==="young")){ab.textContent=t.finishOf(iname(at_));ab.disabled=false;ab.className="btn gold";ab.dataset.item=at_}
+  else if(at_&&!(ph==="meds"||ph==="age"||ph==="young")){ab.textContent=ITEM[at_].fin?ITEM[at_].fin[lang]:t.finishOf(iname(at_));ab.disabled=false;ab.className="btn gold";ab.dataset.item=at_}
   else{ab.textContent=t.atHere;ab.disabled=true;ab.className="btn"}
   const bq=$("botQ");bq.hidden=!q;bq.innerHTML=q?`<p>${esc(title)}</p>${q}`:"";
   if(q&&here===dest)ab.hidden=true;
@@ -718,7 +720,8 @@ const PH_SAY={
   age:{th:"ขอถามนิดนึงนะคะ อายุ 35 ปีขึ้นไปไหมคะ",en:"Quick question! Are you 35 or older?"},
   check:{th:"ลุยกันเลยค่ะ! ตรวจห้องไหนก่อนก็ได้ ตามที่เจ้าหน้าที่แนะนำ น้องพาไปห้องที่ใกล้ที่สุดก่อนนะคะ",en:"Time for your tests! Any order works, just follow the staff. I'll take you to the closest one first."},
   young:{th:"ตรวจครบแล้ว เก่งมากค่ะ! ถ้าพยาบาลไม่ได้บอกให้พบแพทย์ ไปต่อได้เลยนะคะ",en:"All tests done, great job! If the nurse didn't ask you to see the doctor, let's keep going."},
-  doc:{th:"ตรวจครบแล้ว เก่งมากเลยค่ะ ต่อไปไปพบคุณหมอกันนะคะ",en:"All tests done, amazing job! Now let's go see the doctor."},
+  waitlab:{th:"ตรวจครบแล้ว เก่งมากเลยค่ะ ต่อไปกลับไปห้องสุขภาพ รอผลเลือดออกก่อน แล้วค่อยไปพบคุณหมอนะคะ",en:"All tests done, amazing job! Now head back to the Health Room and wait for your blood results before seeing the doctor."},
+  doc:{th:"ผลเลือดออกแล้ว ไปพบคุณหมอกันนะคะ",en:"Your results are ready. Let's go see the doctor."},
   meds:{th:"พบคุณหมอแล้ว คุณหมอให้ยากลับบ้านไหมคะ",en:"Did the doctor give you any medicine to take home?"},
   rx:{th:"ไปรับยากันค่ะ ห้องยาอยู่ไม่ไกลเลย",en:"Let's pick up your medicine. The pharmacy is just around here."},
   mpay:{th:"รับยาแล้ว ไปชำระค่ายาที่โต๊ะหน้าห้องยากันค่ะ",en:"Got your medicine! Now let's pay for it at the desk in front of the pharmacy."},
@@ -834,7 +837,7 @@ function leftList(L){return ITEMS.filter(i=>need(i.id)&&!ck[i.id]).map(i=>i[L])}
 const INTENTS=[
   {urgent:true,kw:["เจ็บหน้าอก","แน่นหน้าอก","หายใจไม่ออก","หายใจลำบาก","หมดสติ","เป็นลม","ชัก","เลือดออกมาก","ฉุกเฉิน","chestpain","cantbreathe","unconscious","fainted","emergency","bleeding"],
    r:L=>({urgent:true,text:T(L,"⚠️ ถ้ามีอาการรุนแรง เช่น เจ็บหน้าอก หายใจไม่ออก หมดสติ กรุณาแจ้งเจ้าหน้าที่ที่อยู่ใกล้ที่สุดทันที ไม่ต้องรอคิวค่ะ","⚠️ For severe symptoms such as chest pain, trouble breathing or fainting, tell the nearest staff member right away. Do not wait in the queue.")})},
-  {kw:["กินยา","ยานี้","ยาตัวนี้","ผลข้างเคียง","อาการ","เป็นโรค","เป็นอะไร","ปวด","มีไข้","ค่าผิดปกติ","ผลเลือด","dose","dosage","symptom","sideeffect","diagnos","whatdoihave"],
+  {kw:["กินยา","ยานี้","ยาตัวนี้","ผลข้างเคียง","อาการ","เป็นโรค","เป็นอะไร","ปวด","มีไข้","ค่าผิดปกติ","dose","dosage","symptom","sideeffect","diagnos","whatdoihave"],
    r:L=>({text:T(L,"ขอโทษค่ะ น้องนำทางตอบได้เฉพาะเรื่องทางเดินและขั้นตอน เรื่องอาการ ผลตรวจ หรือการใช้ยา รบกวนสอบถามแพทย์ พยาบาลห้องสุขภาพ หรือเภสัชกรนะคะ","Sorry, I can only help with directions and steps. For symptoms, results or medicines, please ask the doctor, Health Room nurse or pharmacist.")})},
   {kw:["ไม่ได้ยา","ไม่มียา","ไม่สั่งยา","nomedicine","noprescription"],
    r:L=>{if(!ck.doc){ck.doc=true}meds=false;return nextReply(L,T(L,"ไม่ได้ยา ไม่เป็นไรค่ะ","No medicine, no problem."))}},
@@ -851,7 +854,9 @@ const INTENTS=[
   {kw:["ต้องพบหมอไหม","ต้องพบแพทย์ไหม","พบหมอไหม","พบหมอ","พบแพทย์","หาหมอ","ห้องหมอ","ห้องตรวจแพทย์","doctor","seethedoctor","doineed"],
    r:L=>age==="young"&&!docForced
      ?{text:T(L,`อายุต่ำกว่า ${AGE_DOCTOR} ปี ไม่ต้องพบแพทย์ค่ะ ยกเว้นพยาบาลบอกให้พบ ถ้าพยาบาลบอก แตะ "พยาบาลให้พบแพทย์" ได้เลยนะคะ`,`Under ${AGE_DOCTOR}, you don't need to see the doctor unless the nurse asks you to.`),speak:T(L,`อายุต่ำกว่า ${AGE_DOCTOR} ปี ไม่ต้องพบแพทย์ค่ะ ยกเว้นพยาบาลบอกให้พบนะคะ`,`Under ${AGE_DOCTOR}, you don't need to see the doctor unless the nurse asks you to.`)}
-     :{text:T(L,`อายุ ${AGE_DOCTOR} ปีขึ้นไป พบแพทย์หลังตรวจครบค่ะ ห้องตรวจแพทย์อยู่แถวบนของตึกค่ะ`,`If you're ${AGE_DOCTOR} or older, see the doctor after your tests. The doctor's room is in the top row of the building.`),dest:"doc"}},
+     :{text:T(L,`อายุ ${AGE_DOCTOR} ปีขึ้นไป ตรวจครบแล้วกลับไปรอผลเลือดที่ห้องสุขภาพก่อน แล้วค่อยพบแพทย์ค่ะ`,`If you're ${AGE_DOCTOR} or older, after your tests wait for your blood results in the Health Room, then see the doctor.`),dest:need("waitlab")&&!ck.waitlab?"health":"doc"}},
+  {kw:["รอผล","รอผลเลือด","ผลเลือดออก","ผลเลือด","bloodresult","waitforresult","results ready"],
+   r:L=>({text:T(L,"รอผลเลือดที่ห้องสุขภาพค่ะ ผลออกแล้วพยาบาลจะบอกให้ไปพบแพทย์นะคะ","Wait for your blood results in the Health Room. The nurse will tell you when to see the doctor."),dest:"health"})},
   {kw:["ใบเบิก","เขียนใบเบิก","เบิก","การเงิน","จ่ายเงิน","ชำระเงิน","cashier","reimburse","claimform","billing"],
    r:L=>({text:T(L,"เขียนใบเบิกค่าตรวจสุขภาพที่ห้องการเงินค่ะ ทุกคนต้องเขียนนะคะ","Everyone fills in the check-up reimbursement form at the cashier."),dest:"pay"})},
   {kw:["สรุปผล","ฟังผล","รับผล","ผลตรวจ","results"],
