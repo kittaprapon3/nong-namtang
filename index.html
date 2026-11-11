@@ -423,8 +423,8 @@ const LINES={};
         meds = เฉพาะคนได้ยา, end = ทุกคน
    AGE_DOCTOR = อายุตั้งแต่เท่านี้ต้องพบแพทย์ */
 const AGE_DOCTOR=35;
-/* ทิศเข็มทิศ (องศา 0-359) เมื่อยืนที่ประตูทางเข้าแล้วหันหน้าเข้าตึก ใส่ตัวเลขเมื่อวัดได้ ถ้ายังไม่รู้ให้เป็น null */
-const MAP_UP_BEARING=null;
+/* ทิศเข็มทิศ (องศา) ตอนยืนที่ประตูแล้วหันหน้าเข้าตึก — วัดจริง 315° (ตรวจซ้ำ: ทางไปห้องสุขภาพ 44°, ทางไปเจาะเลือด 225° ตรงกัน) */
+const MAP_UP_BEARING=315;
 const ITEMS=[
   {id:"reg",node:"reg",ico:"🪪",grp:"start",th:"ยื่นบัตร",en:"Register",dTh:"ยื่นบัตรประชาชนที่เวชระเบียน แจ้งว่ามาตรวจสุขภาพค่ะ",dEn:"Show your ID card at Medical Records and say you're here for a check-up."},
   {id:"health",node:"health",ico:"🩺",grp:"check",th:"ห้องสุขภาพ",en:"Health Room",dTh:"ไปห้องสุขภาพ พยาบาลจะวัดความดันและถามอาการค่ะ",dEn:"Go to the Health Room. A nurse will check your blood pressure and ask how you feel."},
